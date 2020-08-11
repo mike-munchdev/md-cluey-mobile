@@ -4,7 +4,7 @@
     "slug": "cluey-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Icon-1024.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -13,14 +13,53 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "appVariables": {
+        "production": {
+          "apiServerUrl": "rxrunr-api.herokuapp.com",
+          "httpProtocol": "https",
+          "wsProtocol": "wss",
+          "drugSearchLimit": 20,
+          "jwtSecret": "as;ledasoi43poiap[iohakj23-9*_()",
+          "mediaServerUrl": "https://api.cloudinary.com/v1_1/munch-development-llc/upload",
+          "uploadPreset": "uqyed4ti"
+        },
+        "heroku-test": {
+          "apiServerUrl": "rxrunr-api-test.herokuapp.com",
+          "httpProtocol": "https",
+          "wsProtocol": "wss",
+          "drugSearchLimit": 20,
+          "jwtSecret": "as;ledasoi43poiap[iohakj23-9*_()",
+          "mediaServerUrl": "https://api.cloudinary.com/v1_1/munch-development-llc/upload",
+          "uploadPreset": "uqyed4ti"
+        },
+        "staging": {
+          "apiServerUrl": "rxrunr-api-staging.herokuapp.com",
+          "httpProtocol": "https",
+          "wsProtocol": "wss",
+          "drugSearchLimit": 20,
+          "jwtSecret": "as;ledasoi43poiapa[pio2j243[oin[d-9*_()",
+          "mediaServerUrl": "https://api.cloudinary.com/v1_1/munch-development-llc/upload",
+          "uploadPreset": "uqyed4ti"
+        },
+        "development": {
+          "apiServerUrlProd": "rxrunr-api.herokuapp.com",
+          "apiServerUrl": "192.168.0.3:4001",
+          "httpProtocol": "http",
+          "wsProtocol": "ws",
+          "drugSearchLimit": 20,
+          "jwtSecret": "test",
+          "mediaServerUrl": "https://api.cloudinary.com/v1_1/munch-development-llc/upload",
+          "uploadPreset": "uqyed4ti"
+        }
+      }
     }
   }
 }
