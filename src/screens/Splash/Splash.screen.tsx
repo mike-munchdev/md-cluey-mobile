@@ -1,6 +1,6 @@
-import React, { useState, useEffect, FC, useContext } from 'react';
+import React, { FC } from 'react';
 import { Entypo } from '@expo/vector-icons';
-import { Text, View } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 import styles from './styles';
@@ -11,35 +11,47 @@ export interface ISplashProps {
   user?: any;
 }
 const AnimatedIcon = Animatable.createAnimatableComponent(Entypo);
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+const slideIn = {
+  from: {
+    left: 50,
+  },
+  to: {
+    left: 200,
+  },
+};
+const fadeIn = {
+  from: {
+    opacity: 0,
+  },
+  to: {
+    opacity: 1,
+  },
+};
 const Splash: FC<ISplashProps> = ({ finishLoading }) => {
   return (
     <Animatable.View style={styles.container}>
-      {/* <Image
-        source={require('../../../assets/logo2.png')}
+      <AnimatedIcon
+        animation={slideIn}
+        iterationCount={1}
+        direction="alternate"
+        name="magnifying-glass"
+        size={108}
+        color={theme.text}
         style={{
-          width: 0,
-          height: 0,
+          position: 'absolute',
+          top: windowHeight / 2 - 70,
         }}
-        resizeMode="cover"
-      /> */}
-      <View style={{ flexDirection: 'row' }}>
-        <AnimatedIcon
-          animation="slideInRight"
-          iterationCount={3}
-          direction="alternate"
-          name="magnifying-glass"
-          size={96}
-          color={theme.text}
-          style={{ marginTop: -10 }}
-          onAnimationEnd={() => finishLoading()}
-        />
-
+        onAnimationEnd={() => finishLoading()}
+      />
+      <View style={{ marginHorizontal: 50 }}>
         <Animatable.Text
+          animation={fadeIn}
           style={{
             fontFamily: 'CoinyRegular',
             fontSize: 72,
             color: theme.text,
-            marginLeft: -100,
           }}
         >
           Cluey

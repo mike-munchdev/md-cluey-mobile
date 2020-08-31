@@ -20,7 +20,10 @@ export const GET_USER_TOKEN_BY_EMAIL_AND_PASSWORD = gql`
   }
 `;
 
-export const getUserTokenByEmailAndPasswordError = (e: ApolloError) => {
+export const getUserTokenByEmailAndPasswordError = (setLoading: Function) => (
+  e: ApolloError
+) => {
+  setLoading(false);
   AlertHelper.show(
     'error',
     'Error',
@@ -29,9 +32,18 @@ export const getUserTokenByEmailAndPasswordError = (e: ApolloError) => {
 };
 
 export const getUserTokenByEmailAndPasswordCompleted = (
-  signIn: (token: string, user: any) => void
+  signIn: (
+    token: string,
+    user: any,
+    navigation: any,
+    location?: string
+  ) => void,
+  navigation: any,
+  location: string,
+  setLoading: Function
 ) => async ({ getUserTokenByEmailAndPassword }) => {
   const { ok, token, user, error } = getUserTokenByEmailAndPassword;
+  setLoading(false);
   if (ok) {
     if (!token) {
       AlertHelper.show(
@@ -40,7 +52,7 @@ export const getUserTokenByEmailAndPasswordCompleted = (
         'No user found with the given information.'
       );
     } else {
-      await signIn(token, user);
+      await signIn(token, user, navigation, location);
     }
   } else {
     AlertHelper.show('error', 'Error', error.message);

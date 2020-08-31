@@ -13,9 +13,22 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "android": {
+      "package": "com.munchdevelopment.clueytest",
+      "googleServicesFile": "./assets/google-services.json"
+    },
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.munchdevelopment.clueytest",
+      "supportsTablet": true,
+      "googleServicesFile": "./assets/GoogleService-Info.plist",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.726028660917-it17vlgku3ska4dm57h87cbequljvno3"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -51,7 +64,7 @@
         },
         "development": {
           "apiServerUrlProd": "rxrunr-api.herokuapp.com",
-          "apiServerUrl": "192.168.0.3:4001",
+          "apiServerUrl": "localhost:4004",
           "httpProtocol": "http",
           "wsProtocol": "ws",
           "drugSearchLimit": 20,
@@ -59,7 +72,18 @@
           "mediaServerUrl": "https://api.cloudinary.com/v1_1/munch-development-llc/upload",
           "uploadPreset": "uqyed4ti"
         }
+      },
+      "bugsnag": {
+        "apiKey": "bb37cfd6867c09cb329bbbc56ee6f6a5"
       }
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "@bugsnag/expo/hooks/post-publish.js",
+          "config": {}
+        }
+      ]
     }
   }
 }

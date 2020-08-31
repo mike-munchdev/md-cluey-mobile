@@ -1,3 +1,1 @@
-import SignUp from './SignUp.screen';
-
-export { SignUp };
+export { default as SignUp } from './SignUp.screen';

@@ -1,3 +1,2 @@
-import SignIn from './SignIn.screen';
-
-export { SignIn };
+export { default as SignIn } from './SignIn.screen';
+export { default as SignInContainer } from './SignInContainer';

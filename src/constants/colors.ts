@@ -16,4 +16,8 @@ export default {
   red: {
     normal: 'red',
   },
+  blue: {
+    facebook: '#4267B2',
+    google: '#3f80ed',
+  },
 };

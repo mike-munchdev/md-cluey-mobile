@@ -1,12 +1,20 @@
 import React, { useEffect, useState, useMemo, createContext } from 'react';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  useNavigation,
+  StackActions,
+} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
 import AsyncStorage from '@react-native-community/async-storage';
-import { Splash, SignIn, SignUp } from '../screens';
+import { useMutation } from '@apollo/react-hooks';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
-import { AuthContext, P, AppContext } from './context';
-import GetStarted from '../screens/GetStarted/GetStarted.screen';
+import { AuthContext, AppContext } from './context';
+import { Splash } from '../screens/Splash';
+import { SignIn } from '../screens/SignIn';
+import { SignUp } from '../screens/SignUp';
+import { Search } from '../screens/Search';
+import { GetStarted } from '../screens/GetStarted/';
 
 import { AlertHelper } from '../utils/alert';
 
@@ -16,52 +24,27 @@ import {
   addPushTokenError,
   addPushTokenCompleted,
 } from '../graphql/queries/user/user';
-import { useMutation } from '@apollo/react-hooks';
+import { ActivateAccount } from '../screens/ActivateAccount';
+import { Sidebar } from '../components/Sidebar';
 
+const Drawer = createDrawerNavigator();
 const AuthStack = createStackNavigator();
 
 const ClueyStack = createStackNavigator();
-const ProfileStack = createStackNavigator();
-const SettingsStack = createStackNavigator();
+
+const DrawerScreen = () => (
+  <Drawer.Navigator initialRouteName="Search" drawerContent={() => <Sidebar />}>
+    <Drawer.Screen name="Search" component={ClueyStackScreen} />
+  </Drawer.Navigator>
+);
 
 const ClueyStackScreen = () => (
   <ClueyStack.Navigator
-    initialRouteName="ClueySearch"
+    initialRouteName="Search"
     screenOptions={{ headerShown: false }}
     mode="modal"
   >
-    {/* <ClueyStack.Screen name="RxHistory" component={RxHistory} />
-    <ClueyStack.Screen name="NewRx" component={NewRx} /> */}
-    {/*<ClueyStack.Screen name="ScanRx" component={ScanRx} />
-     <ClueyStack.Screen name="ScanRxBottle" component={ScanRxBottle} />
-    <ClueyStack.Screen name="ManualRxEntry" component={ManualRxEntry} /> */}
-
-    {/* <ClueyStack.Screen
-      name="Modal"
-      component={Modal}
-      options={{
-        animationEnabled: true,
-        cardStyle: { backgroundColor: 'rgba(0,0,0,0.15)' },
-        cardOverlayEnabled: true,
-        cardStyleInterpolator: ({ current: { progress } }) => {
-          return {
-            cardStyle: {
-              opacity: progress.interpolate({
-                inputRange: [0, 0.5, 0.9, 1],
-                outputRange: [0, 0.25, 0.7, 1],
-              }),
-            },
-            overlayStyle: {
-              opacity: progress.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 0.5],
-                extrapolate: 'clamp',
-              }),
-            },
-          };
-        },
-      }}
-    /> */}
+    <ClueyStack.Screen name="Search" component={Search} />
   </ClueyStack.Navigator>
 );
 
@@ -82,6 +65,11 @@ const AuthStackScreen = () => (
       component={SignUp}
       options={{ headerShown: false }}
     />
+    <AuthStack.Screen
+      name="ActivateAccount"
+      component={ActivateAccount}
+      options={{ headerShown: false }}
+    />
   </AuthStack.Navigator>
 );
 
@@ -95,7 +83,7 @@ const RootStackScreen = (props: any) => {
       {userToken ? (
         <RootStack.Screen
           name="App"
-          component={ClueyStackScreen}
+          component={DrawerScreen}
           options={{
             animationEnabled: false,
           }}
@@ -127,13 +115,11 @@ export default () => {
   });
 
   const updateUser = async (user: any) => {
-    // console.log('updateUser', user);
     setUser(user);
     await AsyncStorage.setItem('user', JSON.stringify(user));
   };
 
   const updateLocation = async (location: any) => {
-    // console.log('updateLocation', location);
     setLocation(location);
     await AsyncStorage.setItem('location', JSON.stringify(location));
   };
@@ -150,12 +136,23 @@ export default () => {
       redirect: (location: string) => {
         // history.push(location);
       },
-      signIn: async (token: string, user: any, location?: string) => {
-        setIsLoading(false);
-        setUserToken(token);
-        setUser(user);
-        await AsyncStorage.setItem('token', token);
-        await AsyncStorage.setItem('user', JSON.stringify(user));
+      signIn: async (
+        token: string,
+        user: any,
+        navigation: any,
+        location?: string
+      ) => {
+        try {
+          setIsLoading(false);
+          setUserToken(token);
+          setUser(user);
+
+          await AsyncStorage.setItem('token', token);
+          await AsyncStorage.setItem('user', JSON.stringify(user));
+          navigation.navigate(location ? location : 'Search');
+        } catch (error) {
+          AlertHelper.show('error', 'Sign In', error.message);
+        }
       },
       signUp: (message: string, navigation: any) => {
         AlertHelper.setOnClose(() => {
@@ -163,16 +160,25 @@ export default () => {
         });
         AlertHelper.show('success', 'Sign Up', message);
       },
-      signOut: async () => {
-        await AsyncStorage.removeItem('token');
-        await AsyncStorage.removeItem('isLoggedIn');
-        await AsyncStorage.removeItem('user');
-        await AsyncStorage.removeItem('location');
-        await AsyncStorage.removeItem('pharmacy');
-        setIsLoading(false);
-        setUserToken(null);
-        setUser(null);
-        setLocation(null);
+      activateAccount: (message: string, navigation: any) => {
+        AlertHelper.setOnClose(() => {
+          navigation.navigate('SignIn');
+        });
+        AlertHelper.show('success', 'Activation', message);
+      },
+      signOut: async (navigation: any) => {
+        try {
+          await AsyncStorage.removeItem('token');
+          await AsyncStorage.removeItem('isLoggedIn');
+          await AsyncStorage.removeItem('user');
+
+          setIsLoading(false);
+          setUserToken(null);
+          setUser(null);
+          navigation.dispatch(StackActions.replace('SignIn'));
+        } catch (error) {
+          AlertHelper.show('error', 'Sign Out', error.message);
+        }
       },
       isLoggedIn: async () => {
         const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
@@ -198,19 +204,17 @@ export default () => {
   useEffect(() => {
     (async () => {
       if (user) {
-        const pushToken = await registerForPushNotificationsAsync();
-
-        await addPushToken({
-          variables: {
-            input: {
-              userId: user.id,
-              pushToken,
-            },
-          },
-        });
-      } else {
-        setIsRequesting(false);
+        // const pushToken = await registerForPushNotificationsAsync();
+        // await addPushToken({
+        //   variables: {
+        //     input: {
+        //       userId: user.id,
+        //       pushToken,
+        //     },
+        //   },
+        // });
       }
+      setIsRequesting(false);
     })();
   }, [user]);
 

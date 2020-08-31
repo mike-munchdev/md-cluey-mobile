@@ -1,3 +1,2 @@
-import DismissKeyboard from './DismissKeyboard';
-
-export { DismissKeyboard };
+export { default as DismissKeyboard } from './DismissKeyboard';
+export { default as AnimatableTextInput } from './AnimatableTextInput';

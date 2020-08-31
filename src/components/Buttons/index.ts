@@ -1,3 +1,2 @@
-import RoundedIconButton from './RoundedIconButton';
-
-export { RoundedIconButton };
+export { default as RoundedIconButton } from './RoundedIconButton';
+export { default as ActionButton } from './ActionButton';

@@ -1,24 +1,38 @@
-import React, { Fragment, useState, FC } from 'react';
+import React, { Fragment, useState, FC, useCallback } from 'react';
 import { FieldProps } from 'formik';
-import { Text, View, TextInput, TouchableOpacity } from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  ViewStyle,
+  StyleProp,
+} from 'react-native';
 import { FontAwesome, Feather } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
 import colors from '../../constants/colors';
 import theme from '../../constants/theme';
 import styles from './styles';
-import { Input } from 'react-native-elements';
+
+import { TextInput } from 'react-native-paper';
 
 interface ITextInputProps {
   placeholder?: string;
   label?: string;
   secureTextEntry?: boolean;
   iconName?: string;
+  iconSize?: number;
   name: string;
   value: string;
   errors: any[];
   touched: any[];
   handleChange: (name: string) => void;
-  headerStyles?: object;
+  handleIconPress?: () => void;
+  containerStyles?: StyleProp<ViewStyle>;
+  textInputRef:
+    | ((instance: TextInput | null) => void)
+    | React.RefObject<TextInput>
+    | null
+    | undefined;
 }
 
 const AnimatableTextInput: FC<ITextInputProps> = ({
@@ -26,63 +40,49 @@ const AnimatableTextInput: FC<ITextInputProps> = ({
   label,
   secureTextEntry,
   iconName,
+  iconSize,
   name,
   value,
   errors,
   touched,
   handleChange,
-  headerStyles,
+  containerStyles,
+  textInputRef,
+  handleIconPress,
 }) => {
-  const [secureTextVisible, setSecureTextVisible] = useState(false);
-  const getIcon = (iconName?: string, secureTextEntry?: boolean) => {
-    if (secureTextEntry) {
-      return <Feather name={iconName || ''} color={theme.text} size={20} />;
-    } else {
-      return <FontAwesome name={iconName || ''} color={theme.text} size={20} />;
-    }
+  const showErrorState = (touched: any, errors: any, name: string) => {
+    return touched[name] !== undefined && errors[name] !== undefined;
   };
 
   return (
-    <Fragment>
-      {/* <Text style={[styles.textFooter, headerStyles]}>{label}</Text> */}
-      <View style={styles.action}>
-        <Input
-          leftIcon={getIcon(iconName, secureTextEntry)}
-          placeholderTextColor={theme.text}
-          placeholder={placeholder}
-          style={styles.textInput}
-          secureTextEntry={secureTextEntry}
-          onChangeText={handleChange}
-          autoCapitalize="none"
-          value={value}
-        />
-        {secureTextVisible ? (
-          <TouchableOpacity
-            onPress={() => setSecureTextVisible(!secureTextEntry)}
-          >
-            <Feather
-              name={`${secureTextVisible ? 'eye' : 'eye-off'}`}
-              color={`${
-                secureTextVisible ? colors.gray.normal : colors.green.normal
-              }`}
-              size={20}
-            />
-          </TouchableOpacity>
-        ) : null}
-        {/* checkTextInputChange ? (
-          <Animatable.View animation="bounceIn">
-            <Feather
-              name="check-circle"
-              color={colors.green.normal}
-              size={20}
-            />
-          </Animatable.View>
-        ) : null */}
-      </View>
-      {touched[name] !== undefined && errors[name] !== undefined ? (
-        <Text style={styles.errorText}>{errors[name]}</Text>
-      ) : null}
-    </Fragment>
+    <View style={[containerStyles]}>
+      <TextInput
+        mode="outlined"
+        left={
+          <TextInput.Icon
+            onPress={() => {
+              if (handleIconPress) {
+                handleIconPress();
+              }
+            }}
+            name={iconName || ''}
+            color={theme.dark.hex}
+            size={iconSize || 20}
+          />
+        }
+        ref={textInputRef}
+        theme={{ colors: { primary: theme.dark.hex } }}
+        placeholderTextColor={theme.text}
+        placeholder={placeholder}
+        style={styles.textInput}
+        secureTextEntry={secureTextEntry}
+        onChangeText={handleChange}
+        autoCapitalize="none"
+        value={value}
+        underlineColorAndroid={theme.text}
+        error={showErrorState(touched, errors, name)}
+      />
+    </View>
   );
 };
 

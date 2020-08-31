@@ -36,13 +36,17 @@ export default () => {
   };
 
   const _loadAssetsAsync = async () => {
-    const imageAssets = cacheImages([require('../assets/Icon-1024.png')]);
+    const imageAssets = cacheImages([
+      require('../assets/Icon-1024.png'),
+      require('../assets/images/magnifying-glass.png'),
+    ]);
 
     const fontAssets = cacheFonts([
       FontAwesome.font,
       MaterialIcons.font,
       Feather.font,
       { CoinyRegular: require('../assets/fonts/CoinyRegular.ttf') },
+      { Montserrat: require('../assets/fonts/MontserratMedium.ttf') },
     ]);
 
     await Promise.all([...imageAssets, ...fontAssets]);

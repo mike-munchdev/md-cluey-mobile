@@ -1,21 +1,18 @@
 import gql from 'graphql-tag';
 import { ApolloError } from 'apollo-client';
 import { AlertHelper } from '../../../utils/alert';
+import Bugsnag from '@bugsnag/expo';
 
 export const userStructure = `{
     id
     email
     firstName
     middleName
-    lastName
-    suffix
-    phoneNumber    
-    stripeId
+    lastName        
     googleId
     facebookId
     pushTokens
-    createdAt
-   
+    createdAt   
 }`;
 
 export const GET_USER_BY_ID = gql`
@@ -90,8 +87,19 @@ export const ADD_PUSH_TOKEN = gql`
   }
 `;
 
+export const ACTIVATE_USER_ACCOUNT = gql`
+  mutation ActivateUserAccount($confirmToken: String!) {
+    activateUserAccount(confirmToken: $confirmToken) {
+      ok
+      message
+      error {
+        message
+      }
+    }
+  }
+`;
+
 export const userSignupError = (e: ApolloError) => {
-  console.log('e', e);
   AlertHelper.show(
     'error',
     'Error',
@@ -186,7 +194,7 @@ export const addPushTokenError = (
 ) => (e: ApolloError) => {
   setLoading(false);
   setRequesting(false);
-  console.log('e', e);
+
   // AlertHelper.show(
   //   'error',
   //   'Error',
@@ -212,6 +220,36 @@ export const addPushTokenCompleted = (
     }
   } else {
     setLoading(false);
+    AlertHelper.show('error', 'Error', error.message);
+  }
+};
+
+export const activateUserAccountError = (setLoading: Function) => (
+  e: ApolloError
+) => {
+  setLoading(false);
+  AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
+  Bugsnag.notify(e);
+};
+
+export const activateUserAccountCompleted = (
+  activateAccount: (message: string, navigation: any) => void,
+  setLoading: Function,
+  navigation: any
+) => async ({ activateUserAccount }) => {
+  const { ok, message, error } = activateUserAccount;
+  setLoading(false);
+  if (ok) {
+    if (!message) {
+      AlertHelper.show(
+        'error',
+        'Error',
+        'No customer found with the given token.'
+      );
+    } else {
+      await activateAccount(message, navigation);
+    }
+  } else {
     AlertHelper.show('error', 'Error', error.message);
   }
 };

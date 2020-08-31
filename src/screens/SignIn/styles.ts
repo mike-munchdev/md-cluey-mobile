@@ -3,59 +3,31 @@ import colors from '../../constants/colors';
 import theme from '../../constants/theme';
 
 const { height } = Dimensions.get('screen');
-const logoHeight = height * 0.7 * 0.4;
+
 export default StyleSheet.create({
-  container: {
+  overlayContainer: {
     flex: 1,
-    alignItems: 'center',
+    backgroundColor: theme.dark.rgba(0.4),
+  },
+  top: {
+    flex: 1,
     justifyContent: 'center',
-    backgroundColor: theme.background,
-    paddingHorizontal: 30,
-  },
-  logo: {
-    height: logoHeight,
-    width: logoHeight,
-  },
-  textHeader: {
-    color: colors.white.normal,
-    fontWeight: 'bold',
-    fontSize: 30,
-  },
-  textFooter: {
-    color: theme.background,
-    fontSize: 18,
-  },
-  action: {
-    flexDirection: 'row',
-    marginTop: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.white.off,
-    paddingBottom: 5,
-  },
-  textInput: {
-    flex: 1,
-    paddingLeft: 10,
-    color: theme.background,
-  },
-  buttons: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
     alignItems: 'center',
     marginTop: 50,
   },
-  button: {
-    width: '100%',
+  formContainer: {
+    marginHorizontal: 10,
+    flex: 4,
+    flexDirection: 'column',
   },
-  signIn: {
-    width: '100%',
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
+  inputView: {
+    height: 300,
+    justifyContent: 'flex-start',
+    // backgroundColor: 'blue',
   },
-  textSign: {
-    fontSize: 18,
-    fontWeight: 'bold',
+  buttonsView: {
+    flex: 2,
+    justifyContent: 'flex-end',
+    marginBottom: 30,
   },
-  forgotText: {},
 });

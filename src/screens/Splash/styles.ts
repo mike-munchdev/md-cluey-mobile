@@ -3,14 +3,14 @@ import colors from '../../constants/colors';
 import theme from '../../constants/theme';
 
 const { height } = Dimensions.get('screen');
-const logoHeight = height * 0.7 * 0.4;
 
 export default StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: theme.background,
+
+    backgroundColor: theme.background.hex,
   },
   header: {
     flex: 2,
@@ -25,12 +25,8 @@ export default StyleSheet.create({
     paddingHorizontal: 30,
     paddingVertical: 30,
   },
-  logo: {
-    height: logoHeight,
-    width: logoHeight,
-  },
   title: {
-    color: theme.dark,
+    color: theme.dark.hex,
     fontWeight: 'bold',
     fontSize: 24,
   },
