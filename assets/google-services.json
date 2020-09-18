@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "726028660917",
+    "firebase_url": "https://cluey-976fc.firebaseio.com",
+    "project_id": "cluey-976fc",
+    "storage_bucket": "cluey-976fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726028660917:android:ff39b97a47d64cda548efc",
+        "android_client_info": {
+          "package_name": "com.munchdevelopment.clueytest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "726028660917-skgvd8lo5vo5s53a9gnn3ht0tkl2mb6t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_GuFjNMH-VdZMkGD6cT1bzhsAwCe31WQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "726028660917-skgvd8lo5vo5s53a9gnn3ht0tkl2mb6t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "726028660917-it17vlgku3ska4dm57h87cbequljvno3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.munchdevelopment.clueytest"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -4,7 +4,7 @@
     "slug": "cluey-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Icon-1024.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -13,14 +13,78 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
+    "android": {
+      "package": "com.munchdevelopment.clueytest",
+      "googleServicesFile": "./assets/google-services.json"
+    },
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.munchdevelopment.clueytest",
+      "supportsTablet": true,
+      "googleServicesFile": "./assets/GoogleService-Info.plist",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.726028660917-it17vlgku3ska4dm57h87cbequljvno3"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "appVariables": {
+        "production": {
+          "apiServerUrl": "rxrunr-api.herokuapp.com",
+          "httpProtocol": "https",
+          "wsProtocol": "wss",
+          "drugSearchLimit": 20,
+          "jwtSecret": "as;ledasoi43poiap[iohakj23-9*_()",
+          "mediaServerUrl": "https://api.cloudinary.com/v1_1/munch-development-llc/upload",
+          "uploadPreset": "uqyed4ti"
+        },
+        "heroku-test": {
+          "apiServerUrl": "rxrunr-api-test.herokuapp.com",
+          "httpProtocol": "https",
+          "wsProtocol": "wss",
+          "drugSearchLimit": 20,
+          "jwtSecret": "as;ledasoi43poiap[iohakj23-9*_()",
+          "mediaServerUrl": "https://api.cloudinary.com/v1_1/munch-development-llc/upload",
+          "uploadPreset": "uqyed4ti"
+        },
+        "staging": {
+          "apiServerUrl": "rxrunr-api-staging.herokuapp.com",
+          "httpProtocol": "https",
+          "wsProtocol": "wss",
+          "drugSearchLimit": 20,
+          "jwtSecret": "as;ledasoi43poiapa[pio2j243[oin[d-9*_()",
+          "mediaServerUrl": "https://api.cloudinary.com/v1_1/munch-development-llc/upload",
+          "uploadPreset": "uqyed4ti"
+        },
+        "development": {
+          "apiServerUrlProd": "rxrunr-api.herokuapp.com",
+          "apiServerUrl": "localhost:4004",
+          "httpProtocol": "http",
+          "wsProtocol": "ws",
+          "drugSearchLimit": 20,
+          "jwtSecret": "test",
+          "mediaServerUrl": "https://api.cloudinary.com/v1_1/munch-development-llc/upload",
+          "uploadPreset": "uqyed4ti"
+        }
+      },
+      "uplead": {
+        "apiKey": "b3ccb6d9ca316379213dff10bfd8227e"
+      },
+      "bugsnag": {
+        "apiKey": "bb37cfd6867c09cb329bbbc56ee6f6a5"
+      }
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "@bugsnag/expo/hooks/post-publish.js",
+          "config": {}
+        }
+      ]
     }
   }
 }
