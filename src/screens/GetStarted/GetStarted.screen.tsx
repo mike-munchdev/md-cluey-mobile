@@ -13,9 +13,6 @@ import { ActionButton } from '../../components/Buttons';
 
 const GetStarted = () => {
   const navigation = useNavigation();
-  useEffect(() => {
-    console.log('GetStarted');
-  }, []);
 
   return (
     <ImageBackground

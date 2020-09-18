@@ -1,5 +1,5 @@
 import React, { useContext, FC, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 import * as Animatable from 'react-native-animatable';
 
@@ -10,9 +10,9 @@ import { Formik } from 'formik';
 import { FontAwesome5 } from '@expo/vector-icons';
 
 import {
-  GET_USER_TOKEN_BY_EMAIL_AND_PASSWORD,
-  getUserTokenByEmailAndPasswordCompleted,
-  getUserTokenByEmailAndPasswordError,
+  getUserTokenCompleted,
+  getUserTokenError,
+  GET_USER_TOKEN,
 } from '../../graphql/queries/token/tokens';
 import styles from './styles';
 
@@ -26,6 +26,11 @@ import SignInContainer from './SignInContainer';
 import { ActionButton } from '../../components/Buttons';
 import TextButton from '../../components/Buttons/TextButton';
 import { HrText } from '../../components/Text';
+import { AlertHelper } from '../../utils/alert';
+import {
+  facebookAuthentication,
+  googleAuthentication,
+} from '../../utils/socialAuth';
 
 const SignIn: FC = () => {
   const [signInLoading, setSignInLoading] = useState(false);
@@ -33,37 +38,88 @@ const SignIn: FC = () => {
   const [httpLink] = useServerInfo();
   const navigation = useNavigation();
 
-  const [getUserTokenByEmailAndPassword] = useLazyQuery(
-    GET_USER_TOKEN_BY_EMAIL_AND_PASSWORD,
-    {
-      fetchPolicy: 'network-only',
-      onError: getUserTokenByEmailAndPasswordError(setSignInLoading),
-      onCompleted: getUserTokenByEmailAndPasswordCompleted(
-        signIn,
-        navigation,
-        'Search',
-        setSignInLoading
-      ),
-    }
-  );
+  const [getUserToken] = useLazyQuery(GET_USER_TOKEN, {
+    fetchPolicy: 'network-only',
+    onError: getUserTokenError(setSignInLoading),
+    onCompleted: getUserTokenCompleted(
+      signIn,
+      navigation,
+      'Search',
+      setSignInLoading
+    ),
+  });
 
-  console.log('httpLink', httpLink);
+  const googleSignin = async () => {
+    try {
+      const { data, token } = await googleAuthentication();
+      const { id, email, familyName, givenName } = data;
+      await getUserToken({
+        variables: {
+          email,
+          googleId: id,
+          googleAuthToken: token,
+        },
+      });
+    } catch ({ message }) {
+      AlertHelper.show('error', 'Google Login Error', message);
+    }
+  };
+  const facebookSignin = async () => {
+    try {
+      const { data, token } = await facebookAuthentication();
+
+      const { id, email, first_name, last_name } = data;
+
+      await getUserToken({
+        variables: {
+          email,
+          facebookId: id,
+          facebookAuthToken: token,
+        },
+      });
+    } catch ({ message }) {
+      AlertHelper.show('error', 'Facebook Login Error', message);
+    }
+  };
+
   return (
     <SignInContainer>
       <View style={styles.overlayContainer}>
         <View style={styles.top}>
-          <Animatable.Text
-            animation="fadeIn"
+          <View
             style={{
-              fontFamily: 'CoinyRegular',
-              fontSize: 72,
-              color: theme.dark.hex,
+              width: '100%',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexDirection: 'row',
             }}
           >
-            Cluey
-          </Animatable.Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+              style={{ position: 'absolute', left: 15 }}
+            >
+              <FontAwesome5
+                name="angle-left"
+                size={24}
+                color={theme.dark.hex}
+              />
+            </TouchableOpacity>
+            <Animatable.Text
+              animation="fadeIn"
+              style={{
+                fontFamily: 'CoinyRegular',
+                fontSize: 72,
+                color: theme.dark.hex,
+                marginTop: 5,
+                justifyContent: 'center',
+              }}
+            >
+              Cluey
+            </Animatable.Text>
+          </View>
         </View>
-
         <Formik
           initialValues={{
             email: '',
@@ -73,7 +129,7 @@ const SignIn: FC = () => {
           onSubmit={(values, { setSubmitting }) => {
             setSignInLoading(true);
             const { email, password } = values;
-            getUserTokenByEmailAndPassword({
+            getUserToken({
               variables: { email, password },
             });
             setSubmitting(false);
@@ -122,13 +178,23 @@ const SignIn: FC = () => {
                     }}
                     buttonStyles={{ marginTop: 15 }}
                   />
+                  <TextButton
+                    handlePress={() => navigation.navigate('ActivateAccount')}
+                    title="Activate Your Account"
+                    textStyles={{
+                      fontSize: 18,
+                      color: theme.dark.hex,
+                      fontWeight: 'bold',
+                    }}
+                    buttonStyles={{ marginTop: 15 }}
+                  />
                 </View>
                 <View style={{ height: 20 }}>
                   <HrText text="Or" />
                 </View>
                 <View style={styles.buttonsView}>
                   <ActionButton
-                    handlePress={() => navigation.navigate('SignIn')}
+                    handlePress={facebookSignin}
                     buttonStyles={{ marginTop: 10 }}
                     textColor={theme.buttonText}
                     color={theme.facebookBlue}
@@ -138,7 +204,7 @@ const SignIn: FC = () => {
                     }
                   />
                   <ActionButton
-                    handlePress={() => navigation.navigate('SignIn')}
+                    handlePress={googleSignin}
                     buttonStyles={{ marginTop: 10 }}
                     textColor={theme.buttonText}
                     color={theme.googleBlue}

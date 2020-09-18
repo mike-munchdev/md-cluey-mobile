@@ -13,9 +13,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "android": {
       "package": "com.munchdevelopment.clueytest",
       "googleServicesFile": "./assets/google-services.json"
@@ -72,6 +70,9 @@
           "mediaServerUrl": "https://api.cloudinary.com/v1_1/munch-development-llc/upload",
           "uploadPreset": "uqyed4ti"
         }
+      },
+      "uplead": {
+        "apiKey": "b3ccb6d9ca316379213dff10bfd8227e"
       },
       "bugsnag": {
         "apiKey": "bb37cfd6867c09cb329bbbc56ee6f6a5"

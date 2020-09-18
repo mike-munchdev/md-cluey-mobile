@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import * as Notifications from 'expo-notifications';
 import Bugsnag from '@bugsnag/expo';
 import Constants from 'expo-constants';
-import { Avatar } from 'react-native-paper';
+import { Avatar, Provider } from 'react-native-paper';
 import { View, Text } from 'react-native';
 
 import App from './src/index';
@@ -60,7 +60,9 @@ const ErrorView = () => {
 export default () => {
   return (
     <ErrorBoundary FallbackComponent={ErrorView}>
-      <App />
+      <Provider>
+        <App />
+      </Provider>
     </ErrorBoundary>
   );
 };

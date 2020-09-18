@@ -10,10 +10,9 @@ export default StyleSheet.create({
   },
   top: {
     height: 80,
+
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'blue',
-    marginTop: 20,
   },
   formContainer: {
     marginHorizontal: 10,

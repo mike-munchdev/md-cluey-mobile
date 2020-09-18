@@ -24,4 +24,5 @@ export default {
   facebookBlue: colors.blue.facebook,
   googleBlue: colors.blue.google,
   errorText: colors.red.normal,
+  pill: colors.blue.hawkes,
 };

@@ -41,6 +41,7 @@
     "react-native-screens": "~2.9.0",
     "react-native-web": "~0.11.7",
     "subscriptions-transport-ws": "^0.9.17",
+    "throttle-debounce": "^2.3.0",
     "yup": "^0.29.3"
   },
   "devDependencies": {

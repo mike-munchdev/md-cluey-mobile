@@ -15,6 +15,7 @@ import { SignIn } from '../screens/SignIn';
 import { SignUp } from '../screens/SignUp';
 import { Search } from '../screens/Search';
 import { GetStarted } from '../screens/GetStarted/';
+import { Brand } from '../screens/Brand';
 
 import { AlertHelper } from '../utils/alert';
 
@@ -26,15 +27,34 @@ import {
 } from '../graphql/queries/user/user';
 import { ActivateAccount } from '../screens/ActivateAccount';
 import { Sidebar } from '../components/Sidebar';
+import { Profile } from '../screens/Profile';
+import { Friends } from '../screens/Friends';
+import { Friend } from '../screens/Friend';
 
 const Drawer = createDrawerNavigator();
 const AuthStack = createStackNavigator();
 
 const ClueyStack = createStackNavigator();
+const ProfileStack = createStackNavigator();
+const FriendsStack = createStackNavigator();
 
+const ProfileStackScreen = () => (
+  <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
+    <ProfileStack.Screen name="Profile" component={Profile} />
+  </ProfileStack.Navigator>
+);
+
+const FriendsStackScreen = () => (
+  <FriendsStack.Navigator screenOptions={{ headerShown: false }}>
+    <FriendsStack.Screen name="Friends" component={Friends} />
+    <FriendsStack.Screen name="Friend" component={Friend} />
+  </FriendsStack.Navigator>
+);
 const DrawerScreen = () => (
   <Drawer.Navigator initialRouteName="Search" drawerContent={() => <Sidebar />}>
     <Drawer.Screen name="Search" component={ClueyStackScreen} />
+    <Drawer.Screen name="Profile" component={ProfileStackScreen} />
+    <Drawer.Screen name="Friends" component={FriendsStackScreen} />
   </Drawer.Navigator>
 );
 
@@ -45,6 +65,7 @@ const ClueyStackScreen = () => (
     mode="modal"
   >
     <ClueyStack.Screen name="Search" component={Search} />
+    <ClueyStack.Screen name="Brand" component={Brand} />
   </ClueyStack.Navigator>
 );
 

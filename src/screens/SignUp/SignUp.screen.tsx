@@ -1,6 +1,6 @@
 import React, { useContext, FC } from 'react';
 
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 
 import styles from './styles';
 import * as Animatable from 'react-native-animatable';
@@ -10,8 +10,7 @@ import { AuthContext } from '../../config/context';
 import { Formik } from 'formik';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useMutation } from '@apollo/react-hooks';
-import * as Facebook from 'expo-facebook';
-import * as Google from 'expo-google-app-auth';
+
 import { signupSchema } from '../../validation/signup';
 import AnimatableTextInput from '../../components/TextInput/AnimatableTextInput';
 import {
@@ -24,6 +23,7 @@ import theme from '../../constants/theme';
 import { ActionButton } from '../../components/Buttons';
 import { HrText } from '../../components/Text';
 import { AlertHelper } from '../../utils/alert';
+import { facebookAuthentication } from '../../utils/socialAuth';
 
 const SignUp: FC = () => {
   const { signUp } = useContext(AuthContext);
@@ -35,74 +35,43 @@ const SignUp: FC = () => {
     onCompleted: userSignupCompleted(signUp, navigation),
   });
 
-  const googleLogIn = async () => {
+  const googleSignup = async () => {
     try {
-      const { type, accessToken, user } = await Google.logInAsync({
-        iosClientId: `854065862128-d6n6v1m2gjf1bgml4am349bf1s43fvkc.apps.googleusercontent.com`,
-        androidClientId: `854065862128-c9qbpsi1m8frp0a39n6bqq8dhkp2555f.apps.googleusercontent.com`,
-        // iosStandaloneAppClientId: `<YOUR_IOS_CLIENT_ID>`,
-        // androidStandaloneAppClientId: `<YOUR_ANDROID_CLIENT_ID>`,
+      const { data, token } = await facebookAuthentication();
+      const { id, email, familyName, givenName } = data;
+      await userSignup({
+        variables: {
+          input: {
+            email,
+            firstName: givenName,
+            lastName: familyName,
+            googleId: id,
+            googleAuthToken: token,
+          },
+        },
       });
-
-      console.log('type', type);
-      if (type === 'success') {
-        // Then you can use the Google REST API
-        let userInfoResponse = await fetch(
-          'https://www.googleapis.com/userinfo/v2/me',
-          {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          }
-        );
-        console.log('userInfoResponse', userInfoResponse);
-      }
     } catch ({ message }) {
       AlertHelper.show('error', 'Google Login Error', message);
     }
   };
-  const facebookLogIn = async () => {
+  const facebookSignup = async () => {
     try {
-      await Facebook.initializeAsync();
-      const {
-        type,
-        token,
-        expires,
-        permissions,
-        declinedPermissions,
-      } = await Facebook.logInWithReadPermissionsAsync('897285013968583', {
-        permissions: ['public_profile'],
+      const { data, token } = await facebookAuthentication();
+      const { id, email, password, first_name, last_name } = data;
+      await userSignup({
+        variables: {
+          input: {
+            email,
+            password,
+            firstName: first_name,
+            lastName: last_name,
+            facebookId: id,
+            facebookAuthToken: token,
+          },
+        },
       });
-
-      if (type === 'success') {
-        // Get the user's name using Facebook's Graph API
-        fetch(
-          `https://graph.facebook.com/me?access_token=${token}&fields=id,first_name,last_name,email`
-        )
-          .then((response) => response.json())
-          .then(async (data) => {
-            console.log('data', data);
-            const { id, email, password, first_name, last_name } = data;
-            await userSignup({
-              variables: {
-                input: {
-                  email,
-                  password,
-                  firstName: first_name,
-                  lastName: last_name,
-                  facebookId: id,
-                },
-              },
-            });
-          })
-          .catch((e) => console.log(e));
-      } else {
-        AlertHelper.show(
-          'error',
-          'Facebook Login Error',
-          'Could not successfully connect to Facebook Login'
-        );
-      }
     } catch ({ message }) {
-      AlertHelper.show('error', 'Facebook Login Eror', message);
+      AlertHelper.show('error', 'Facebook Login Error', message);
     }
   };
 
@@ -110,16 +79,39 @@ const SignUp: FC = () => {
     <SignUpContainer>
       <View style={styles.overlayContainer}>
         <View style={styles.top}>
-          <Animatable.Text
-            animation="fadeIn"
+          <View
             style={{
-              fontFamily: 'CoinyRegular',
-              fontSize: 72,
-              color: theme.dark.hex,
+              width: '100%',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexDirection: 'row',
             }}
           >
-            Cluey
-          </Animatable.Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+              style={{ position: 'absolute', left: 15 }}
+            >
+              <FontAwesome5
+                name="angle-left"
+                size={24}
+                color={theme.dark.hex}
+              />
+            </TouchableOpacity>
+            <Animatable.Text
+              animation="fadeIn"
+              style={{
+                fontFamily: 'CoinyRegular',
+                fontSize: 72,
+                color: theme.dark.hex,
+                marginTop: 5,
+                justifyContent: 'center',
+              }}
+            >
+              Cluey
+            </Animatable.Text>
+          </View>
         </View>
 
         <Formik
@@ -199,7 +191,7 @@ const SignUp: FC = () => {
                 </View>
                 <View style={styles.buttonsView}>
                   <ActionButton
-                    handlePress={facebookLogIn}
+                    handlePress={facebookSignup}
                     textColor={theme.buttonText}
                     color={theme.facebookBlue}
                     title="Sign Up with Facebook"
@@ -208,7 +200,7 @@ const SignUp: FC = () => {
                     }
                   />
                   <ActionButton
-                    handlePress={googleLogIn}
+                    handlePress={googleSignup}
                     buttonStyles={{ marginTop: 10 }}
                     textColor={theme.buttonText}
                     color={theme.googleBlue}

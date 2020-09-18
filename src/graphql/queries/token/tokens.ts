@@ -3,16 +3,19 @@ import { ApolloError } from 'apollo-client';
 import { AlertHelper } from '../../../utils/alert';
 import { userStructure } from '../user/user';
 
-export const GET_USER_TOKEN_BY_EMAIL_AND_PASSWORD = gql`
-  query GetUserTokenByEmailAndPassword(
-    $email: String!
-    $password: String!
+export const GET_USER_TOKEN = gql`
+  query GetUserToken(
+    $email: String
+    $password: String
+    $facebookId: String
+    $facebookAuthToken: String
+    $googleId: String
+    $googleAuthToken: String
   ) {
-    getUserTokenByEmailAndPassword(email: $email, password: $password) {
+    getUserToken(email: $email, password: $password, facebookId: $facebookId, facebookAuthToken: $facebookAuthToken, googleId: $googleId, googleAuthToken: $googleAuthToken) {
       ok
       token
-      user ${userStructure}
-      
+      user ${userStructure}      
       error {
         message
       }
@@ -20,9 +23,7 @@ export const GET_USER_TOKEN_BY_EMAIL_AND_PASSWORD = gql`
   }
 `;
 
-export const getUserTokenByEmailAndPasswordError = (setLoading: Function) => (
-  e: ApolloError
-) => {
+export const getUserTokenError = (setLoading: Function) => (e: ApolloError) => {
   setLoading(false);
   AlertHelper.show(
     'error',
@@ -31,7 +32,7 @@ export const getUserTokenByEmailAndPasswordError = (setLoading: Function) => (
   );
 };
 
-export const getUserTokenByEmailAndPasswordCompleted = (
+export const getUserTokenCompleted = (
   signIn: (
     token: string,
     user: any,
@@ -41,8 +42,8 @@ export const getUserTokenByEmailAndPasswordCompleted = (
   navigation: any,
   location: string,
   setLoading: Function
-) => async ({ getUserTokenByEmailAndPassword }) => {
-  const { ok, token, user, error } = getUserTokenByEmailAndPassword;
+) => async ({ getUserToken }) => {
+  const { ok, token, user, error } = getUserToken;
   setLoading(false);
   if (ok) {
     if (!token) {

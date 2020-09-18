@@ -18,16 +18,11 @@ const Sidebar = () => {
   const { signOut } = useContext(AuthContext);
   const { user } = useContext(AppContext);
   const navigation = useNavigation();
-  const [
-    isSendMessagesToCorporationsOn,
-    setIsSendMessagesToCorporationsOn,
-  ] = useState(false);
-  const [isMakeProfilePublicOn, setIsMakeProfilePublicOn] = useState(false);
 
-  const onIsSendMessagesToCorporationsToggleSwitch = () =>
-    setIsSendMessagesToCorporationsOn(!isSendMessagesToCorporationsOn);
-  const onIsMakeProfilePublicToggleSwitch = () =>
-    setIsMakeProfilePublicOn(!isMakeProfilePublicOn);
+  const [isMakeLikesPublicOn, setIsMakeLikesPublicOn] = useState(false);
+
+  const onIsMakeLikesPublicToggleSwitch = () =>
+    setIsMakeLikesPublicOn(!isMakeLikesPublicOn);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -49,7 +44,7 @@ const Sidebar = () => {
       <HorizontalRule styles={{ marginBottom: 20 }} />
       <View style={{ marginLeft: 10, marginBottom: 20 }}>
         <SidebarMenuItem
-          onPress={onIsSendMessagesToCorporationsToggleSwitch}
+          onPress={() => navigation.navigate('Search')}
           iconName="home"
           iconSize={20}
           title="Home"
@@ -69,47 +64,19 @@ const Sidebar = () => {
       <HorizontalRule styles={{ marginBottom: 20 }} />
       <View style={{ marginLeft: 10, marginBottom: 20 }}>
         <SidebarMenuItem
-          onPress={onIsSendMessagesToCorporationsToggleSwitch}
+          onPress={onIsMakeLikesPublicToggleSwitch}
           icon={() => (
             <MaterialCommunityIcons
-              name={
-                isSendMessagesToCorporationsOn
-                  ? 'toggle-switch'
-                  : 'toggle-switch-off'
-              }
+              name={isMakeLikesPublicOn ? 'toggle-switch' : 'toggle-switch-off'}
               size={20}
-              color={
-                isSendMessagesToCorporationsOn
-                  ? theme.successText
-                  : theme.errorText
-              }
+              color={isMakeLikesPublicOn ? theme.successText : theme.errorText}
             />
           )}
-          title="Send messages to corporations"
-        />
-        <SidebarMenuItem
-          onPress={onIsMakeProfilePublicToggleSwitch}
-          icon={() => (
-            <MaterialCommunityIcons
-              name={
-                isMakeProfilePublicOn ? 'toggle-switch' : 'toggle-switch-off'
-              }
-              size={20}
-              color={
-                isMakeProfilePublicOn ? theme.successText : theme.errorText
-              }
-            />
-          )}
-          title="Make profile public to friends"
-          viewStyles={{ marginTop: 20 }}
+          title="Make Likes/Dislikes Public"
         />
         <SidebarMenuItem
           onPress={async () => {
-            AlertHelper.show(
-              'info',
-              'Under Development',
-              'Feature is currently under development!'
-            );
+            navigation.navigate('Friends');
           }}
           iconName="user-friends"
           iconSize={20}
@@ -143,7 +110,7 @@ const Sidebar = () => {
           iconColor={theme.dark.hex}
           viewStyles={{ marginTop: 20 }}
         />
-        <SidebarMenuItem
+        {/* <SidebarMenuItem
           onPress={async () => {
             AlertHelper.show(
               'info',
@@ -156,21 +123,8 @@ const Sidebar = () => {
           title="Manage Political Preferences"
           iconColor={theme.dark.hex}
           viewStyles={{ marginTop: 20 }}
-        />
-        <SidebarMenuItem
-          onPress={async () => {
-            AlertHelper.show(
-              'info',
-              'Under Development',
-              'Feature is currently under development!'
-            );
-          }}
-          iconName="clipboard-list"
-          iconSize={20}
-          title="Create Shopping List"
-          iconColor={theme.dark.hex}
-          viewStyles={{ marginTop: 20 }}
-        />
+        /> */}
+
         <SidebarMenuItem
           onPress={async () => {
             await signOut(navigation);
@@ -208,6 +162,20 @@ const Sidebar = () => {
           iconName="users"
           iconSize={20}
           title=""
+          iconColor={theme.dark.hex}
+          viewStyles={{ marginTop: 20 }}
+        />
+        <SidebarMenuItem
+          onPress={async () => {
+            AlertHelper.show(
+              'info',
+              'Under Development',
+              'Feature is currently under development!'
+            );
+          }}
+          iconName="clipboard-list"
+          iconSize={20}
+          title="Create Shopping List"
           iconColor={theme.dark.hex}
           viewStyles={{ marginTop: 20 }}
         />

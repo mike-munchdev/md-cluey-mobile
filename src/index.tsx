@@ -39,6 +39,7 @@ export default () => {
     const imageAssets = cacheImages([
       require('../assets/Icon-1024.png'),
       require('../assets/images/magnifying-glass.png'),
+      require('../assets/images/magnifying-glass-larger.png'),
     ]);
 
     const fontAssets = cacheFonts([
@@ -46,7 +47,9 @@ export default () => {
       MaterialIcons.font,
       Feather.font,
       { CoinyRegular: require('../assets/fonts/CoinyRegular.ttf') },
-      { Montserrat: require('../assets/fonts/MontserratMedium.ttf') },
+      { Montserrat: require('../assets/fonts/Montserrat-Regular.ttf') },
+      { MontserratBold: require('../assets/fonts/Montserrat-Bold.ttf') },
+      { MontserratMedium: require('../assets/fonts/Montserrat-Medium.ttf') },
     ]);
 
     await Promise.all([...imageAssets, ...fontAssets]);

@@ -7,13 +7,12 @@ const { height } = Dimensions.get('screen');
 export default StyleSheet.create({
   overlayContainer: {
     flex: 1,
-    backgroundColor: theme.dark.rgba(0.4),
   },
   top: {
-    flex: 1,
+    height: 80,
+
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 50,
   },
   formContainer: {
     marginHorizontal: 10,

@@ -238,6 +238,7 @@ export const activateUserAccountCompleted = (
   navigation: any
 ) => async ({ activateUserAccount }) => {
   const { ok, message, error } = activateUserAccount;
+
   setLoading(false);
   if (ok) {
     if (!message) {

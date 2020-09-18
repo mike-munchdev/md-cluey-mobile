@@ -4,20 +4,14 @@ import { View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 import { useNavigation } from '@react-navigation/native';
-import { useLazyQuery, useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 
 import { Formik } from 'formik';
 
-import {
-  GET_USER_TOKEN_BY_EMAIL_AND_PASSWORD,
-  getUserTokenByEmailAndPasswordCompleted,
-  getUserTokenByEmailAndPasswordError,
-} from '../../graphql/queries/token/tokens';
 import styles from './styles';
 
 import { AnimatableTextInput } from '../../components/TextInput/';
 import { AuthContext } from '../../config/context';
-import { useServerInfo } from '../../hooks/serverInfo';
 import theme from '../../constants/theme';
 import ActivateAccountContainer from './ActivateAccountContainer';
 import { ActionButton } from '../../components/Buttons';
@@ -51,12 +45,12 @@ const ActivateAccount: FC = () => {
           <Animatable.Text
             animation="fadeIn"
             style={{
-              fontFamily: 'RussoOne',
+              fontFamily: 'CoinyRegular',
               fontSize: 72,
               color: theme.dark.hex,
             }}
           >
-            RxRUNr
+            Cluey
           </Animatable.Text>
         </View>
 
@@ -68,6 +62,7 @@ const ActivateAccount: FC = () => {
           onSubmit={(values, { setSubmitting }) => {
             setIsLoading(true);
             const { confirmToken } = values;
+
             activateUserAccount({
               variables: { confirmToken },
             });

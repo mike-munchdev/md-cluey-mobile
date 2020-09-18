@@ -4,8 +4,10 @@ import {
   View,
   TouchableOpacity,
   GestureResponderEvent,
+  StyleProp,
+  TextStyle,
 } from 'react-native';
-import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 import colors from '../../constants/colors';
 import theme from '../../constants/theme';
@@ -14,25 +16,23 @@ export interface IRoundedIconButtonProps {
   onPress: ((event: GestureResponderEvent) => void) | undefined;
   backgroundColor: string | undefined;
   borderColor?: string | undefined;
-  size: number | undefined;
-  iconSize: number | undefined;
+  size?: number | undefined;
   borderWidth?: number | undefined;
-  iconName: string | undefined;
-  iconColor?: string | undefined;
   text?: string | undefined;
+  textStyle?: StyleProp<TextStyle>;
   disabled?: boolean | undefined;
+  icon: JSX.Element | undefined;
 }
 export const RoundedIconButton: FC<IRoundedIconButtonProps> = ({
   onPress,
   backgroundColor,
   borderColor,
   size,
-  iconSize,
-  iconName,
-  iconColor,
   borderWidth,
   text,
   disabled,
+  textStyle,
+  icon,
 }) => {
   return (
     <View style={{ flex: 1, alignItems: 'center' }}>
@@ -50,20 +50,9 @@ export const RoundedIconButton: FC<IRoundedIconButtonProps> = ({
           borderWidth: borderWidth || 2,
         }}
       >
-        <FontAwesome name={iconName} size={iconSize} color={iconColor} />
+        {icon}
       </TouchableOpacity>
-      {text ? (
-        <Text
-          style={{
-            fontSize: 12,
-            fontWeight: 'bold',
-            marginTop: 5,
-            color: theme.text,
-          }}
-        >
-          {text}
-        </Text>
-      ) : null}
+      {text ? <Text style={textStyle}>{text}</Text> : null}
     </View>
   );
 };

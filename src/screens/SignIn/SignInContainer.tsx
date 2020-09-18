@@ -1,7 +1,14 @@
 import React, { useState, useEffect, FC } from 'react';
-import { StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  StatusBar,
+} from 'react-native';
 
 import { DismissKeyboard } from '../../components/TextInput';
+import theme from '../../constants/theme';
 
 const SignInContainer: FC = (props) => {
   return (
@@ -11,7 +18,10 @@ const SignInContainer: FC = (props) => {
         behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
         enabled
       >
-        {props.children}
+        <StatusBar translucent={true} backgroundColor={'transparent'} />
+        <SafeAreaView style={styles.safeAreaContainer}>
+          {props.children}
+        </SafeAreaView>
       </KeyboardAvoidingView>
     </DismissKeyboard>
   );
@@ -24,4 +34,5 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  safeAreaContainer: { flex: 1, backgroundColor: theme.dark.rgba(0.4) },
 });
