@@ -15,11 +15,10 @@ import { SignIn } from '../screens/SignIn';
 import { SignUp } from '../screens/SignUp';
 import { Search } from '../screens/Search';
 import { GetStarted } from '../screens/GetStarted/';
-import { Brand } from '../screens/Brand';
+import { Company } from '../screens/Company';
 
 import { AlertHelper } from '../utils/alert';
 
-import { registerForPushNotificationsAsync } from '../utils/notifications';
 import {
   ADD_PUSH_TOKEN,
   addPushTokenError,
@@ -30,6 +29,8 @@ import { Sidebar } from '../components/Sidebar';
 import { Profile } from '../screens/Profile';
 import { Friends } from '../screens/Friends';
 import { Friend } from '../screens/Friend';
+import { Companies } from '../screens/Companies';
+import { Categories } from '../screens/Categories';
 
 const Drawer = createDrawerNavigator();
 const AuthStack = createStackNavigator();
@@ -65,7 +66,9 @@ const ClueyStackScreen = () => (
     mode="modal"
   >
     <ClueyStack.Screen name="Search" component={Search} />
-    <ClueyStack.Screen name="Brand" component={Brand} />
+    <ClueyStack.Screen name="Company" component={Company} />
+    <ClueyStack.Screen name="Companies" component={Companies} />
+    <ClueyStack.Screen name="Categories" component={Categories} />
   </ClueyStack.Navigator>
 );
 

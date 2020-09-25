@@ -11,11 +11,8 @@ export default StyleSheet.create({
   friendsContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'red',
-
     marginHorizontal: 20,
     marginTop: 10,
-    // marginTop: 50,
   },
   infoContainer: {
     marginHorizontal: 10,

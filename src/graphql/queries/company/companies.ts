@@ -7,10 +7,8 @@ export const companiesStructure = `{
     id
     name
     brandUrl
-    parentCompanies {      
-        id
-        name
-    }   
+    brandLogoUrl
+     
   }
 `;
 
@@ -51,6 +49,48 @@ export const getCompaniesByNameCompleted = (
   if (ok) {
     if (searchText) setCache({ ...cache, [searchText]: companies });
     setCompanies(companies);
+  } else {
+    AlertHelper.show('error', 'Error', error.message);
+  }
+};
+
+export const GET_COMPANIES_BY_CATEGORY = gql`
+  query GetCompaniesByCategory($id: String!) {
+    getCompaniesByCategory(id: $id) {
+      ok
+      companies ${companiesStructure}
+      error {        
+        message
+      }     
+    }
+  }
+`;
+
+export const getCompaniesByCategoryError = (
+  setCompanies: Function,
+
+  setLoading: Function
+) => (e: ApolloError) => {
+  setLoading(false);
+  setCompanies([]);
+  setFilteredList([]);
+  AlertHelper.show(
+    'error',
+    'Error',
+    'An error occurred during signup. Please try again.'
+  );
+};
+
+export const getCompaniesByCategoryCompleted = (
+  setCompanies: Function,
+
+  setLoading: Function
+) => async ({ getCompaniesByCategory }) => {
+  const { ok, companies, error } = getCompaniesByCategory;
+  setLoading(false);
+  if (ok) {
+    setCompanies(companies);
+    setFilteredList(companies);
   } else {
     AlertHelper.show('error', 'Error', error.message);
   }

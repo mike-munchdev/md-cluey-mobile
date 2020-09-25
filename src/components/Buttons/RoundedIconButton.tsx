@@ -7,13 +7,11 @@ import {
   StyleProp,
   TextStyle,
 } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
-
-import colors from '../../constants/colors';
-import theme from '../../constants/theme';
+import * as Animatable from 'react-native-animatable';
 
 export interface IRoundedIconButtonProps {
   onPress: ((event: GestureResponderEvent) => void) | undefined;
+  onLongPress?: ((event: GestureResponderEvent) => void) | undefined;
   backgroundColor: string | undefined;
   borderColor?: string | undefined;
   size?: number | undefined;
@@ -25,6 +23,7 @@ export interface IRoundedIconButtonProps {
 }
 export const RoundedIconButton: FC<IRoundedIconButtonProps> = ({
   onPress,
+  onLongPress,
   backgroundColor,
   borderColor,
   size,
@@ -35,8 +34,9 @@ export const RoundedIconButton: FC<IRoundedIconButtonProps> = ({
   icon,
 }) => {
   return (
-    <View style={{ flex: 1, alignItems: 'center' }}>
+    <Animatable.View style={{ flex: 1, alignItems: 'center' }}>
       <TouchableOpacity
+        onLongPress={onLongPress}
         disabled={disabled}
         onPress={onPress}
         style={{
@@ -53,7 +53,7 @@ export const RoundedIconButton: FC<IRoundedIconButtonProps> = ({
         {icon}
       </TouchableOpacity>
       {text ? <Text style={textStyle}>{text}</Text> : null}
-    </View>
+    </Animatable.View>
   );
 };
 

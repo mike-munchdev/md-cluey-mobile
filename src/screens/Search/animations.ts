@@ -101,3 +101,14 @@ export const fadeIn = {
     opacity: 1,
   },
 };
+
+export const fadeOut = {
+  from: {
+    left: 0,
+    opacity: 1,
+  },
+  to: {
+    left: 0,
+    opacity: 0,
+  },
+};

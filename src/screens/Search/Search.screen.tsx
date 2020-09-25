@@ -26,6 +26,7 @@ import {
   buttonViewAnimateOut,
   searchViewGetOutOfTheWay,
   fadeIn,
+  fadeOut,
 } from './animations';
 import { searchSchema } from '../../validation/searchSchema';
 import { useLazyQuery } from '@apollo/react-hooks';
@@ -37,6 +38,7 @@ import {
 import { sortByFieldName } from '../../utils/sort';
 import { IAutoCompleteItemProps } from '../../components/TextInput/AutoCompleteTextInput';
 import { Button } from 'react-native-paper';
+import { Avatar } from 'react-native-elements';
 
 const Search: FC = () => {
   const navigation = useNavigation();
@@ -59,7 +61,7 @@ const Search: FC = () => {
     if (selectedCompany) {
       const company = companies.find((p) => p.id === selectedCompany.id);
       setSearchText('');
-      navigation.navigate('Brand', { company });
+      navigation.navigate('Company', { company });
     }
   }, [selectedCompany]);
 
@@ -163,12 +165,10 @@ const Search: FC = () => {
     buttonView.current.bounceInRight(100);
     buttonView.current.fadeIn(1000);
 
-    const magnifyingGlassImageEndState = magnifyingGlassImageRef.current.animate(
-      fadeInAndShrink
-    );
-    const categoryViewEndState = await categoryView.current.animate(
-      moveDownAndFadeOut
-    );
+    // const magnifyingGlassImageEndState = magnifyingGlassImageRef.current.animate(
+    //   fadeInAndShrink
+    // );
+    const categoryViewEndState = await categoryView.current.animate(fadeOut);
 
     if (categoryViewEndState.finished) {
       categoryView.current.animate(searchViewGetOutOfTheWay);
@@ -214,7 +214,8 @@ const Search: FC = () => {
           />
 
           <ActionButton
-            handlePress={searchByCategoryTransitionIn}
+            handlePress={() => navigation.navigate('Categories')}
+            // handlePress={searchByCategoryTransitionIn}
             textColor={theme.buttonText}
             color={theme.dark.hex}
             title="Search By Category"
@@ -246,71 +247,45 @@ const Search: FC = () => {
             }}
           >
             <RoundedIconButton
-              onPress={() => alert('search by category')}
-              backgroundColor={theme.text}
+              onPress={() => {
+                navigation.navigate('Companies', {
+                  categoryId: '5f6925e3df9efbd2ae954b40',
+                });
+              }}
+              backgroundColor={theme.buttonTransparentBackground}
               borderColor={theme.dark.hex}
-              text="Oral Care"
+              text="Beauty"
+              size={80}
               icon={
-                <FontAwesome5 name="tooth" size={24} color={theme.dark.hex} />
+                <Avatar
+                  size="large"
+                  rounded
+                  source={require('../../../assets/images/categories/beauty-01.jpg')}
+                  avatarStyle={{ width: '100%', height: '100%' }}
+                />
               }
               textStyle={{ fontSize: 14 }}
             />
             <RoundedIconButton
-              onPress={() => alert('search by category')}
-              backgroundColor={theme.text}
+              onPress={() => {
+                navigation.navigate('Companies', {
+                  categoryId: '5f6925e3df9efbd2ae954b41',
+                });
+              }}
+              backgroundColor={theme.buttonTransparentBackground}
               borderColor={theme.dark.hex}
-              text="Oral Care"
+              text="Household"
+              size={80}
               icon={
-                <FontAwesome5 name="tooth" size={24} color={theme.dark.hex} />
-              }
-            />
-            <RoundedIconButton
-              onPress={() => alert('search by category')}
-              backgroundColor={theme.text}
-              borderColor={theme.dark.hex}
-              icon={
-                <FontAwesome5 name="tooth" size={24} color={theme.dark.hex} />
-              }
-            />
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              width: '50%',
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: 10,
-            }}
-          >
-            <RoundedIconButton
-              onPress={() => alert('search by category')}
-              backgroundColor={theme.text}
-              borderColor={theme.dark.hex}
-              text="Oral Care"
-              icon={
-                <FontAwesome5 name="tooth" size={24} color={theme.dark.hex} />
-              }
-              textStyle={{ fontSize: 14 }}
-            />
-            <RoundedIconButton
-              onPress={() => alert('search by category')}
-              backgroundColor={theme.text}
-              borderColor={theme.dark.hex}
-              text="Oral Care"
-              icon={
-                <FontAwesome5 name="tooth" size={24} color={theme.dark.hex} />
-              }
-            />
-            <RoundedIconButton
-              onPress={() => alert('search by category')}
-              backgroundColor={theme.text}
-              borderColor={theme.dark.hex}
-              icon={
-                <FontAwesome5 name="tooth" size={24} color={theme.dark.hex} />
+                <Avatar
+                  size="large"
+                  rounded
+                  source={require('../../../assets/images/categories/household-01.jpg')}
+                />
               }
             />
           </View>
+
           <View
             style={{
               flexDirection: 'row',
@@ -322,30 +297,58 @@ const Search: FC = () => {
           >
             <RoundedIconButton
               onPress={() => alert('search by category')}
-              backgroundColor={theme.text}
+              backgroundColor={theme.buttonTransparentBackground}
               borderColor={theme.dark.hex}
-              text="Oral Care"
+              text="Grocery"
+              size={80}
               icon={
-                <FontAwesome5 name="tooth" size={24} color={theme.dark.hex} />
+                <Avatar
+                  size="large"
+                  rounded
+                  source={require('../../../assets/images/categories/grocery-01.jpg')}
+                />
               }
               textStyle={{ fontSize: 14 }}
             />
             <RoundedIconButton
               onPress={() => alert('search by category')}
-              backgroundColor={theme.text}
+              backgroundColor={theme.buttonTransparentBackground}
               borderColor={theme.dark.hex}
-              text="Oral Care"
+              text="Health"
+              size={80}
               icon={
-                <FontAwesome5 name="tooth" size={24} color={theme.dark.hex} />
+                <Avatar
+                  size="large"
+                  rounded
+                  source={require('../../../assets/images/categories/health-nutrition-01.jpg')}
+                />
               }
             />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '50%',
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 20,
+            }}
+          >
             <RoundedIconButton
-              onPress={() => alert('search by category')}
+              onPress={() => searchByCategoryTransitionOut()}
               backgroundColor={theme.text}
               borderColor={theme.dark.hex}
+              text="Back"
+              size={40}
               icon={
-                <FontAwesome5 name="tooth" size={24} color={theme.dark.hex} />
+                <FontAwesome5
+                  name="angle-left"
+                  size={25}
+                  color={theme.dark.hex}
+                />
               }
+              textStyle={{ fontSize: 14 }}
             />
           </View>
         </Animatable.View>
@@ -437,7 +440,6 @@ const Search: FC = () => {
             );
           }}
         </Formik>
-
         <View style={styles.top}>
           <Animatable.Text
             animation="fadeIn"

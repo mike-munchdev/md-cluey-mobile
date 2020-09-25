@@ -11,12 +11,15 @@ export default StyleSheet.create({
     color: theme.dark.hex,
   },
   politicalScoreContainer: {
-    flex: 1,
     marginTop: 10,
     flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
   },
   politicalSubTextContainer: {
     alignItems: 'center',
+    width: '100%',
   },
   parentCompanyContainer: {
     height: '15%',
@@ -48,5 +51,13 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     color: theme.dark.hex,
     textTransform: 'capitalize',
+  },
+  politicalInfoView: { flexDirection: 'row', width: '90%', marginTop: 10 },
+  politicalInfoHelpView: { justifyContent: 'center', marginRight: 5 },
+  politicalInfoTextView: {
+    flex: 1,
+    marginLeft: 5,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
   },
 });

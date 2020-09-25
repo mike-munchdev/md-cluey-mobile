@@ -8,18 +8,18 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#005046"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
     "android": {
-      "package": "com.munchdevelopment.clueytest",
+      "package": "com.clueyconsumer.clueymobile",
       "googleServicesFile": "./assets/google-services.json"
     },
     "ios": {
-      "bundleIdentifier": "com.munchdevelopment.clueytest",
+      "bundleIdentifier": "com.clueyconsumer.clueymobile",
       "supportsTablet": true,
       "googleServicesFile": "./assets/GoogleService-Info.plist",
       "config": {
@@ -34,41 +34,25 @@
     "extra": {
       "appVariables": {
         "production": {
-          "apiServerUrl": "rxrunr-api.herokuapp.com",
+          "apiServerUrl": "md-cluey-test.herokuapp.com",
           "httpProtocol": "https",
-          "wsProtocol": "wss",
-          "drugSearchLimit": 20,
-          "jwtSecret": "as;ledasoi43poiap[iohakj23-9*_()",
-          "mediaServerUrl": "https://api.cloudinary.com/v1_1/munch-development-llc/upload",
-          "uploadPreset": "uqyed4ti"
+          "wsProtocol": "wss"
         },
         "heroku-test": {
-          "apiServerUrl": "rxrunr-api-test.herokuapp.com",
+          "apiServerUrl": "md-cluey-test.herokuapp.com",
           "httpProtocol": "https",
-          "wsProtocol": "wss",
-          "drugSearchLimit": 20,
-          "jwtSecret": "as;ledasoi43poiap[iohakj23-9*_()",
-          "mediaServerUrl": "https://api.cloudinary.com/v1_1/munch-development-llc/upload",
-          "uploadPreset": "uqyed4ti"
+          "wsProtocol": "wss"
         },
         "staging": {
-          "apiServerUrl": "rxrunr-api-staging.herokuapp.com",
+          "apiServerUrl": "md-cluey-staging.herokuapp.com",
           "httpProtocol": "https",
-          "wsProtocol": "wss",
-          "drugSearchLimit": 20,
-          "jwtSecret": "as;ledasoi43poiapa[pio2j243[oin[d-9*_()",
-          "mediaServerUrl": "https://api.cloudinary.com/v1_1/munch-development-llc/upload",
-          "uploadPreset": "uqyed4ti"
+          "wsProtocol": "wss"
         },
         "development": {
-          "apiServerUrlProd": "rxrunr-api.herokuapp.com",
+          "apiServerUrlProd": "md-cluey-test.herokuapp.com",
           "apiServerUrl": "localhost:4004",
           "httpProtocol": "http",
-          "wsProtocol": "ws",
-          "drugSearchLimit": 20,
-          "jwtSecret": "test",
-          "mediaServerUrl": "https://api.cloudinary.com/v1_1/munch-development-llc/upload",
-          "uploadPreset": "uqyed4ti"
+          "wsProtocol": "ws"
         }
       },
       "uplead": {
