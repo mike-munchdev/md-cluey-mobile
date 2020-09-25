@@ -1,13 +1,29 @@
 import colors from './colors';
 
+export const hex2rgba = (hex: string, alpha = 1) => {
+  const [r, g, b] = hex.match(/\w\w/g).map((x) => parseInt(x, 16));
+  return `rgba(${r},${g},${b},${alpha})`;
+};
+
 export default {
   background: {
+    hex: colors.green.darker,
+    rgba: (alpha: number) => {
+      return hex2rgba(colors.green.darker, alpha);
+      // return `rgba(0,31,27,${alpha})`;
+    },
+  },
+  white: {
     hex: colors.white.normal,
+    rgba: (alpha: number) => {
+      return hex2rgba(colors.white.normal, alpha);
+    },
   },
   dark: {
     hex: colors.green.dark,
     rgba: (alpha: number) => {
-      return `rgba(0,31,27,${alpha})`;
+      return hex2rgba(colors.green.dark, alpha);
+      // return `rgba(0,31,27,${alpha})`;
     },
   },
   light: colors.green.light,
@@ -25,4 +41,8 @@ export default {
   googleBlue: colors.blue.google,
   errorText: colors.red.normal,
   pill: colors.blue.hawkes,
+  willBuy: colors.green.normal,
+  willBuyLater: colors.purple.normal,
+  willNotBuyLater: colors.yellow.normal,
+  willNotBuy: colors.orange.normal,
 };

@@ -12,6 +12,7 @@ export default {
     light: '#3a932a',
     medium: '#0b5544',
     normal: 'green',
+    darker: '#001f1b',
   },
   red: {
     normal: 'red',
@@ -20,5 +21,14 @@ export default {
     facebook: '#4267B2',
     google: '#3f80ed',
     hawkes: '#cfdfff',
+  },
+  purple: {
+    normal: 'purple',
+  },
+  yellow: {
+    normal: 'yellow',
+  },
+  orange: {
+    normal: 'orange',
   },
 };

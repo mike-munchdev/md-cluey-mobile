@@ -32,11 +32,15 @@ import { ListItem } from 'react-native-elements';
 import { EditStringValueModal } from '../../components/Modals';
 
 const Profile: FC = () => {
-  const [visible, setVisible] = React.useState(false);
+  const [nameDialogVisible, setNameDialogVisible] = React.useState(false);
+  const [emailDialogVisible, setEmailDialogVisible] = React.useState(false);
+  const [passwordDialogVisible, setPasswordDialogVisible] = React.useState(
+    false
+  );
   const [name, setName] = useState('Michael Griffin');
-  const showModal = () => setVisible(true);
+  const [email, setEmail] = useState('mgriffin');
+  const [password, setPassword] = useState('michael1');
 
-  const hideModal = () => setVisible(false);
   const navigation = useNavigation();
   const route = useRoute();
 
@@ -62,7 +66,7 @@ const Profile: FC = () => {
               marginHorizontal: 10,
             }}
             bottomDivider
-            onPress={() => showModal()}
+            onPress={() => setNameDialogVisible(true)}
           >
             <ListItem.Content>
               <ListItem.Title>{name}</ListItem.Title>
@@ -75,10 +79,10 @@ const Profile: FC = () => {
               marginHorizontal: 10,
             }}
             bottomDivider
-            onPress={() => alert('hello')}
+            onPress={() => setEmailDialogVisible(true)}
           >
             <ListItem.Content>
-              <ListItem.Title>mgriffin.jr@gmail.com</ListItem.Title>
+              <ListItem.Title>{email}</ListItem.Title>
               <ListItem.Subtitle>Email</ListItem.Subtitle>
             </ListItem.Content>
             <ListItem.Chevron />
@@ -88,7 +92,7 @@ const Profile: FC = () => {
               marginHorizontal: 10,
             }}
             bottomDivider
-            onPress={() => alert('hello')}
+            onPress={() => setPasswordDialogVisible(true)}
           >
             <ListItem.Content>
               <ListItem.Title>************</ListItem.Title>
@@ -97,12 +101,35 @@ const Profile: FC = () => {
             <ListItem.Chevron />
           </ListItem>
         </List.Section>
+        <List.Section style={{ width: '100%' }}>
+          <List.Subheader style={{ fontSize: 16, textTransform: 'uppercase' }}>
+            Cluey Consumer profile
+          </List.Subheader>
+        </List.Section>
+        <List.Section style={{ width: '100%' }}>
+          <List.Subheader style={{ fontSize: 16, textTransform: 'uppercase' }}>
+            Logout
+          </List.Subheader>
+        </List.Section>
       </View>
       <EditStringValueModal
-        isVisible={visible}
-        hideModal={hideModal}
+        isVisible={nameDialogVisible}
+        hideDialog={() => setNameDialogVisible(false)}
         value={name}
         title="Name"
+      />
+      <EditStringValueModal
+        isVisible={emailDialogVisible}
+        hideDialog={() => setEmailDialogVisible(false)}
+        value={name}
+        title="Email"
+      />
+      <EditStringValueModal
+        isVisible={passwordDialogVisible}
+        hideDialog={() => setPasswordDialogVisible(false)}
+        value={name}
+        title="Password"
+        secure
       />
     </ProfileContainer>
   );

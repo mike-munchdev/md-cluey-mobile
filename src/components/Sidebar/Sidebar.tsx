@@ -45,9 +45,9 @@ const Sidebar = () => {
       <View style={{ marginLeft: 10, marginBottom: 20 }}>
         <SidebarMenuItem
           onPress={() => navigation.navigate('Search')}
-          iconName="home"
+          iconName="search"
           iconSize={20}
-          title="Home"
+          title="Search"
           iconColor={theme.dark.hex}
         />
         {/* <SidebarMenuItem
@@ -64,17 +64,6 @@ const Sidebar = () => {
       <HorizontalRule styles={{ marginBottom: 20 }} />
       <View style={{ marginLeft: 10, marginBottom: 20 }}>
         <SidebarMenuItem
-          onPress={onIsMakeLikesPublicToggleSwitch}
-          icon={() => (
-            <MaterialCommunityIcons
-              name={isMakeLikesPublicOn ? 'toggle-switch' : 'toggle-switch-off'}
-              size={20}
-              color={isMakeLikesPublicOn ? theme.successText : theme.errorText}
-            />
-          )}
-          title="Make Likes/Dislikes Public"
-        />
-        <SidebarMenuItem
           onPress={async () => {
             navigation.navigate('Friends');
           }}
@@ -82,20 +71,8 @@ const Sidebar = () => {
           iconSize={20}
           title="Manage Cluey Friends"
           iconColor={theme.dark.hex}
-          viewStyles={{ marginTop: 20 }}
         />
-      </View>
-      <HorizontalRule styles={{ marginBottom: 20 }} />
-      <View style={{ marginLeft: 10, marginBottom: 20 }}>
-        <SidebarMenuItem
-          onPress={async () => {
-            navigation.navigate('Settings');
-          }}
-          iconName="cog"
-          iconColor={theme.dark.hex}
-          iconSize={20}
-          title="Settings"
-        />
+
         <SidebarMenuItem
           onPress={async () => {
             AlertHelper.show(
@@ -110,6 +87,27 @@ const Sidebar = () => {
           iconColor={theme.dark.hex}
           viewStyles={{ marginTop: 20 }}
         />
+        <SidebarMenuItem
+          onPress={onIsMakeLikesPublicToggleSwitch}
+          icon={() => (
+            <MaterialCommunityIcons
+              name={isMakeLikesPublicOn ? 'toggle-switch' : 'toggle-switch-off'}
+              size={20}
+              color={isMakeLikesPublicOn ? theme.successText : theme.errorText}
+            />
+          )}
+          title="Make Likes/Dislikes Public"
+          viewStyles={{ marginTop: 20 }}
+        />
+        {/* <SidebarMenuItem
+          onPress={async () => {
+            navigation.navigate('Settings');
+          }}
+          iconName="cog"
+          iconColor={theme.dark.hex}
+          iconSize={20}
+          title="Settings"
+        /> */}
         {/* <SidebarMenuItem
           onPress={async () => {
             AlertHelper.show(
@@ -125,7 +123,7 @@ const Sidebar = () => {
           viewStyles={{ marginTop: 20 }}
         /> */}
 
-        <SidebarMenuItem
+        {/* <SidebarMenuItem
           onPress={async () => {
             await signOut(navigation);
           }}
@@ -134,10 +132,13 @@ const Sidebar = () => {
           iconSize={20}
           title="Logout"
           viewStyles={{ marginTop: 20 }}
-        />
+        /> */}
       </View>
       <HorizontalRule styles={{ marginBottom: 20 }} />
       <View style={{ marginLeft: 10, marginBottom: 20 }}>
+        <View style={{ marginBottom: 10 }}>
+          <Text style={{ fontSize: 14 }}>Coming Soon</Text>
+        </View>
         <SidebarMenuItem
           onPress={async () => {
             AlertHelper.show(
@@ -147,9 +148,9 @@ const Sidebar = () => {
             );
           }}
           iconName="globe-americas"
-          iconColor={theme.dark.hex}
+          iconColor={theme.disabledText}
           iconSize={20}
-          title=""
+          title="Manage Planet Preferences"
         />
         <SidebarMenuItem
           onPress={async () => {
@@ -161,9 +162,9 @@ const Sidebar = () => {
           }}
           iconName="users"
           iconSize={20}
-          title=""
-          iconColor={theme.dark.hex}
+          iconColor={theme.disabledText}
           viewStyles={{ marginTop: 20 }}
+          title="Manage People Preferences"
         />
         <SidebarMenuItem
           onPress={async () => {
@@ -176,7 +177,7 @@ const Sidebar = () => {
           iconName="clipboard-list"
           iconSize={20}
           title="Create Shopping List"
-          iconColor={theme.dark.hex}
+          iconColor={theme.disabledText}
           viewStyles={{ marginTop: 20 }}
         />
       </View>

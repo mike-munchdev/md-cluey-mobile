@@ -39,6 +39,7 @@ export default () => {
     const imageAssets = cacheImages([
       require('../assets/Icon-1024.png'),
       require('../assets/images/magnifying-glass.png'),
+      require('../assets/images/magnifying-glass-2.png'),
       require('../assets/images/magnifying-glass-larger.png'),
     ]);
 

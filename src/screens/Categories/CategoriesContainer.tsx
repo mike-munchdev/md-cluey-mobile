@@ -10,7 +10,7 @@ import {
 import { DismissKeyboard } from '../../components/TextInput';
 import theme from '../../constants/theme';
 
-const BrandContainer: FC = (props) => {
+const CompaniesContainer: FC = (props) => {
   return (
     <DismissKeyboard>
       <KeyboardAvoidingView
@@ -26,7 +26,7 @@ const BrandContainer: FC = (props) => {
     </DismissKeyboard>
   );
 };
-export default BrandContainer;
+export default CompaniesContainer;
 
 const styles = StyleSheet.create({
   container: {

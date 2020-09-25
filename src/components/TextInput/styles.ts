@@ -37,8 +37,8 @@ export default StyleSheet.create({
   },
   textInput: {
     color: theme.text,
-    backgroundColor: theme.background.hex,
-    borderColor: theme.background.hex,
+    backgroundColor: theme.white.hex,
+    borderColor: theme.white.hex,
   },
 
   buttons: {

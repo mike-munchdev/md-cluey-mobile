@@ -16,9 +16,15 @@ export default StyleSheet.create({
     marginHorizontal: 10,
     // marginTop: 50,
   },
+  brandsContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 20,
+    marginTop: 10,
+  },
   infoContainer: {
     marginHorizontal: 10,
-    height: '75%',
+    height: '65%',
     flexDirection: 'column',
   },
   searchCaptionText: {
@@ -28,4 +34,12 @@ export default StyleSheet.create({
     color: theme.dark.hex,
   },
   actionButtonContainer: {},
+  likesContainer: {
+    position: 'absolute',
+    bottom: 60,
+    flexDirection: 'row',
+
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
