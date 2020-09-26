@@ -5,43 +5,40 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Avatar, ListItem } from 'react-native-elements';
 
-import CompaniesContainer from './CompaniesContainer';
+import ProductTypesContainer from './ProductTypesContainer';
 import styles from './styles';
 import theme from '../../constants/theme';
 import {
-  getCompaniesByProductTypeCompleted,
-  getCompaniesByProductTypeError,
-  GET_COMPANIES_BY_PRODUCT_TYPE,
-} from '../../graphql/queries/company/companies';
+  getProductTypesByCategoryCompleted,
+  getProductTypesByCategoryError,
+  GET_PRODUCT_TYPES_BY_CATEGORY,
+} from '../../graphql/queries/productTypes/productTypes';
 import { useLazyQuery } from '@apollo/react-hooks';
 import { ActivityIndicator, Searchbar } from 'react-native-paper';
 import NavigationHeader from '../../components/Headers/NavigationHeader';
-import { CompaniesList } from '../../components/Lists';
+import { RoundedIconButton } from '../../components/Buttons';
+import { SimpleListItem } from '../../components/ListItem';
+import { ProductTypesList } from '../../components/Lists';
 
-const Companies: FC = () => {
+const ProductTypes: FC = () => {
   const route = useRoute();
   const [searchQuery, setSearchQuery] = useState('');
 
-  const [companies, setCompanies] = useState([]);
-  const [filteredList, setFilteredList] = useState([]);
+  const [productTypes, setProductTypes] = useState([]);
+
   const [isLoading, setIsLoading] = useState(false);
   const [categoryId, setCategoryId] = useState(
     route.params.categoryId ? route.params.categoryId : null
   );
 
   const navigation = useNavigation();
-  const [getCompaniesByProductType] = useLazyQuery(
-    GET_COMPANIES_BY_PRODUCT_TYPE,
+  const [getProductTypesByCategory] = useLazyQuery(
+    GET_PRODUCT_TYPES_BY_CATEGORY,
     {
       fetchPolicy: 'network-only',
-      onError: getCompaniesByProductTypeError(
-        setCompanies,
-        setFilteredList,
-        setIsLoading
-      ),
-      onCompleted: getCompaniesByProductTypeCompleted(
-        setCompanies,
-        setFilteredList,
+      onError: getProductTypesByCategoryError(setProductTypes, setIsLoading),
+      onCompleted: getProductTypesByCategoryCompleted(
+        setProductTypes,
         setIsLoading
       ),
     }
@@ -50,7 +47,7 @@ const Companies: FC = () => {
   useEffect(() => {
     (async () => {
       if (categoryId) {
-        await getCompaniesByProductType({
+        await getProductTypesByCategory({
           variables: {
             id: categoryId,
           },
@@ -59,19 +56,8 @@ const Companies: FC = () => {
     })();
   }, [categoryId]);
 
-  useEffect(() => {
-    const searchLowercase = searchQuery.toLowerCase();
-    const newList = companies.filter((c) =>
-      c.name.toLowerCase().includes(searchLowercase)
-    );
-
-    setFilteredList(newList);
-  }, [searchQuery]);
-
-  const onChangeSearch = (query: string) => setSearchQuery(query);
-
   return (
-    <CompaniesContainer>
+    <ProductTypesContainer>
       <View style={styles.overlayContainer}>
         <NavigationHeader goBack />
         <View
@@ -85,20 +71,16 @@ const Companies: FC = () => {
           <Text
             style={{
               fontFamily: 'CoinyRegular',
-              fontSize: 50,
+              fontSize: 48,
               color: theme.dark.hex,
             }}
           >
-            Companies
+            Subcategories
           </Text>
         </View>
-        <CompaniesList
-          list={filteredList}
-          searchQuery={searchQuery}
-          onChangeSearch={onChangeSearch}
-        />
+        <ProductTypesList list={productTypes} />
       </View>
-    </CompaniesContainer>
+    </ProductTypesContainer>
   );
 };
-export default Companies;
+export default ProductTypes;

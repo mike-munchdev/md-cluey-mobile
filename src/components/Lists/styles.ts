@@ -6,4 +6,16 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  companiesContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 20,
+    flex: 1,
+  },
+  productTypesContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 10,
+    flex: 1,
+  },
 });
