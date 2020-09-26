@@ -38,6 +38,14 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
       >
         <View style={styles.politicalScoreContainer}>
           <ContributionsProgressBar
+            title="Individual"
+            democrat={democratPercent}
+            republican={republicanPercent}
+          />
+        </View>
+        <View style={styles.politicalScoreContainer}>
+          <ContributionsProgressBar
+            title="PAC"
             democrat={democratPercent}
             republican={republicanPercent}
           />

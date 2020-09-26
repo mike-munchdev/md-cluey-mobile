@@ -36,23 +36,27 @@
         "production": {
           "apiServerUrl": "md-cluey-test.herokuapp.com",
           "httpProtocol": "https",
-          "wsProtocol": "wss"
+          "wsProtocol": "wss",
+          "categoryImageUrlPrefix": "http://md-cluey-test.herokuapp.com/categories/"
         },
         "heroku-test": {
           "apiServerUrl": "md-cluey-test.herokuapp.com",
           "httpProtocol": "https",
-          "wsProtocol": "wss"
+          "wsProtocol": "wss",
+          "categoryImageUrlPrefix": "http://md-cluey-test.herokuapp.com/categories/"
         },
         "staging": {
           "apiServerUrl": "md-cluey-staging.herokuapp.com",
           "httpProtocol": "https",
-          "wsProtocol": "wss"
+          "wsProtocol": "wss",
+          "categoryImageUrlPrefix": "http://md-cluey-test.herokuapp.com/categories/"
         },
         "development": {
           "apiServerUrlProd": "md-cluey-test.herokuapp.com",
           "apiServerUrl": "localhost:4004",
           "httpProtocol": "http",
-          "wsProtocol": "ws"
+          "wsProtocol": "ws",
+          "categoryImageUrlPrefix": "http://md-cluey-test.herokuapp.com/categories/"
         }
       },
       "uplead": {

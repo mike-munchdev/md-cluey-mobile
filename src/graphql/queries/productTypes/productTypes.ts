@@ -3,19 +3,18 @@ import { ApolloError } from 'apollo-client';
 import { AlertHelper } from '../../../utils/alert';
 import Bugsnag from '@bugsnag/expo';
 
-export const categoriesStructure = `{    
+export const productTypesStructure = `{    
     id
     name
-    slug
-    logoUrl
+    
   }
 `;
 
-export const GET_CATEGORIES = gql`
-  query GetCategories {
-    getCategories {
+export const GET_PRODUCT_TYPES_BY_CATEGORY = gql`
+  query GetProductTypesByCategory ($id: String!) {
+    getProductTypesByCategory (id: $id) {
       ok
-      categories ${categoriesStructure}
+      productTypes ${productTypesStructure}
       error {        
         message
       }
@@ -24,12 +23,12 @@ export const GET_CATEGORIES = gql`
   }
 `;
 
-export const getCategoriesError = (
-  setCategories: Function,
+export const getProductTypesByCategoryError = (
+  setProductTypes: Function,
   setLoading: Function
 ) => (e: ApolloError) => {
   setLoading(false);
-  setCategories([]);
+  setProductTypes([]);
   AlertHelper.show(
     'error',
     'Error',
@@ -37,14 +36,14 @@ export const getCategoriesError = (
   );
 };
 
-export const getCategoriesCompleted = (
-  setCategories: Function,
+export const getProductTypesByCategoryCompleted = (
+  setProductTypes: Function,
   setLoading: Function
-) => async ({ getCategories }) => {
-  const { ok, categories, error, searchText } = getCategories;
+) => async ({ getProductTypesByCategory }) => {
+  const { ok, productTypes, error, searchText } = getProductTypesByCategory;
   setLoading(false);
   if (ok) {
-    setCategories(categories);
+    setProductTypes(productTypes);
   } else {
     AlertHelper.show('error', 'Error', error.message);
   }

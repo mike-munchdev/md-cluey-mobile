@@ -17,6 +17,7 @@ import { useLazyQuery } from '@apollo/react-hooks';
 import { ActivityIndicator, Searchbar } from 'react-native-paper';
 import NavigationHeader from '../../components/Headers/NavigationHeader';
 import { RoundedIconButton } from '../../components/Buttons';
+import { SimpleListItem } from '../../components/ListItem';
 
 const Categories: FC = () => {
   const route = useRoute();
@@ -42,53 +43,57 @@ const Categories: FC = () => {
   return (
     <CategoriesContainer>
       <View style={styles.overlayContainer}>
-        <View>
-          <NavigationHeader goBack />
+        <NavigationHeader goBack />
+        <View
+          style={{
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 20,
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: 'CoinyRegular',
+              fontSize: 50,
+              color: theme.dark.hex,
+            }}
+          >
+            Categories
+          </Text>
         </View>
-        <View style={styles.companiesContainer}>
-          <View style={{ width: '100%', marginHorizontal: 10, marginTop: 20 }}>
-            <FlatList
-              data={categories}
-              keyExtractor={(item, index) => item.id.toString()}
-              renderItem={({ item }) => {
-                return (
-                  <TouchableOpacity
-                    key={item.id}
-                    onPress={() =>
-                      navigation.navigate('Company', { companyId: item.id })
-                    }
+        <View style={styles.categoriesContainer}>
+          <FlatList
+            contentContainerStyle={{ width: '100%' }}
+            style={{ width: '100%' }}
+            data={categories}
+            keyExtractor={(item, index) => item.id.toString()}
+            renderItem={({ item }) => {
+              return (
+                <SimpleListItem
+                  item={item}
+                  routeName="ProductTypes"
+                  params={{ categoryId: item.id }}
+                  title={item.name}
+                />
+              );
+            }}
+            ListEmptyComponent={() => {
+              return (
+                <View style={{ alignItems: 'center' }}>
+                  <Text
+                    style={{
+                      fontFamily: 'MontserratMedium',
+                      fontSize: 24,
+                      color: theme.dark.hex,
+                    }}
                   >
-                    <ListItem
-                      key={item.id}
-                      bottomDivider
-                      style={{ marginBottom: 5, backgroundColor: theme.light }}
-                    >
-                      <Avatar rounded source={{ uri: item.brandLogoUrl }} />
-                      <ListItem.Content>
-                        <ListItem.Title>{item.name}</ListItem.Title>
-                        <ListItem.Subtitle>{item.brandUrl}</ListItem.Subtitle>
-                      </ListItem.Content>
-                    </ListItem>
-                  </TouchableOpacity>
-                );
-              }}
-              ListEmptyComponent={() => {
-                return (
-                  <View style={{ alignItems: 'center' }}>
-                    <Text
-                      style={{
-                        fontFamily: 'MontserratMedium',
-                        fontSize: 24,
-                        color: theme.dark.hex,
-                      }}
-                    >
-                      No companies
-                    </Text>
-                  </View>
-                );
-              }}
-            />
-          </View>
+                    No categories
+                  </Text>
+                </View>
+              );
+            }}
+          />
         </View>
       </View>
     </CategoriesContainer>

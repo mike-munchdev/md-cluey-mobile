@@ -31,6 +31,7 @@ import { Friends } from '../screens/Friends';
 import { Friend } from '../screens/Friend';
 import { Companies } from '../screens/Companies';
 import { Categories } from '../screens/Categories';
+import { ProductTypes } from '../screens/ProductTypes';
 
 const Drawer = createDrawerNavigator();
 const AuthStack = createStackNavigator();
@@ -69,6 +70,7 @@ const ClueyStackScreen = () => (
     <ClueyStack.Screen name="Company" component={Company} />
     <ClueyStack.Screen name="Companies" component={Companies} />
     <ClueyStack.Screen name="Categories" component={Categories} />
+    <ClueyStack.Screen name="ProductTypes" component={ProductTypes} />
   </ClueyStack.Navigator>
 );
 

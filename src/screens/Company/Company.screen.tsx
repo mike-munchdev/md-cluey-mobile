@@ -67,7 +67,6 @@ const Company: FC = () => {
           <CompanyContainer>
             <View style={styles.overlayContainer}>
               <NavigationHeader goBack />
-
               <View style={styles.brandContainer}>
                 {/* <Text style={styles.searchCaptionText}>You searched...</Text> */}
                 {/* {companyImageVisible ? ( */}
