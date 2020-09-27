@@ -19,7 +19,6 @@ export const GET_CATEGORIES = gql`
       error {        
         message
       }
-      
     }
   }
 `;
@@ -30,11 +29,7 @@ export const getCategoriesError = (
 ) => (e: ApolloError) => {
   setLoading(false);
   setCategories([]);
-  AlertHelper.show(
-    'error',
-    'Error',
-    'An error occurred during signup. Please try again.'
-  );
+  AlertHelper.show('error', 'Error', 'An error occurred. Please try again.');
 };
 
 export const getCategoriesCompleted = (
@@ -42,6 +37,7 @@ export const getCategoriesCompleted = (
   setLoading: Function
 ) => async ({ getCategories }) => {
   const { ok, categories, error, searchText } = getCategories;
+
   setLoading(false);
   if (ok) {
     setCategories(categories);

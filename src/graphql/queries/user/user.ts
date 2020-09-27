@@ -15,6 +15,14 @@ export const userStructure = `{
     createdAt   
 }`;
 
+export const responseStructure = `{  
+    id
+    company {
+      id
+    }
+    response  
+}`;
+
 export const GET_USER_BY_ID = gql`
   query GetUserById($userId: String!) {
     getUserById(userId: $userId) {
@@ -99,12 +107,20 @@ export const ACTIVATE_USER_ACCOUNT = gql`
   }
 `;
 
+export const UPDATE_COMPANY_RESPONSE_FOR_USER = gql`
+  mutation UpdateCompanyResponseForUser($input: UserCompanyResponseInput!) {
+    updateCompanyResponseForUser(input: $input) {
+      ok
+      response ${responseStructure}
+      error {
+        message
+      }
+    }
+  }
+`;
+
 export const userSignupError = (e: ApolloError) => {
-  AlertHelper.show(
-    'error',
-    'Error',
-    'An error occurred during signup. Please try again.'
-  );
+  AlertHelper.show('error', 'Error', 'An error occurred. Please try again.');
 };
 
 export const userSignupCompleted = (
@@ -250,6 +266,29 @@ export const activateUserAccountCompleted = (
     } else {
       await activateAccount(message, navigation);
     }
+  } else {
+    AlertHelper.show('error', 'Error', error.message);
+  }
+};
+
+export const updateCompanyResponseForUserError = (
+  setCompanyResponse: Function,
+  setLoading: Function
+) => (e: ApolloError) => {
+  setLoading(false);
+  setCompanyResponse(null);
+  AlertHelper.show('error', 'Error', 'An error occurred. Please try again.');
+};
+
+export const updateCompanyResponseForUserCompleted = (
+  setCompanyResponse: Function,
+  setLoading: Function
+) => async ({ updateCompanyResponseForUser }) => {
+  const { ok, response, error } = updateCompanyResponseForUser;
+
+  setLoading(false);
+  if (ok) {
+    setCompanyResponse(response);
   } else {
     AlertHelper.show('error', 'Error', error.message);
   }

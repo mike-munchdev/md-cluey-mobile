@@ -3,7 +3,7 @@ import { ApolloError } from 'apollo-client';
 import { AlertHelper } from '../../../utils/alert';
 import Bugsnag from '@bugsnag/expo';
 
-export const companiesStructure = `{    
+export const companyStructure = `{    
     id
     name
     brandUrl
@@ -15,7 +15,7 @@ export const GET_COMPANIES_BY_NAME = gql`
   query GetCompaniesByName($name: String!, $exact: Boolean) {
     getCompaniesByName(name: $name, exact: $exact) {
       ok
-      companies ${companiesStructure}
+      companies ${companyStructure}
       error {        
         message
       }
@@ -30,11 +30,7 @@ export const getCompaniesByNameError = (
 ) => (e: ApolloError) => {
   setLoading(false);
   setCompanies([]);
-  AlertHelper.show(
-    'error',
-    'Error',
-    'An error occurred during signup. Please try again.'
-  );
+  AlertHelper.show('error', 'Error', 'An error occurred. Please try again.');
 };
 
 export const getCompaniesByNameCompleted = (
@@ -57,7 +53,7 @@ export const GET_COMPANIES_BY_CATEGORY = gql`
   query GetCompaniesByCategory($id: String!) {
     getCompaniesByCategory(id: $id) {
       ok
-      companies ${companiesStructure}
+      companies ${companyStructure}
       error {        
         message
       }     
@@ -73,11 +69,7 @@ export const getCompaniesByCategoryError = (
   setLoading(false);
   setCompanies([]);
   setFilteredList([]);
-  AlertHelper.show(
-    'error',
-    'Error',
-    'An error occurred during signup. Please try again.'
-  );
+  AlertHelper.show('error', 'Error', 'An error occurred. Please try again.');
 };
 
 export const getCompaniesByCategoryCompleted = (
@@ -99,7 +91,7 @@ export const GET_COMPANIES_BY_PRODUCT_TYPE = gql`
   query GetCompaniesByProductType($id: String!) {
     getCompaniesByProductType(id: $id) {
       ok
-      companies ${companiesStructure}
+      companies ${companyStructure}
       error {        
         message
       }     
@@ -115,11 +107,7 @@ export const getCompaniesByProductTypeError = (
   setLoading(false);
   setCompanies([]);
   setFilteredList([]);
-  AlertHelper.show(
-    'error',
-    'Error',
-    'An error occurred during signup. Please try again.'
-  );
+  AlertHelper.show('error', 'Error', 'An error occurred. Please try again.');
 };
 
 export const getCompaniesByProductTypeCompleted = (
@@ -132,6 +120,42 @@ export const getCompaniesByProductTypeCompleted = (
   if (ok) {
     setCompanies(companies);
     setFilteredList(companies);
+  } else {
+    AlertHelper.show('error', 'Error', error.message);
+  }
+};
+
+export const GET_COMPANY_BY_ID = gql`
+  query GetCompanyById($id: String!) {
+    getCompanyById(id: $id) {
+      ok
+      company ${companyStructure}
+      error {        
+        message
+      }     
+    }
+  }
+`;
+
+export const getCompanyByIdError = (
+  setCompany: Function,
+  setLoading: Function
+) => (e: ApolloError) => {
+  setLoading(false);
+  setCompany(null);
+
+  AlertHelper.show('error', 'Error', 'An error occurred. Please try again.');
+};
+
+export const getCompanyByIdCompleted = (
+  setCompany: Function,
+
+  setLoading: Function
+) => async ({ getCompanyById }) => {
+  const { ok, company, error } = getCompanyById;
+  setLoading(false);
+  if (ok) {
+    setCompany(company);
   } else {
     AlertHelper.show('error', 'Error', error.message);
   }

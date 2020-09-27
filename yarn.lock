@@ -5243,11 +5243,6 @@ pseudomap@^1.0.2:
   resolved "https://registry.yarnpkg.com/pseudomap/-/pseudomap-1.0.2.tgz#f052a28da70e618917ef0a8ac34c1ae5a68286b3"
   integrity sha1-8FKijacOYYkX7wqKw0wa5aaChrM=
 
-psl@^1.8.0:
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/psl/-/psl-1.8.0.tgz#9326f8bcfb013adcc005fdff056acce020e51c24"
-  integrity sha512-RIdOzyoavK+hA18OGGWDqUTsCLhtA7IcZ/6NCs4fFJaHBDab+pDDmDIByWFRQJq2Cd7r1OoQxBGKOaztq+hjIQ==
-
 pump@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/pump/-/pump-3.0.0.tgz#b4a2116815bde2f4e1ea602354e8c75565107a64"
@@ -5740,6 +5735,11 @@ rimraf@~2.2.6:
   version "2.2.8"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.2.8.tgz#e439be2aaee327321952730f99a8929e4fc50582"
   integrity sha1-5Dm+Kq7jJzIZUnMPmaiSnk/FBYI=
+
+rn-tooltip@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/rn-tooltip/-/rn-tooltip-3.0.0.tgz#29d5124b18a6168a525be78141b13044c02d4d41"
+  integrity sha512-XIDbNiucMarQfoRUgKnVfXU/Qbx8R8EUk37eEfm4xvB49TOTsGPLytQp5yhKncgvknY+nDcAiMglFX2VLctu6A==
 
 rsvp@^4.8.4:
   version "4.8.5"

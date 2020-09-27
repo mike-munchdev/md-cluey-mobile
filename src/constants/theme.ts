@@ -45,4 +45,5 @@ export default {
   willBuyLater: colors.purple.normal,
   willNotBuyLater: colors.yellow.normal,
   willNotBuy: colors.orange.normal,
+  opaque: colors.gray.dark,
 };

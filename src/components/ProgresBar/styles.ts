@@ -3,10 +3,18 @@ import theme from '../../constants/theme';
 
 export default StyleSheet.create({
   container: {
-    width: '90%',
-    flexDirection: 'row',
+    width: '100%',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  titleText: {
+    fontFamily: 'MontserratMedium',
+    fontSize: 18,
+  },
+  percentContainer: {
+    width: '90%',
+    flexDirection: 'row',
   },
   percentText: {
     fontSize: 18,

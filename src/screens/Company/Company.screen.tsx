@@ -22,15 +22,27 @@ import { HorizontalRule } from '../../components/HorizontalRule';
 import { RoundedIconButton } from '../../components/Buttons';
 import NavigationHeader from '../../components/Headers/NavigationHeader';
 import { Avatar } from 'react-native-paper';
+import { ActionsView } from '../../components/Actions';
+import { useLazyQuery } from '@apollo/react-hooks';
+import {
+  getCompanyByIdCompleted,
+  getCompanyByIdError,
+  GET_COMPANIES_BY_CATEGORY,
+  GET_COMPANY_BY_ID,
+} from '../../graphql/queries/company/companies';
 
 const Company: FC = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const [company] = useState<ICompany | undefined>(
-    route.params.company ? route.params.company : null
+  const [company, setCompany] = useState<ICompany | undefined>();
+
+  const [companyId, setCompanyId] = useState<string | undefined>(
+    route.params.companyId ? route.params.companyId : null
   );
 
-  const [, setCompanyImageVisible] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [companyImageVisible, setCompanyImageVisible] = useState(true);
   const [imageUri, setImageUri] = useState(
     'https://img1.wsimg.com/isteam/ip/562a710e-a7a5-44d1-aa8d-cfa6312092eb/2329154B-D2D8-4A7D-873D-F8A8BF480E00.jpeg/:/rs=w:2046px,cg:true,m'
   );
@@ -43,12 +55,25 @@ const Company: FC = () => {
   };
 
   useEffect(() => {
-    if (company && company.brandUrl) {
+    console.log('companyId', companyId);
+    if (companyId) {
+      getCompanyById({
+        variables: {
+          id: companyId,
+        },
+      });
       setImageUri(
         `https://img1.wsimg.com/isteam/ip/562a710e-a7a5-44d1-aa8d-cfa6312092eb/revlon.com.png`
       );
     }
   }, []);
+
+  const [getCompanyById] = useLazyQuery(GET_COMPANY_BY_ID, {
+    fetchPolicy: 'network-only',
+    onError: getCompanyByIdError(setCompany, setIsLoading),
+    onCompleted: getCompanyByIdCompleted(setCompany, setIsLoading),
+  });
+
   return (
     <Formik
       initialValues={{
@@ -117,71 +142,7 @@ const Company: FC = () => {
                 <View style={styles.actionButtonContainer}></View>
               </View>
             </View>
-            <View style={styles.likesContainer}>
-              <RoundedIconButton
-                onPress={() => alert('search by category')}
-                backgroundColor={theme.buttonTransparentBackground}
-                borderColor={theme.buttonTransparentBackground}
-                borderWidth={0}
-                icon={
-                  <Avatar.Icon
-                    size={64}
-                    color={theme.white.hex}
-                    icon="thumb-up"
-                    style={{ backgroundColor: theme.willBuy }}
-                  />
-                }
-                textStyle={{ fontSize: 14 }}
-              />
-              <RoundedIconButton
-                onPress={() => alert('search by category')}
-                backgroundColor={theme.buttonTransparentBackground}
-                borderColor={theme.buttonTransparentBackground}
-                borderWidth={0}
-                icon={
-                  <Avatar.Icon
-                    size={48}
-                    color={theme.white.hex}
-                    icon="thumb-up"
-                    style={{ backgroundColor: theme.willBuyLater }}
-                  />
-                }
-                textStyle={{ fontSize: 14 }}
-              />
-              <RoundedIconButton
-                onLongPress={() => growAndShowToolTip()}
-                onPress={() => alert('search by category')}
-                backgroundColor={theme.buttonTransparentBackground}
-                borderWidth={0}
-                borderColor={theme.buttonTransparentBackground}
-                size={60}
-                icon={
-                  <Avatar.Icon
-                    size={48}
-                    color={theme.white.hex}
-                    icon="thumb-down"
-                    style={{ backgroundColor: theme.willNotBuyLater }}
-                  />
-                }
-                textStyle={{ fontSize: 14 }}
-              />
-              <RoundedIconButton
-                onPress={() => alert('search by category')}
-                backgroundColor={theme.buttonTransparentBackground}
-                borderWidth={0}
-                borderColor={theme.buttonTransparentBackground}
-                size={60}
-                icon={
-                  <Avatar.Icon
-                    size={64}
-                    color={theme.white.hex}
-                    icon="thumb-down"
-                    style={{ backgroundColor: theme.willNotBuy }}
-                  />
-                }
-                textStyle={{ fontSize: 14 }}
-              />
-            </View>
+            <ActionsView company={company} />
           </CompanyContainer>
         );
       }}

@@ -23,6 +23,7 @@ export interface IProduct {
 }
 
 export interface ICompany {
+  id: string;
   name: string;
   // parentCompanies?: ICompany[];
   brandUrl?: string;
