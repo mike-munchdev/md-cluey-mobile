@@ -5,8 +5,7 @@ import Bugsnag from '@bugsnag/expo';
 
 export const productTypesStructure = `{    
     id
-    name
-    
+    name    
   }
 `;
 
@@ -29,11 +28,7 @@ export const getProductTypesByCategoryError = (
 ) => (e: ApolloError) => {
   setLoading(false);
   setProductTypes([]);
-  AlertHelper.show(
-    'error',
-    'Error',
-    'An error occurred during signup. Please try again.'
-  );
+  AlertHelper.show('error', 'Error', 'An error occurred. Please try again.');
 };
 
 export const getProductTypesByCategoryCompleted = (

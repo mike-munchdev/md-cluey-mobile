@@ -10,7 +10,7 @@ import {
 import * as Animatable from 'react-native-animatable';
 
 export interface IRoundedIconButtonProps {
-  onPress: ((event: GestureResponderEvent) => void) | undefined;
+  onPress?: ((event: GestureResponderEvent) => void) | undefined;
   onLongPress?: ((event: GestureResponderEvent) => void) | undefined;
   backgroundColor: string | undefined;
   borderColor?: string | undefined;

@@ -78,7 +78,7 @@ const ProductTypes: FC = () => {
             Subcategories
           </Text>
         </View>
-        <ProductTypesList list={productTypes} />
+        <ProductTypesList list={productTypes} loading={isLoading} />
       </View>
     </ProductTypesContainer>
   );

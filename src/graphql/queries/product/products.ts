@@ -46,11 +46,7 @@ export const getProductsByNameError = (
 ) => (e: ApolloError) => {
   setLoading(false);
   setProducts([]);
-  AlertHelper.show(
-    'error',
-    'Error',
-    'An error occurred during signup. Please try again.'
-  );
+  AlertHelper.show('error', 'Error', 'An error occurred. Please try again.');
 };
 
 export const getProductsByNameCompleted = (

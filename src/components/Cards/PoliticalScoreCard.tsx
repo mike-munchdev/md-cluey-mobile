@@ -14,13 +14,23 @@ export interface IPoliticalScoreCardProps {
 
 const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
   const [expanded, setExpanded] = useState(true);
-  const [democratPercent, setDemocratPercent] = useState(0);
-  const [republicanPercent, setRepublicanPercent] = useState(0);
+  const [individualDemocratPercent, setIndividualDemocratPercent] = useState(0);
+  const [
+    individualRepublicanPercent,
+    setIndividualRepublicanPercent,
+  ] = useState(0);
+  const [pacDemocratPercent, setPacDemocratPercent] = useState(0);
+  const [pacRepublicanPercent, setPacRepublicanPercent] = useState(0);
+
   useEffect(() => {
-    const republican = Math.floor(Math.random() * 100);
-    const democrat = 100 - republican;
-    setDemocratPercent(democrat);
-    setRepublicanPercent(republican);
+    const iRepublican = Math.floor(Math.random() * 100);
+    const iDemocrat = 100 - iRepublican;
+    const pRepublican = Math.floor(Math.random() * 100);
+    const pDemocrat = 100 - pRepublican;
+    setIndividualDemocratPercent(iDemocrat);
+    setIndividualRepublicanPercent(iRepublican);
+    setPacDemocratPercent(pDemocrat);
+    setPacRepublicanPercent(pRepublican);
   }, []);
   const handlePress = () => setExpanded(!expanded);
 
@@ -39,15 +49,15 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
         <View style={styles.politicalScoreContainer}>
           <ContributionsProgressBar
             title="Individual"
-            democrat={democratPercent}
-            republican={republicanPercent}
+            democrat={individualDemocratPercent}
+            republican={individualRepublicanPercent}
           />
         </View>
         <View style={styles.politicalScoreContainer}>
           <ContributionsProgressBar
             title="PAC"
-            democrat={democratPercent}
-            republican={republicanPercent}
+            democrat={pacDemocratPercent}
+            republican={pacRepublicanPercent}
           />
         </View>
         <View style={styles.politicalSubTextContainer}>

@@ -34,12 +34,4 @@ export default StyleSheet.create({
     color: theme.dark.hex,
   },
   actionButtonContainer: {},
-  likesContainer: {
-    position: 'absolute',
-    bottom: 60,
-    flexDirection: 'row',
-
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
 });
