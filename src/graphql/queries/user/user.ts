@@ -2,17 +2,31 @@ import gql from 'graphql-tag';
 import { ApolloError } from 'apollo-client';
 import { AlertHelper } from '../../../utils/alert';
 import Bugsnag from '@bugsnag/expo';
+import { IUser } from '../../../interfaces';
 
 export const userStructure = `{
     id
     email
     firstName
     middleName
-    lastName        
+    lastName   
+    dob
+    city
+    state
+    gender     
     googleId
     facebookId
     pushTokens
-    createdAt   
+    createdAt
+    isProfilePublic
+    isActive
+    responses {
+      id
+      company {
+        id
+      }
+      response
+    }
 }`;
 
 export const responseStructure = `{  
@@ -41,6 +55,18 @@ export const UPDATE_USER = gql`
       ok
       user ${userStructure}
       error {        
+        message
+      }
+    }
+  }
+`;
+
+export const UPDATE_USER_PASSWORD = gql`
+  mutation UpdateUserPassword($input: UpdateUserPasswordInput!) {
+    updateUserPassword(input: $input) {
+      ok
+      message
+      error {
         message
       }
     }
@@ -149,13 +175,13 @@ export const updateUserError = (setLoading: Function) => (e: ApolloError) => {
   AlertHelper.show(
     'error',
     'Error',
-    'An error occurred adding Rx to cart. Please try again.'
+    'An error occurred and has been logged. Please try again.'
   );
 };
 
 export const updateUserCompleted = (
   setLoading: Function,
-  setUser: Function
+  setUser: ((user: IUser) => void) | undefined
 ) => async ({ updateUser }) => {
   const { ok, user, error } = updateUser;
 
@@ -164,7 +190,6 @@ export const updateUserCompleted = (
     if (!user) {
       AlertHelper.show('error', 'Error', 'Error retrieving information.');
     } else {
-      AlertHelper.show('success', 'Success', 'Information saved.');
       setUser(user);
     }
   } else {
@@ -180,13 +205,13 @@ export const updateUserSettingsError = (setLoading: Function) => (
   AlertHelper.show(
     'error',
     'Error',
-    'An error occurred adding Rx to cart. Please try again.'
+    'An error occurred and has been logged. Please try again.'
   );
 };
 
 export const updateUserSettingsCompleted = (
   setLoading: Function,
-  setUser: Function
+  setUser: (user: IUser) => void
 ) => async ({ updateUserSettings }) => {
   const { ok, user, error } = updateUserSettings;
 
@@ -220,7 +245,7 @@ export const addPushTokenError = (
 
 export const addPushTokenCompleted = (
   setLoading: Function,
-  setUser: Function,
+  setUser: ((user: IUser) => void) | undefined,
   setRequesting: Function
 ) => async ({ addPushToken }) => {
   const { ok, user, error } = addPushToken;
@@ -290,6 +315,31 @@ export const updateCompanyResponseForUserCompleted = (
   if (ok) {
     setCompanyResponse(response);
   } else {
+    AlertHelper.show('error', 'Error', error.message);
+  }
+};
+
+export const updateUserPasswordError = (setLoading: Function) => (
+  e: ApolloError
+) => {
+  setLoading(false);
+  AlertHelper.show(
+    'error',
+    'Error',
+    'An error occurred and has been logged. Please try again.'
+  );
+};
+
+export const updateUserPasswordCompleted = (
+  setLoading: Function,
+  setUser: ((user: IUser) => void) | undefined
+) => async ({ updateUserPassword }) => {
+  const { ok, message, error } = updateUserPassword;
+
+  if (ok) {
+    setLoading(false);
+  } else {
+    setLoading(false);
     AlertHelper.show('error', 'Error', error.message);
   }
 };

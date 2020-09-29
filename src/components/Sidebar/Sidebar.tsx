@@ -13,16 +13,35 @@ import { HorizontalRule } from '../HorizontalRule/';
 import { useNavigation } from '@react-navigation/native';
 import theme from '../../constants/theme';
 import { AlertHelper } from '../../utils/alert';
+import { useMutation } from '@apollo/react-hooks';
+import {
+  updateUserCompleted,
+  updateUserError,
+  UPDATE_USER,
+} from '../../graphql/queries/user/user';
 
 const Sidebar = () => {
-  const { signOut } = useContext(AuthContext);
-  const { user } = useContext(AppContext);
   const navigation = useNavigation();
 
-  const [isMakeLikesPublicOn, setIsMakeLikesPublicOn] = useState(false);
+  const { user, setUser } = useContext(AppContext);
 
-  const onIsMakeLikesPublicToggleSwitch = () =>
-    setIsMakeLikesPublicOn(!isMakeLikesPublicOn);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [updateUser] = useMutation(UPDATE_USER, {
+    onError: updateUserError(setIsLoading),
+    onCompleted: updateUserCompleted(setIsLoading, setUser),
+  });
+  const onIsMakeLikesPublicToggleSwitch = async () => {
+    // check for consumer profile settings
+    await updateUser({
+      variables: {
+        input: {
+          userId: user?.id,
+          isProfilePublic: !user?.isProfilePublic,
+        },
+      },
+    });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -91,9 +110,13 @@ const Sidebar = () => {
           onPress={onIsMakeLikesPublicToggleSwitch}
           icon={() => (
             <MaterialCommunityIcons
-              name={isMakeLikesPublicOn ? 'toggle-switch' : 'toggle-switch-off'}
+              name={
+                user?.isProfilePublic ? 'toggle-switch' : 'toggle-switch-off'
+              }
               size={20}
-              color={isMakeLikesPublicOn ? theme.successText : theme.errorText}
+              color={
+                user?.isProfilePublic ? theme.successText : theme.errorText
+              }
             />
           )}
           title="Make Likes/Dislikes Public"

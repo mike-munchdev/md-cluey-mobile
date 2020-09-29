@@ -1,7 +1,7 @@
 import React, { useState, useEffect, FC } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import theme from '../../constants/theme';
-import { SimpleListItem } from '../ListItem';
+import { NavListItem } from '../ListItem';
 
 import styles from './styles';
 
@@ -20,7 +20,7 @@ const CategoriesList: FC<ICategoriesListProps> = ({ list, loading }) => {
         keyExtractor={(item, index) => item.id.toString()}
         renderItem={({ item }) => {
           return (
-            <SimpleListItem
+            <NavListItem
               item={item}
               routeName="ProductTypes"
               params={{ categoryId: item.id }}

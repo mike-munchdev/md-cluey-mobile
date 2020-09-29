@@ -5,7 +5,7 @@ import { Avatar, ListItem } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import theme from '../../constants/theme';
 
-export interface ISimpleListItemProps {
+export interface INavListItemProps {
   item: any;
   routeName: string;
   params: any;
@@ -14,7 +14,7 @@ export interface ISimpleListItemProps {
   logoUrl?: string;
 }
 
-const SimpleListItem: FC<ISimpleListItemProps> = ({
+const NavListItem: FC<INavListItemProps> = ({
   item,
   routeName,
   params,
@@ -53,4 +53,4 @@ const SimpleListItem: FC<ISimpleListItemProps> = ({
   );
 };
 
-export default SimpleListItem;
+export default NavListItem;

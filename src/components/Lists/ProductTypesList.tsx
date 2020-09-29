@@ -2,7 +2,7 @@ import React, { FC, Fragment } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { ActivityIndicator, Searchbar } from 'react-native-paper';
 import theme from '../../constants/theme';
-import { SimpleListItem } from '../ListItem';
+import { NavListItem } from '../ListItem';
 
 import styles from './styles';
 
@@ -28,7 +28,7 @@ const ProductTypesList: FC<IProductTypesListProps> = ({ list, loading }) => {
             keyExtractor={(item, index) => item.id.toString()}
             renderItem={({ item }) => {
               return (
-                <SimpleListItem
+                <NavListItem
                   item={item}
                   routeName="Companies"
                   params={{ categoryId: item.id }}

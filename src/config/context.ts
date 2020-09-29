@@ -2,7 +2,7 @@ import React, { createContext } from 'react';
 import { IUser, ILocation } from '../interfaces';
 
 type AppContextProps = {
-  setUser: (user: IUser) => {};
+  setUser: (user: IUser) => void;
   user: IUser | undefined | null;
   location: ILocation | undefined | null;
 };

@@ -55,7 +55,6 @@ const Company: FC = () => {
   };
 
   useEffect(() => {
-    console.log('companyId', companyId);
     if (companyId) {
       getCompanyById({
         variables: {
