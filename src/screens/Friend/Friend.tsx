@@ -31,9 +31,6 @@ const Friend: FC = () => {
     setAreWeFriends(!areWeFriends);
   };
 
-  useEffect(() => {
-    console.log('friend', friend);
-  }, [friend]);
   return (
     <FriendContainer>
       <View style={styles.overlayContainer}>
@@ -137,7 +134,8 @@ const Friend: FC = () => {
                 renderItem={({ item }) => {
                   return (
                     <List.Item
-                  a    style={{ backgroundColor: 'white' }}
+                      a
+                      style={{ backgroundColor: 'white' }}
                       title={item.title}
                       description={item.brand ? item.brand.name : ''}
                       // left={(props) => <List.Icon {...props} icon="folder" />}
