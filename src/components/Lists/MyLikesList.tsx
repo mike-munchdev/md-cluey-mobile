@@ -1,12 +1,12 @@
 import React, { useState, useEffect, FC, Fragment } from 'react';
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { ActivityIndicator, Searchbar } from 'react-native-paper';
 import theme from '../../constants/theme';
-import { NavListItem } from '../ListItem';
+import { MyLikesListItem, NavListItem } from '../ListItem';
 
 import styles from './styles';
 
-export interface ICompaniesListProps {
+export interface IMyLikesListProps {
   list: [];
   searchQuery: string;
   onChangeSearch:
@@ -14,21 +14,22 @@ export interface ICompaniesListProps {
     | undefined;
   loading: boolean;
 }
-const CompaniesList: FC<ICompaniesListProps> = ({
+
+const MyLikesList: FC<IMyLikesListProps> = ({
   list,
-  searchQuery,
-  onChangeSearch,
   loading,
+  onChangeSearch,
+  searchQuery,
 }) => {
   return (
     <View style={styles.companiesContainer}>
       {loading ? (
-        <ActivityIndicator />
+        <ActivityIndicator animating={true} />
       ) : (
         <Fragment>
           <Searchbar
             style={{ marginBottom: 10 }}
-            placeholder="Name"
+            placeholder="Company"
             onChangeText={onChangeSearch}
             value={searchQuery}
           />
@@ -38,15 +39,7 @@ const CompaniesList: FC<ICompaniesListProps> = ({
             data={list}
             keyExtractor={(item, index) => item.id.toString()}
             renderItem={({ item }) => {
-              return (
-                <NavListItem
-                  item={item}
-                  routeName="Company"
-                  params={{ companyId: item.id }}
-                  title={item.name}
-                  subTitle={item.brandUrl}
-                />
-              );
+              return <MyLikesListItem item={item} title={item.company.name} />;
             }}
             ListEmptyComponent={() => {
               return (
@@ -58,7 +51,7 @@ const CompaniesList: FC<ICompaniesListProps> = ({
                       color: theme.dark.hex,
                     }}
                   >
-                    No companies
+                    No Likes
                   </Text>
                 </View>
               );
@@ -69,4 +62,4 @@ const CompaniesList: FC<ICompaniesListProps> = ({
     </View>
   );
 };
-export default CompaniesList;
+export default MyLikesList;

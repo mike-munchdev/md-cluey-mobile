@@ -5,7 +5,7 @@ import * as Animatable from 'react-native-animatable';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import { Formik } from 'formik';
-import CompanyContainer from './CompanyContainer';
+
 import styles from './styles';
 import theme from '../../constants/theme';
 
@@ -30,6 +30,7 @@ import {
   GET_COMPANIES_BY_CATEGORY,
   GET_COMPANY_BY_ID,
 } from '../../graphql/queries/company/companies';
+import { StandardContainer } from '../../components/Containers';
 
 const Company: FC = () => {
   const navigation = useNavigation();
@@ -88,7 +89,7 @@ const Company: FC = () => {
     >
       {({}) => {
         return (
-          <CompanyContainer>
+          <StandardContainer>
             <View style={styles.overlayContainer}>
               <NavigationHeader goBack />
               <View style={styles.brandContainer}>
@@ -142,7 +143,7 @@ const Company: FC = () => {
               </View>
             </View>
             <ActionsView company={company} />
-          </CompanyContainer>
+          </StandardContainer>
         );
       }}
     </Formik>

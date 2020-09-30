@@ -6,7 +6,6 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import * as EmailValidator from 'email-validator';
 import { isDate, capitalize } from 'lodash';
 
-import ProfileContainer from './ProfileContainer';
 import styles from './styles';
 import theme from '../../constants/theme';
 import schema from '../../validation/passwordSchema';
@@ -31,6 +30,7 @@ import { passwordRequirments } from '../../validation/passwordSchema';
 import moment from 'moment';
 import { genderOptions, stateOptions } from '../../utils/optionLists';
 import colors from '../../constants/colors';
+import { StandardContainer } from '../../components/Containers';
 
 export interface IOptionsProps {
   name: string;
@@ -112,7 +112,7 @@ const Profile: FC = () => {
   const navigation = useNavigation();
 
   return (
-    <ProfileContainer>
+    <StandardContainer>
       <View style={styles.overlayContainer}>
         <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity
@@ -441,7 +441,7 @@ const Profile: FC = () => {
         options={fieldProps.options}
         placeholder={fieldProps.placeholder}
       />
-    </ProfileContainer>
+    </StandardContainer>
   );
 };
 export default Profile;

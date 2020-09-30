@@ -94,11 +94,7 @@ const Sidebar = () => {
 
         <SidebarMenuItem
           onPress={async () => {
-            AlertHelper.show(
-              'info',
-              'Under Development',
-              'Feature is currently under development!'
-            );
+            navigation.navigate('MyLikes');
           }}
           iconName="thumbs-up"
           iconSize={20}

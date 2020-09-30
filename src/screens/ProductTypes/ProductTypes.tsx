@@ -17,8 +17,9 @@ import { useLazyQuery } from '@apollo/react-hooks';
 import { ActivityIndicator, Searchbar } from 'react-native-paper';
 import NavigationHeader from '../../components/Headers/NavigationHeader';
 import { RoundedIconButton } from '../../components/Buttons';
-import { SimpleListItem } from '../../components/ListItem';
+import { NavListItem } from '../../components/ListItem';
 import { ProductTypesList } from '../../components/Lists';
+import { StandardContainer } from '../../components/Containers';
 
 const ProductTypes: FC = () => {
   const route = useRoute();
@@ -57,7 +58,7 @@ const ProductTypes: FC = () => {
   }, [categoryId]);
 
   return (
-    <ProductTypesContainer>
+    <StandardContainer>
       <View style={styles.overlayContainer}>
         <NavigationHeader goBack />
         <View
@@ -80,7 +81,7 @@ const ProductTypes: FC = () => {
         </View>
         <ProductTypesList list={productTypes} loading={isLoading} />
       </View>
-    </ProductTypesContainer>
+    </StandardContainer>
   );
 };
 export default ProductTypes;
