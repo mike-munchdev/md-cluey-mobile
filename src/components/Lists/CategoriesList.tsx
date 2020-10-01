@@ -1,6 +1,8 @@
+import Constants from 'expo-constants';
 import React, { useState, useEffect, FC } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import theme from '../../constants/theme';
+import { NODE_ENV } from '../../hooks/serverInfo';
 import { NavListItem } from '../ListItem';
 
 import styles from './styles';
@@ -25,6 +27,15 @@ const CategoriesList: FC<ICategoriesListProps> = ({ list, loading }) => {
               routeName="ProductTypes"
               params={{ categoryId: item.id }}
               title={item.name}
+              showLogo={true}
+              logoUrl={
+                item.logoUrl
+                  ? `${
+                      Constants.manifest.extra.appVariables[String(NODE_ENV)]
+                        .categoriesLogoUrlPrefix
+                    }${item.logoUrl}`
+                  : ''
+              }
             />
           );
         }}

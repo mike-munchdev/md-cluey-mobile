@@ -33,6 +33,8 @@ const ProductTypesList: FC<IProductTypesListProps> = ({ list, loading }) => {
                   routeName="Companies"
                   params={{ categoryId: item.id }}
                   title={item.name}
+                  showLogo={false}
+                  logoUrl=""
                 />
               );
             }}

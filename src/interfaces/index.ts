@@ -43,4 +43,5 @@ export interface ICompany {
   name: string;
   // parentCompanies?: ICompany[];
   brandUrl?: string;
+  brandLogoUrl?: string;
 }

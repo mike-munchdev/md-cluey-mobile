@@ -1,10 +1,12 @@
 import React, { useState, useEffect, FC, Fragment } from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { ActivityIndicator, Searchbar } from 'react-native-paper';
+import Constants from 'expo-constants';
 import theme from '../../constants/theme';
 import { NavListItem } from '../ListItem';
 
 import styles from './styles';
+import { NODE_ENV } from '../../hooks/serverInfo';
 
 export interface ICompaniesListProps {
   list: [];
@@ -38,6 +40,7 @@ const CompaniesList: FC<ICompaniesListProps> = ({
             data={list}
             keyExtractor={(item, index) => item.id.toString()}
             renderItem={({ item }) => {
+              console.log('item.brandLogoUrl', item.brandLogoUrl);
               return (
                 <NavListItem
                   item={item}
@@ -45,6 +48,16 @@ const CompaniesList: FC<ICompaniesListProps> = ({
                   params={{ companyId: item.id }}
                   title={item.name}
                   subTitle={item.brandUrl}
+                  showLogo={true}
+                  logoUrl={
+                    item.brandLogoUrl
+                      ? `${
+                          Constants.manifest.extra.appVariables[
+                            String(NODE_ENV)
+                          ].brandLogoUrlPrefix
+                        }${item.brandLogoUrl}`
+                      : ''
+                  }
                 />
               );
             }}

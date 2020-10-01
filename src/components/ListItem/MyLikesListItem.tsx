@@ -87,7 +87,7 @@ const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item, title }) => {
             name="laugh"
             type="font-awesome-5"
             size={companyResponse.response === 'will-buy' ? 34 : 22}
-            color={theme.willBuy}
+            color={theme.successText}
             onPress={() =>
               updateResponse('will-buy', companyResponse.company.id)
             }
@@ -97,27 +97,27 @@ const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item, title }) => {
             name="emoji-happy"
             type="entypo"
             size={companyResponse.response === 'will-buy-later' ? 30 : 22}
-            color={theme.willBuyLater}
+            color={theme.successText}
             onPress={() =>
               updateResponse('will-buy-later', companyResponse.company.id)
             }
           />
           <ListItem.Chevron
             style={{ marginHorizontal: 7 }}
-            name="emoji-sad"
+            name="emoji-neutral"
             type="entypo"
             size={companyResponse.response === 'will-not-buy-later' ? 30 : 22}
-            color={theme.willNotBuyLater}
+            color={theme.successText}
             onPress={() =>
               updateResponse('will-not-buy-later', companyResponse.company.id)
             }
           />
           <ListItem.Chevron
             style={{ marginHorizontal: 7 }}
-            name="emoji-neutral"
+            name="emoji-sad"
             type="entypo"
             size={companyResponse.response === 'will-not-buy' ? 30 : 22}
-            color={theme.willNotBuy}
+            color={theme.successText}
             onPress={() =>
               updateResponse('will-not-buy', companyResponse.company.id)
             }
