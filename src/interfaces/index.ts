@@ -6,7 +6,7 @@ export interface IUser {
   email: string;
   googleId: string;
   facebookId: string;
-  responses: ICompanyReponse[];
+  companyResponses: ICompanyReponse[];
   confirmToken: string;
   isProfilePublic: Boolean;
   isActive: Boolean;
@@ -43,4 +43,5 @@ export interface ICompany {
   name: string;
   // parentCompanies?: ICompany[];
   brandUrl?: string;
+  brandLogoUrl?: string;
 }

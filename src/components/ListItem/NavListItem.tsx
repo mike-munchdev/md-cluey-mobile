@@ -4,6 +4,7 @@ import { Avatar, ListItem } from 'react-native-elements';
 
 import { useNavigation } from '@react-navigation/native';
 import theme from '../../constants/theme';
+import NavItemLogo from './NavItemLogo';
 
 export interface INavListItemProps {
   item: any;
@@ -11,7 +12,8 @@ export interface INavListItemProps {
   params: any;
   title: string;
   subTitle?: string;
-  logoUrl?: string;
+  logoUrl: string;
+  showLogo: boolean;
 }
 
 const NavListItem: FC<INavListItemProps> = ({
@@ -21,6 +23,7 @@ const NavListItem: FC<INavListItemProps> = ({
   title,
   subTitle,
   logoUrl,
+  showLogo,
 }) => {
   const navigation = useNavigation();
 
@@ -35,8 +38,8 @@ const NavListItem: FC<INavListItemProps> = ({
         width: '100%',
       }}
     >
+      {showLogo ? <NavItemLogo logoUri={logoUrl} /> : null}
       <ListItem.Content>
-        {logoUrl && <Avatar rounded source={{ uri: logoUrl }} />}
         <ListItem.Title>
           <Text
             style={{

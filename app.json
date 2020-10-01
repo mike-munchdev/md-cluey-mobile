@@ -56,7 +56,9 @@
           "apiServerUrl": "localhost:4004",
           "httpProtocol": "http",
           "wsProtocol": "ws",
-          "categoryImageUrlPrefix": "http://md-cluey-test.herokuapp.com/categories/"
+          "categoryImageUrlPrefix": "http://md-cluey-test.herokuapp.com/categories/",
+          "brandLogoUrlPrefix": "https://localhost:4004/logos/",
+          "categoriesLogoUrlPrefix": "https://localhost:4004/categories/"
         }
       },
       "uplead": {

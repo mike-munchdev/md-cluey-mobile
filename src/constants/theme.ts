@@ -43,7 +43,7 @@ export default {
   pill: colors.blue.hawkes,
   willBuy: colors.green.normal,
   willBuyLater: colors.purple.normal,
-  willNotBuyLater: colors.orange.normal,
-  willNotBuy: colors.yellow.normal,
+  willNotBuyLater: colors.yellow.normal,
+  willNotBuy: colors.orange.normal,
   opaque: colors.gray.dark,
 };

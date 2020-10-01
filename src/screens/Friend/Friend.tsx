@@ -13,6 +13,7 @@ import { Button, List, Searchbar, Switch } from 'react-native-paper';
 import { Avatar, ListItem } from 'react-native-elements';
 import { friends, IFriend } from '../Friends/Friends';
 import { HorizontalRule } from '../../components/HorizontalRule';
+import { StandardContainer } from '../../components/Containers';
 
 const Friend: FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -32,7 +33,7 @@ const Friend: FC = () => {
   };
 
   return (
-    <FriendContainer>
+    <StandardContainer>
       <View style={styles.overlayContainer}>
         <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity
@@ -152,7 +153,7 @@ const Friend: FC = () => {
           </View>
         </View>
       </View>
-    </FriendContainer>
+    </StandardContainer>
   );
 };
 export default Friend;

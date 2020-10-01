@@ -11,6 +11,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { Searchbar } from 'react-native-paper';
 import { Avatar, ListItem } from 'react-native-elements';
+import { StandardContainer } from '../../components/Containers';
+import NavigationHeader from '../../components/Headers/NavigationHeader';
 
 export interface IFriend {
   id: number;
@@ -60,17 +62,26 @@ const Friends: FC = () => {
   const onChangeSearch = (query: string) => setSearchQuery(query);
 
   return (
-    <FriendsContainer>
+    <StandardContainer>
       <View style={styles.overlayContainer}>
-        <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity
-            style={{ marginLeft: 20, marginTop: 20 }}
-            onPress={() => {
-              navigation.openDrawer();
+        <NavigationHeader goBack />
+        <View
+          style={{
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 20,
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: 'CoinyRegular',
+              fontSize: 48,
+              color: theme.dark.hex,
             }}
           >
-            <FontAwesome5 name="bars" size={24} color={theme.dark.hex} />
-          </TouchableOpacity>
+            Friends
+          </Text>
         </View>
         <View style={styles.friendsContainer}>
           <Searchbar
@@ -122,7 +133,7 @@ const Friends: FC = () => {
           </View>
         </View>
       </View>
-    </FriendsContainer>
+    </StandardContainer>
   );
 };
 export default Friends;

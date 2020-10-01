@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 
-import CategoriesContainer from './CategoriesContainer';
 import styles from './styles';
 import theme from '../../constants/theme';
 import {
@@ -12,6 +11,7 @@ import {
 import { useLazyQuery } from '@apollo/react-hooks';
 import NavigationHeader from '../../components/Headers/NavigationHeader';
 import { CategoriesList } from '../../components/Lists';
+import { StandardContainer } from '../../components/Containers';
 
 const Categories: FC = () => {
   const [] = useState('');
@@ -34,7 +34,7 @@ const Categories: FC = () => {
   }, []);
 
   return (
-    <CategoriesContainer>
+    <StandardContainer>
       <View style={styles.overlayContainer}>
         <NavigationHeader goBack />
         <View
@@ -57,7 +57,7 @@ const Categories: FC = () => {
         </View>
         <CategoriesList list={categories} loading={isLoading} />
       </View>
-    </CategoriesContainer>
+    </StandardContainer>
   );
 };
 export default Categories;

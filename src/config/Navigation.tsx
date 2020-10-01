@@ -32,6 +32,7 @@ import { Friend } from '../screens/Friend';
 import { Companies } from '../screens/Companies';
 import { Categories } from '../screens/Categories';
 import { ProductTypes } from '../screens/ProductTypes';
+import { MyLikes } from '../screens/MyLikes';
 
 const Drawer = createDrawerNavigator();
 const AuthStack = createStackNavigator();
@@ -39,6 +40,7 @@ const AuthStack = createStackNavigator();
 const ClueyStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
 const FriendsStack = createStackNavigator();
+const MyLikesStack = createStackNavigator();
 
 const ProfileStackScreen = () => (
   <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
@@ -46,6 +48,11 @@ const ProfileStackScreen = () => (
   </ProfileStack.Navigator>
 );
 
+const MyLikesStackScreen = () => (
+  <MyLikesStack.Navigator screenOptions={{ headerShown: false }}>
+    <MyLikesStack.Screen name="MyLikes" component={MyLikes} />
+  </MyLikesStack.Navigator>
+);
 const FriendsStackScreen = () => (
   <FriendsStack.Navigator screenOptions={{ headerShown: false }}>
     <FriendsStack.Screen name="Friends" component={Friends} />
@@ -57,6 +64,7 @@ const DrawerScreen = () => (
     <Drawer.Screen name="Search" component={ClueyStackScreen} />
     <Drawer.Screen name="Profile" component={ProfileStackScreen} />
     <Drawer.Screen name="Friends" component={FriendsStackScreen} />
+    <Drawer.Screen name="MyLikes" component={MyLikesStackScreen} />
   </Drawer.Navigator>
 );
 

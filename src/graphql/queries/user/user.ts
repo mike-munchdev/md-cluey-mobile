@@ -3,7 +3,13 @@ import { ApolloError } from 'apollo-client';
 import { AlertHelper } from '../../../utils/alert';
 import Bugsnag from '@bugsnag/expo';
 import { IUser } from '../../../interfaces';
+import { companyStructure } from '../company/companies';
 
+export const responseStructure = `{  
+    id
+    company ${companyStructure}
+    response  
+}`;
 export const userStructure = `{
     id
     email
@@ -20,22 +26,20 @@ export const userStructure = `{
     createdAt
     isProfilePublic
     isActive
-    responses {
-      id
-      company {
-        id
-      }
-      response
-    }
+    companyResponses ${responseStructure}
 }`;
 
-export const responseStructure = `{  
-    id
-    company {
-      id
+export const GET_USER_COMPANY_RESPONSES = gql`
+  query GetUserCompanyResponses($userId: String!) {
+    getUserCompanyResponses(userId: $userId) {
+      ok
+      companyResponses ${responseStructure}
+      error {        
+        message
+      }
     }
-    response  
-}`;
+  }
+`;
 
 export const GET_USER_BY_ID = gql`
   query GetUserById($userId: String!) {
@@ -137,7 +141,7 @@ export const UPDATE_COMPANY_RESPONSE_FOR_USER = gql`
   mutation UpdateCompanyResponseForUser($input: UserCompanyResponseInput!) {
     updateCompanyResponseForUser(input: $input) {
       ok
-      response ${responseStructure}
+      companyResponse ${responseStructure}
       error {
         message
       }
@@ -309,11 +313,11 @@ export const updateCompanyResponseForUserCompleted = (
   setCompanyResponse: Function,
   setLoading: Function
 ) => async ({ updateCompanyResponseForUser }) => {
-  const { ok, response, error } = updateCompanyResponseForUser;
+  const { ok, companyResponse, error } = updateCompanyResponseForUser;
 
   setLoading(false);
   if (ok) {
-    setCompanyResponse(response);
+    setCompanyResponse(companyResponse);
   } else {
     AlertHelper.show('error', 'Error', error.message);
   }
@@ -340,6 +344,33 @@ export const updateUserPasswordCompleted = (
     setLoading(false);
   } else {
     setLoading(false);
+    AlertHelper.show('error', 'Error', error.message);
+  }
+};
+export const getUserCompanyResponsesError = (reset: Function) => (
+  e: ApolloError
+) => {
+  reset();
+  AlertHelper.show(
+    'error',
+    'Error',
+    'An error occurred and has been logged. Please try again.'
+  );
+};
+
+export const getUserCompanyResponsesCompleted = (
+  reset: Function,
+  setResponses: Function,
+  setFilteredList: Function
+) => async ({ getUserCompanyResponses }) => {
+  const { ok, companyResponses, error } = getUserCompanyResponses;
+
+  if (ok) {
+    setResponses(companyResponses);
+    setFilteredList(companyResponses);
+    reset();
+  } else {
+    reset();
     AlertHelper.show('error', 'Error', error.message);
   }
 };

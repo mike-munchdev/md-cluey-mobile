@@ -1,11 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
-import { FlatList, View, Text, TouchableOpacity } from 'react-native';
+import { View, Text } from 'react-native';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { Avatar, ListItem } from 'react-native-elements';
 
-import CompaniesContainer from './CompaniesContainer';
 import styles from './styles';
 import theme from '../../constants/theme';
 import {
@@ -14,9 +11,9 @@ import {
   GET_COMPANIES_BY_PRODUCT_TYPE,
 } from '../../graphql/queries/company/companies';
 import { useLazyQuery } from '@apollo/react-hooks';
-import { ActivityIndicator, Searchbar } from 'react-native-paper';
 import NavigationHeader from '../../components/Headers/NavigationHeader';
 import { CompaniesList } from '../../components/Lists';
+import { StandardContainer } from '../../components/Containers';
 
 const Companies: FC = () => {
   const route = useRoute();
@@ -24,12 +21,11 @@ const Companies: FC = () => {
 
   const [companies, setCompanies] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [categoryId, setCategoryId] = useState(
+  const [, setIsLoading] = useState(false);
+  const [categoryId] = useState(
     route.params.categoryId ? route.params.categoryId : null
   );
 
-  const navigation = useNavigation();
   const [getCompaniesByProductType] = useLazyQuery(
     GET_COMPANIES_BY_PRODUCT_TYPE,
     {
@@ -71,7 +67,7 @@ const Companies: FC = () => {
   const onChangeSearch = (query: string) => setSearchQuery(query);
 
   return (
-    <CompaniesContainer>
+    <StandardContainer>
       <View style={styles.overlayContainer}>
         <NavigationHeader goBack />
         <View
@@ -98,7 +94,7 @@ const Companies: FC = () => {
           onChangeSearch={onChangeSearch}
         />
       </View>
-    </CompaniesContainer>
+    </StandardContainer>
   );
 };
 export default Companies;
