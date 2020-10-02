@@ -31,7 +31,7 @@ const ProductTypesList: FC<IProductTypesListProps> = ({ list, loading }) => {
                 <NavListItem
                   item={item}
                   routeName="Companies"
-                  params={{ categoryId: item.id }}
+                  params={{ category: item }}
                   title={item.name}
                   showLogo={false}
                   logoUrl=""

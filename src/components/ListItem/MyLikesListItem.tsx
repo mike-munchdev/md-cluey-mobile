@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useContext, useState } from 'react';
+import React, { FC, Fragment, useContext, useEffect, useState } from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 import { Avatar, ListItem } from 'react-native-elements';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -19,10 +19,23 @@ export interface IMyLikesListItemProps {
 }
 
 const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item, title }) => {
-  const { user } = useContext(AppContext);
+  const { user, setUser } = useContext(AppContext);
   const navigation = useNavigation();
   const [companyResponse, setCompanyResponse] = useState(item);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    console.log('MyLikesListItem useEffect');
+    if (companyResponse) {
+      const responses = [
+        ...user?.companyResponses.filter((r) => r.id !== companyResponse.id),
+        companyResponse,
+      ];
+      user.companyResponses = responses;
+
+      setUser(user);
+    }
+  }, [companyResponse, user]);
 
   const [updateCompanyResponseForUser] = useMutation(
     UPDATE_COMPANY_RESPONSE_FOR_USER,
