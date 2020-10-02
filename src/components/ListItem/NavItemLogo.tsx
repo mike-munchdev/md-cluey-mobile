@@ -7,9 +7,10 @@ import styles from './styles';
 
 export interface INavItemLogoProps {
   logoUri: string;
+  rounded: boolean;
 }
 
-const NavItemLogo: FC<INavItemLogoProps> = ({ logoUri }) => {
+const NavItemLogo: FC<INavItemLogoProps> = ({ logoUri, rounded }) => {
   const [extension, setExtension] = useState<string>('');
 
   useEffect(() => {
@@ -26,7 +27,8 @@ const NavItemLogo: FC<INavItemLogoProps> = ({ logoUri }) => {
     </Avatar>
   ) : (
     <Avatar
-      avatarStyle={{ resizeMode: 'contain', width: '100%' }}
+      rounded={rounded}
+      avatarStyle={rounded ? { width: '100%' } : { resizeMode: 'center' }}
       source={{
         uri: logoUri,
       }}

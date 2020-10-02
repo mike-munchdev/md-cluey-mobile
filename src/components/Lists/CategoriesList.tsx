@@ -23,6 +23,7 @@ const CategoriesList: FC<ICategoriesListProps> = ({ list, loading }) => {
         renderItem={({ item }) => {
           return (
             <NavListItem
+              rounded={true}
               item={item}
               routeName="ProductTypes"
               params={{ categoryId: item.id }}
@@ -32,7 +33,7 @@ const CategoriesList: FC<ICategoriesListProps> = ({ list, loading }) => {
                 item.logoUrl
                   ? `${
                       Constants.manifest.extra.appVariables[String(NODE_ENV)]
-                        .categoriesLogoUrlPrefix
+                        .categoryImageUrlPrefix
                     }${item.logoUrl}`
                   : ''
               }

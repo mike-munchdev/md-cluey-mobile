@@ -1,9 +1,9 @@
-import React, { useContext, FC, useState } from 'react';
+import React, { useContext, FC, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 import * as Animatable from 'react-native-animatable';
 
-import { useNavigation } from '@react-navigation/native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import { useLazyQuery } from '@apollo/react-hooks';
 
 import { Formik } from 'formik';
@@ -31,6 +31,8 @@ import {
   facebookAuthentication,
   googleAuthentication,
 } from '../../utils/socialAuth';
+import { StandardContainer } from '../../components/Containers';
+import Bugsnag from '@bugsnag/expo';
 
 const SignIn: FC = () => {
   const [signInLoading, setSignInLoading] = useState(false);
@@ -60,12 +62,18 @@ const SignIn: FC = () => {
           googleAuthToken: token,
         },
       });
-    } catch ({ message }) {
-      AlertHelper.show('error', 'Google Login Error', message);
+    } catch (error) {
+      Bugsnag.notify(error);
+      AlertHelper.show(
+        'error',
+        'Google Login Error',
+        'Error logging into Google'
+      );
     }
   };
   const facebookSignin = async () => {
     try {
+      AlertHelper.show('info', 'testing', 'facebook testing');
       const { data, token } = await facebookAuthentication();
 
       const { id, email, first_name, last_name } = data;
@@ -77,13 +85,18 @@ const SignIn: FC = () => {
           facebookAuthToken: token,
         },
       });
-    } catch ({ message }) {
-      AlertHelper.show('error', 'Facebook Login Error', message);
+    } catch (error) {
+      Bugsnag.notify(error);
+      AlertHelper.show(
+        'error',
+        'Facebook Login Error',
+        'Error logging into Facebook'
+      );
     }
   };
 
   return (
-    <SignInContainer>
+    <StandardContainer>
       <View style={styles.overlayContainer}>
         <View style={styles.top}>
           <View
@@ -94,9 +107,9 @@ const SignIn: FC = () => {
               flexDirection: 'row',
             }}
           >
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => {
-                navigation.goBack();
+                navigation.dispatch(StackActions.replace('GetStarted'));
               }}
               style={{ position: 'absolute', left: 15 }}
             >
@@ -105,7 +118,7 @@ const SignIn: FC = () => {
                 size={24}
                 color={theme.dark.hex}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <Animatable.Text
               animation="fadeIn"
               style={{
@@ -168,7 +181,7 @@ const SignIn: FC = () => {
                     buttonStyles={{ marginTop: 20 }}
                     isLoading={signInLoading}
                   />
-                  <TextButton
+                  {/* <TextButton
                     handlePress={() => navigation.navigate('ForgotPassword')}
                     title="Forgot your Password?"
                     textStyles={{
@@ -177,7 +190,7 @@ const SignIn: FC = () => {
                       fontWeight: 'bold',
                     }}
                     buttonStyles={{ marginTop: 15 }}
-                  />
+                  /> */}
                   <TextButton
                     handlePress={() => navigation.navigate('ActivateAccount')}
                     title="Activate Your Account"
@@ -194,7 +207,11 @@ const SignIn: FC = () => {
                 </View>
                 <View style={styles.buttonsView}>
                   <ActionButton
-                    handlePress={facebookSignin}
+                    handlePress={() => {
+                      (async () => {
+                        await facebookSignin();
+                      })();
+                    }}
                     buttonStyles={{ marginTop: 10 }}
                     textColor={theme.buttonText}
                     color={theme.facebookBlue}
@@ -204,7 +221,11 @@ const SignIn: FC = () => {
                     }
                   />
                   <ActionButton
-                    handlePress={googleSignin}
+                    handlePress={() => {
+                      (async () => {
+                        await googleSignin();
+                      })();
+                    }}
                     buttonStyles={{ marginTop: 10 }}
                     textColor={theme.buttonText}
                     color={theme.googleBlue}
@@ -219,7 +240,7 @@ const SignIn: FC = () => {
           }}
         </Formik>
       </View>
-    </SignInContainer>
+    </StandardContainer>
   );
 };
 export default SignIn;

@@ -34,7 +34,6 @@ import { StandardContainer } from '../../components/Containers';
 import { NODE_ENV } from '../../hooks/serverInfo';
 
 const Company: FC = () => {
-  const navigation = useNavigation();
   const route = useRoute();
   const [company, setCompany] = useState<ICompany | undefined>();
 
@@ -50,15 +49,6 @@ const Company: FC = () => {
     onCompleted: getCompanyByIdCompleted(setCompany, setIsLoading),
   });
 
-  useEffect(() => {
-    console.log('company', company);
-    console.log(
-      `${
-        Constants.manifest.extra.appVariables[String(NODE_ENV)]
-          .brandLogoUrlPrefix
-      }${company?.brandLogoUrl}`
-    );
-  }, [company]);
   useEffect(() => {
     (async () => {
       if (companyId) {
@@ -95,17 +85,26 @@ const Company: FC = () => {
                       }${company?.brandLogoUrl}`,
                     }}
                     style={{
-                      width: '100%',
+                      width: 200,
                       height: 200,
                       resizeMode: 'contain',
                     }}
                     PlaceholderContent={
-                      <ActivityIndicator color={theme.dark.hex} />
+                      <ActivityIndicator color={theme.dark.hex} size="large" />
                     }
                   />
                 ) : (
                   <View>
-                    <Text>{company?.name}</Text>
+                    <Text
+                      adjustsFontSizeToFit={true}
+                      style={{
+                        fontFamily: 'CoinyRegular',
+                        fontSize: 42,
+                        color: theme.dark.hex,
+                      }}
+                    >
+                      {company?.name}
+                    </Text>
                   </View>
                 )}
               </View>

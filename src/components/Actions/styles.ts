@@ -9,4 +9,10 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  likesButton: { flexDirection: 'row', alignItems: 'center' },
+  likesInfoText: {
+    marginLeft: 10,
+    fontFamily: 'MontserratMedium',
+    fontSize: 14,
+  },
 });

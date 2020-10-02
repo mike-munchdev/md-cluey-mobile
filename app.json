@@ -1,10 +1,13 @@
 {
   "expo": {
-    "name": "cluey-mobile",
+    "name": "Cluey",
     "slug": "cluey-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/Icon-1024.png",
+    "facebookScheme": "fb302449431038089",
+    "facebookAppId": "302449431038089",
+    "facebookDisplayName": "MD-Cluey",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -56,9 +59,8 @@
           "apiServerUrl": "localhost:4004",
           "httpProtocol": "http",
           "wsProtocol": "ws",
-          "categoryImageUrlPrefix": "http://md-cluey-test.herokuapp.com/categories/",
-          "brandLogoUrlPrefix": "https://localhost:4004/logos/",
-          "categoriesLogoUrlPrefix": "https://localhost:4004/categories/"
+          "categoryImageUrlPrefix": "https://md-cluey-test.herokuapp.com/categories/",
+          "brandLogoUrlPrefix": "https://md-cluey-test.herokuapp.com/logos/"
         }
       },
       "uplead": {

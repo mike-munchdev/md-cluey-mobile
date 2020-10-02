@@ -1,11 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
-import { FlatList, View, Text, TouchableOpacity } from 'react-native';
+import { View, Text } from 'react-native';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { Avatar, ListItem } from 'react-native-elements';
 
-import ProductTypesContainer from './ProductTypesContainer';
 import styles from './styles';
 import theme from '../../constants/theme';
 import {
@@ -14,25 +11,21 @@ import {
   GET_PRODUCT_TYPES_BY_CATEGORY,
 } from '../../graphql/queries/productTypes/productTypes';
 import { useLazyQuery } from '@apollo/react-hooks';
-import { ActivityIndicator, Searchbar } from 'react-native-paper';
 import NavigationHeader from '../../components/Headers/NavigationHeader';
-import { RoundedIconButton } from '../../components/Buttons';
-import { NavListItem } from '../../components/ListItem';
 import { ProductTypesList } from '../../components/Lists';
 import { StandardContainer } from '../../components/Containers';
 
 const ProductTypes: FC = () => {
   const route = useRoute();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [] = useState('');
 
   const [productTypes, setProductTypes] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [categoryId, setCategoryId] = useState(
+  const [categoryId] = useState(
     route.params.categoryId ? route.params.categoryId : null
   );
 
-  const navigation = useNavigation();
   const [getProductTypesByCategory] = useLazyQuery(
     GET_PRODUCT_TYPES_BY_CATEGORY,
     {

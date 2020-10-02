@@ -40,9 +40,9 @@ const CompaniesList: FC<ICompaniesListProps> = ({
             data={list}
             keyExtractor={(item, index) => item.id.toString()}
             renderItem={({ item }) => {
-              console.log('item.brandLogoUrl', item.brandLogoUrl);
               return (
                 <NavListItem
+                  rounded={false}
                   item={item}
                   routeName="Company"
                   params={{ companyId: item.id }}

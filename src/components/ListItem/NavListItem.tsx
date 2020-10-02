@@ -14,6 +14,7 @@ export interface INavListItemProps {
   subTitle?: string;
   logoUrl: string;
   showLogo: boolean;
+  rounded: boolean;
 }
 
 const NavListItem: FC<INavListItemProps> = ({
@@ -24,6 +25,7 @@ const NavListItem: FC<INavListItemProps> = ({
   subTitle,
   logoUrl,
   showLogo,
+  rounded,
 }) => {
   const navigation = useNavigation();
 
@@ -32,25 +34,30 @@ const NavListItem: FC<INavListItemProps> = ({
       onPress={() => navigation.navigate(routeName, params)}
       key={item.id}
       bottomDivider
+      containerStyle={{ backgroundColor: theme.dark.rgba(0.9) }}
       style={{
         marginBottom: 5,
-        backgroundColor: theme.light,
         width: '100%',
       }}
     >
-      {showLogo ? <NavItemLogo logoUri={logoUrl} /> : null}
+      {showLogo ? <NavItemLogo logoUri={logoUrl} rounded={rounded} /> : null}
       <ListItem.Content>
         <ListItem.Title>
           <Text
             style={{
               fontFamily: 'MontserratMedium',
               fontSize: 18,
+              color: theme.white.hex,
             }}
           >
             {title || ''}
           </Text>
         </ListItem.Title>
-        {subTitle && <ListItem.Subtitle>{subTitle}</ListItem.Subtitle>}
+        {subTitle && (
+          <ListItem.Subtitle style={{ color: theme.white.hex }}>
+            {subTitle}
+          </ListItem.Subtitle>
+        )}
       </ListItem.Content>
     </ListItem>
   );

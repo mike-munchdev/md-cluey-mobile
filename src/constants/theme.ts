@@ -23,7 +23,6 @@ export default {
     hex: colors.green.dark,
     rgba: (alpha: number) => {
       return hex2rgba(colors.green.dark, alpha);
-      // return `rgba(0,31,27,${alpha})`;
     },
   },
   light: colors.green.light,

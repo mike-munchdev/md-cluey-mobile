@@ -1,5 +1,5 @@
 import React, { FC, useState, useContext, Fragment } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { FontAwesome5 } from '@expo/vector-icons';
 
@@ -124,292 +124,303 @@ const Profile: FC = () => {
             <FontAwesome5 name="bars" size={24} color={theme.dark.hex} />
           </TouchableOpacity>
         </View>
-        <List.Section style={{ width: '100%' }}>
-          <List.Subheader style={{ fontSize: 16, textTransform: 'uppercase' }}>
-            account information
-          </List.Subheader>
-          <ListItem
-            style={{
-              marginHorizontal: 10,
-            }}
-            bottomDivider
-            onPress={() => {
-              setFieldProps({
-                fieldName: 'firstName',
-                fieldLabel: 'First Name',
-                fieldValue: user?.firstName || '',
-                secureTextEntry: false,
-                isValid: (value: string) => {
-                  return value.length > 0;
-                },
-                captionText: [],
-                placeholder: 'First Name',
-                maskType: 'none',
-                options: [],
-              });
-              setIsStringDialogVisible(true);
-            }}
-          >
-            <ListItem.Content>
-              <ListItem.Title>{user?.firstName}</ListItem.Title>
-              <ListItem.Subtitle>First Name</ListItem.Subtitle>
-            </ListItem.Content>
-            <ListItem.Chevron />
-          </ListItem>
-          <ListItem
-            style={{
-              marginHorizontal: 10,
-            }}
-            bottomDivider
-            onPress={() => {
-              setFieldProps({
-                fieldName: 'lastName',
-                fieldLabel: 'Last Name',
-                fieldValue: user ? user.lastName : '',
-                secureTextEntry: false,
-                isValid: (value) => {
-                  return value.length > 0;
-                },
-                captionText: [],
-                placeholder: 'Last Name',
-                maskType: 'none',
-                options: [],
-              });
+        <ScrollView>
+          <List.Section style={{ width: '100%' }}>
+            <List.Subheader
+              style={{ fontSize: 16, textTransform: 'uppercase' }}
+            >
+              account information
+            </List.Subheader>
+            <ListItem
+              style={{
+                marginHorizontal: 10,
+              }}
+              bottomDivider
+              onPress={() => {
+                setFieldProps({
+                  fieldName: 'firstName',
+                  fieldLabel: 'First Name',
+                  fieldValue: user?.firstName || '',
+                  secureTextEntry: false,
+                  isValid: (value: string) => {
+                    return value.length > 0;
+                  },
+                  captionText: [],
+                  placeholder: 'First Name',
+                  maskType: 'none',
+                  options: [],
+                });
+                setIsStringDialogVisible(true);
+              }}
+            >
+              <ListItem.Content>
+                <ListItem.Title>{user?.firstName}</ListItem.Title>
+                <ListItem.Subtitle>First Name</ListItem.Subtitle>
+              </ListItem.Content>
+              <ListItem.Chevron />
+            </ListItem>
+            <ListItem
+              style={{
+                marginHorizontal: 10,
+              }}
+              bottomDivider
+              onPress={() => {
+                setFieldProps({
+                  fieldName: 'lastName',
+                  fieldLabel: 'Last Name',
+                  fieldValue: user ? user.lastName : '',
+                  secureTextEntry: false,
+                  isValid: (value) => {
+                    return value.length > 0;
+                  },
+                  captionText: [],
+                  placeholder: 'Last Name',
+                  maskType: 'none',
+                  options: [],
+                });
 
-              setIsStringDialogVisible(true);
-            }}
-          >
-            <ListItem.Content>
-              <ListItem.Title>{user?.lastName}</ListItem.Title>
-              <ListItem.Subtitle>Last Name</ListItem.Subtitle>
-            </ListItem.Content>
-            <ListItem.Chevron />
-          </ListItem>
-          {user?.facebookId || user?.googleId ? null : (
-            <Fragment>
-              <ListItem
-                style={{
-                  marginHorizontal: 10,
-                }}
-                bottomDivider
-                onPress={() => {
-                  setFieldProps({
-                    fieldName: 'email',
-                    fieldLabel: 'E-mail',
-                    fieldValue: user ? user.email : '',
-                    secureTextEntry: false,
-                    isValid: (value: string) => {
-                      return value.length > 0 && EmailValidator.validate(value);
-                    },
-                    captionText: [],
-                    placeholder: 'E-mail',
-                    maskType: 'none',
-                    options: [],
-                  });
+                setIsStringDialogVisible(true);
+              }}
+            >
+              <ListItem.Content>
+                <ListItem.Title>{user?.lastName}</ListItem.Title>
+                <ListItem.Subtitle>Last Name</ListItem.Subtitle>
+              </ListItem.Content>
+              <ListItem.Chevron />
+            </ListItem>
+            {user?.facebookId || user?.googleId ? null : (
+              <Fragment>
+                <ListItem
+                  style={{
+                    marginHorizontal: 10,
+                  }}
+                  bottomDivider
+                  onPress={() => {
+                    setFieldProps({
+                      fieldName: 'email',
+                      fieldLabel: 'E-mail',
+                      fieldValue: user ? user.email : '',
+                      secureTextEntry: false,
+                      isValid: (value: string) => {
+                        return (
+                          value.length > 0 && EmailValidator.validate(value)
+                        );
+                      },
+                      captionText: [],
+                      placeholder: 'E-mail',
+                      maskType: 'none',
+                      options: [],
+                    });
 
-                  setIsStringDialogVisible(true);
-                }}
-              >
-                <ListItem.Content>
-                  <ListItem.Title>{user?.email}</ListItem.Title>
-                  <ListItem.Subtitle>Email</ListItem.Subtitle>
-                </ListItem.Content>
-                <ListItem.Chevron />
-              </ListItem>
+                    setIsStringDialogVisible(true);
+                  }}
+                >
+                  <ListItem.Content>
+                    <ListItem.Title>{user?.email}</ListItem.Title>
+                    <ListItem.Subtitle>Email</ListItem.Subtitle>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
 
-              <ListItem
-                style={{
-                  marginHorizontal: 10,
-                }}
-                bottomDivider
-                onPress={() => {
-                  setFieldProps({
-                    fieldName: 'password',
-                    fieldLabel: 'Password',
-                    fieldValue: '************',
-                    secureTextEntry: true,
-                    isValid: (value: string) => {
-                      return value.length > 0 && schema.validate(value);
-                    },
-                    captionText: passwordRequirments,
-                    placeholder: 'Password',
-                    maskType: 'none',
-                    options: [],
-                  });
+                <ListItem
+                  style={{
+                    marginHorizontal: 10,
+                  }}
+                  bottomDivider
+                  onPress={() => {
+                    setFieldProps({
+                      fieldName: 'password',
+                      fieldLabel: 'Password',
+                      fieldValue: '************',
+                      secureTextEntry: true,
+                      isValid: (value: string) => {
+                        return value.length > 0 && schema.validate(value);
+                      },
+                      captionText: passwordRequirments,
+                      placeholder: 'Password',
+                      maskType: 'none',
+                      options: [],
+                    });
 
-                  setIsStringDialogVisible(true);
-                }}
-              >
-                <ListItem.Content>
-                  <ListItem.Title>************</ListItem.Title>
-                  <ListItem.Subtitle>Password</ListItem.Subtitle>
-                </ListItem.Content>
-                <ListItem.Chevron />
-              </ListItem>
-            </Fragment>
-          )}
-        </List.Section>
-        <List.Section style={{ width: '100%' }}>
-          <List.Subheader style={{ fontSize: 16, textTransform: 'uppercase' }}>
-            Cluey Consumer profile
-          </List.Subheader>
-          <ListItem
-            style={{
-              marginHorizontal: 10,
-            }}
-            bottomDivider
-            onPress={() => {
-              setFieldProps({
-                fieldName: 'dob',
-                fieldLabel: 'Age',
-                fieldValue: user?.dob,
-                secureTextEntry: false,
-                isValid: (value: string) => {
-                  return value.length > 0 && isDate(new Date(value));
-                },
-                captionText: [],
-                placeholder: 'MM/DD/YYYY',
-                maskType: 'date',
-                options: [],
-              });
-              setIsStringDialogVisible(true);
-            }}
-          >
-            <ListItem.Content>
-              <ListItem.Title>
-                {user ? moment(user.dob).format('MM/DD/YYYY') : null}
-              </ListItem.Title>
-              <ListItem.Subtitle>Age</ListItem.Subtitle>
-            </ListItem.Content>
-            <ListItem.Chevron />
-          </ListItem>
-          <ListItem
-            style={{
-              marginHorizontal: 10,
-            }}
-            bottomDivider
-            onPress={() => {
-              setFieldProps({
-                fieldName: 'gender',
-                fieldLabel: 'Gender',
-                fieldValue: user ? user.gender : '',
-                secureTextEntry: false,
-                isValid: (value) => {
-                  return value.length > 0;
-                },
-                captionText: [],
-                placeholder: 'Gender',
-                options: genderOptions,
-              });
+                    setIsStringDialogVisible(true);
+                  }}
+                >
+                  <ListItem.Content>
+                    <ListItem.Title>************</ListItem.Title>
+                    <ListItem.Subtitle>Password</ListItem.Subtitle>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+              </Fragment>
+            )}
+          </List.Section>
+          <List.Section style={{ width: '100%' }}>
+            <List.Subheader
+              style={{ fontSize: 16, textTransform: 'uppercase' }}
+            >
+              Cluey Consumer profile
+            </List.Subheader>
+            <ListItem
+              style={{
+                marginHorizontal: 10,
+              }}
+              bottomDivider
+              onPress={() => {
+                setFieldProps({
+                  fieldName: 'dob',
+                  fieldLabel: 'Age',
+                  fieldValue: user?.dob,
+                  secureTextEntry: false,
+                  isValid: (value: string) => {
+                    return value.length > 0 && isDate(new Date(value));
+                  },
+                  captionText: [],
+                  placeholder: 'MM/DD/YYYY',
+                  maskType: 'date',
+                  options: [],
+                });
+                setIsStringDialogVisible(true);
+              }}
+            >
+              <ListItem.Content>
+                <ListItem.Title>
+                  {user ? moment(user.dob).format('MM/DD/YYYY') : null}
+                </ListItem.Title>
+                <ListItem.Subtitle>Age</ListItem.Subtitle>
+              </ListItem.Content>
+              <ListItem.Chevron />
+            </ListItem>
+            <ListItem
+              style={{
+                marginHorizontal: 10,
+              }}
+              bottomDivider
+              onPress={() => {
+                setFieldProps({
+                  fieldName: 'gender',
+                  fieldLabel: 'Gender',
+                  fieldValue: user ? user.gender : '',
+                  secureTextEntry: false,
+                  isValid: (value) => {
+                    return value.length > 0;
+                  },
+                  captionText: [],
+                  placeholder: 'Gender',
+                  options: genderOptions,
+                });
 
-              setIsOptionsDialogVisible(true);
-            }}
-          >
-            <ListItem.Content>
-              <ListItem.Title>
-                {user ? capitalize(user.gender) : ''}
-              </ListItem.Title>
-              <ListItem.Subtitle>Gender</ListItem.Subtitle>
-            </ListItem.Content>
-            <ListItem.Chevron />
-          </ListItem>
-          <ListItem
-            style={{
-              marginHorizontal: 10,
-            }}
-            bottomDivider
-            onPress={() => {
-              setFieldProps({
-                fieldName: 'city',
-                fieldLabel: 'City',
-                fieldValue: user ? user.city : '',
-                secureTextEntry: false,
-                isValid: (value) => {
-                  return value.length > 0;
-                },
-                captionText: [],
-                placeholder: 'City',
-                maskType: 'none',
-                options: [],
-              });
+                setIsOptionsDialogVisible(true);
+              }}
+            >
+              <ListItem.Content>
+                <ListItem.Title>
+                  {user ? capitalize(user.gender) : ''}
+                </ListItem.Title>
+                <ListItem.Subtitle>Gender</ListItem.Subtitle>
+              </ListItem.Content>
+              <ListItem.Chevron />
+            </ListItem>
+            <ListItem
+              style={{
+                marginHorizontal: 10,
+              }}
+              bottomDivider
+              onPress={() => {
+                setFieldProps({
+                  fieldName: 'city',
+                  fieldLabel: 'City',
+                  fieldValue: user ? user.city : '',
+                  secureTextEntry: false,
+                  isValid: (value) => {
+                    return value.length > 0;
+                  },
+                  captionText: [],
+                  placeholder: 'City',
+                  maskType: 'none',
+                  options: [],
+                });
 
-              setIsStringDialogVisible(true);
-            }}
-          >
-            <ListItem.Content>
-              <ListItem.Title>{user?.city}</ListItem.Title>
-              <ListItem.Subtitle>City</ListItem.Subtitle>
-            </ListItem.Content>
-            <ListItem.Chevron />
-          </ListItem>
-          <ListItem
-            style={{
-              marginHorizontal: 10,
-            }}
-            bottomDivider
-            onPress={() => {
-              setFieldProps({
-                fieldName: 'state',
-                fieldLabel: 'State',
-                fieldValue: user ? user.state : '',
-                secureTextEntry: false,
-                isValid: (value) => {
-                  return value.length > 0;
-                },
-                captionText: [],
-                placeholder: 'State',
-                options: stateOptions,
-              });
+                setIsStringDialogVisible(true);
+              }}
+            >
+              <ListItem.Content>
+                <ListItem.Title>{user?.city}</ListItem.Title>
+                <ListItem.Subtitle>City</ListItem.Subtitle>
+              </ListItem.Content>
+              <ListItem.Chevron />
+            </ListItem>
+            <ListItem
+              style={{
+                marginHorizontal: 10,
+              }}
+              bottomDivider
+              onPress={() => {
+                setFieldProps({
+                  fieldName: 'state',
+                  fieldLabel: 'State',
+                  fieldValue: user ? user.state : '',
+                  secureTextEntry: false,
+                  isValid: (value) => {
+                    return value.length > 0;
+                  },
+                  captionText: [],
+                  placeholder: 'State',
+                  options: stateOptions,
+                });
 
-              setIsOptionsDialogVisible(true);
-            }}
-          >
-            <ListItem.Content>
-              <ListItem.Title>
-                {user ? user.state.toUpperCase() : ''}
-              </ListItem.Title>
-              <ListItem.Subtitle>State</ListItem.Subtitle>
-            </ListItem.Content>
-            <ListItem.Chevron />
-          </ListItem>
-        </List.Section>
-        <List.Section style={{ width: '100%' }}>
-          <List.Subheader style={{ fontSize: 16, textTransform: 'uppercase' }}>
-            Logout
-          </List.Subheader>
-          <ListItem
-            style={{
-              marginHorizontal: 10,
-            }}
-            bottomDivider
-            onPress={() => {
-              signOut(navigation);
-            }}
-          >
-            <ListItem.Content>
-              <ListItem.Title>Logout</ListItem.Title>
-            </ListItem.Content>
-            <ListItem.Chevron />
-          </ListItem>
-        </List.Section>
-        <List.Section>
-          <ListItem
-            containerStyle={{
-              backgroundColor: theme.buttonTransparentBackground,
-            }}
-          >
-            <Paragraph style={{ color: theme.dark.hex }}>
-              “Why am I being asked for this information? When Cluey users
-              choose to make their likes and dislikes public to companies, Cluey
-              uses the information provided in this section (age, gender, and
-              region) to send on your behalf to companies so they have an
-              anonymized demographic profile behind the likes and dislikes data.
-              This allows your message to companies and the data they receive to
-              be more meaningful. We will never share any account information
-              such as usernames or emails to companies or any third parties.”
-            </Paragraph>
-          </ListItem>
-        </List.Section>
+                setIsOptionsDialogVisible(true);
+              }}
+            >
+              <ListItem.Content>
+                <ListItem.Title>
+                  {user ? user.state.toUpperCase() : ''}
+                </ListItem.Title>
+                <ListItem.Subtitle>State</ListItem.Subtitle>
+              </ListItem.Content>
+              <ListItem.Chevron />
+            </ListItem>
+          </List.Section>
+          <List.Section style={{ width: '100%' }}>
+            <List.Subheader
+              style={{ fontSize: 16, textTransform: 'uppercase' }}
+            >
+              Logout
+            </List.Subheader>
+            <ListItem
+              style={{
+                marginHorizontal: 10,
+              }}
+              bottomDivider
+              onPress={() => {
+                signOut(navigation);
+              }}
+            >
+              <ListItem.Content>
+                <ListItem.Title>Logout</ListItem.Title>
+              </ListItem.Content>
+              <ListItem.Chevron />
+            </ListItem>
+          </List.Section>
+          <List.Section>
+            <ListItem
+              containerStyle={{
+                backgroundColor: theme.buttonTransparentBackground,
+              }}
+            >
+              <Paragraph style={{ color: theme.dark.hex }}>
+                “Why am I being asked for this information? When Cluey users
+                choose to make their likes and dislikes public to companies,
+                Cluey uses the information provided in this section (age,
+                gender, and region) to send on your behalf to companies so they
+                have an anonymized demographic profile behind the likes and
+                dislikes data. This allows your message to companies and the
+                data they receive to be more meaningful. We will never share any
+                account information such as usernames or emails to companies or
+                any third parties.”
+              </Paragraph>
+            </ListItem>
+          </List.Section>
+        </ScrollView>
       </View>
       <EditStringValueModal
         isVisible={isStringDialogVisible}
