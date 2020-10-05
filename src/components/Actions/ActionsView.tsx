@@ -34,8 +34,8 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
 
   useEffect(() => {
     if (company) {
-      console.log('user, user', user);
-      console.log('user, company', company);
+      // console.log('user, user', user);
+      // console.log('user, company', company);
       const response = user?.companyResponses.find(
         (r) => r.company.id === company.id
       );
@@ -45,17 +45,29 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
   }, [company]);
 
   useEffect(() => {
-    console.log('ActionsView useEffect');
+    // console.log('ActionsView useEffect companyResponse', companyResponse);
     if (companyResponse) {
       const responses = [
         ...user?.companyResponses.filter((r) => r.id !== companyResponse.id),
         companyResponse,
       ];
-      user.companyResponses = responses;
-
-      setUser(user);
+      const updatedUser = { ...user };
+      updatedUser.companyResponses = responses;
+      // console.log('updateUser', updatedUser);
+      setUser(updatedUser);
     }
-  }, [companyResponse, user]);
+  }, [companyResponse]);
+
+  useEffect(() => {
+    // console.log('ActionsView: user changed', user);
+    // const getUserCompanyResponse = user?.companyResponses.find(
+    //   (r) => r.id === companyResponse?.id
+    // );
+    // if (getUserCompanyResponse) {
+    //   console.log('getUserCompanyResponse', getUserCompanyResponse);
+    //   setCompanyResponse(getUserCompanyResponse);
+    // }
+  }, [user]);
 
   const [updateCompanyResponseForUser] = useMutation(
     UPDATE_COMPANY_RESPONSE_FOR_USER,
@@ -111,7 +123,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
               >
                 <FontAwesome5
                   name="laugh"
-                  color={theme.willBuy}
+                  color={theme.dark.hex}
                   size={companyResponse?.response === 'will-buy' ? 34 : 22}
                 />
                 <Text
@@ -133,7 +145,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
               >
                 <Entypo
                   name="emoji-happy"
-                  color={theme.willBuy}
+                  color={theme.dark.hex}
                   size={
                     companyResponse?.response === 'will-buy-later' ? 30 : 22
                   }
@@ -152,18 +164,20 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
               <TouchableOpacity
                 style={styles.likesButton}
                 onPress={() => {
-                  updateResponse('will-not-buy');
+                  updateResponse('will-not-buy-later');
                 }}
               >
                 <Entypo
                   name="emoji-neutral"
-                  color={theme.willBuy}
-                  size={companyResponse?.response === 'will-not-buy' ? 30 : 22}
+                  color={theme.dark.hex}
+                  size={
+                    companyResponse?.response === 'will-not-buy-later' ? 30 : 22
+                  }
                 />
                 <Text
                   style={[
                     styles.likesInfoText,
-                    companyResponse?.response === 'will-not-buy'
+                    companyResponse?.response === 'will-not-buy-later'
                       ? { fontFamily: 'MontserratBold' }
                       : { fontFamily: 'MontserratMedium' },
                   ]}
@@ -174,20 +188,18 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
               <TouchableOpacity
                 style={styles.likesButton}
                 onPress={() => {
-                  updateResponse('will-not-buy-later');
+                  updateResponse('will-not-buy');
                 }}
               >
                 <Entypo
                   name="emoji-sad"
-                  color={theme.willBuy}
-                  size={
-                    companyResponse?.response === 'will-not-buy-later' ? 30 : 22
-                  }
+                  color={theme.dark.hex}
+                  size={companyResponse?.response === 'will-not-buy' ? 30 : 22}
                 />
                 <Text
                   style={[
                     styles.likesInfoText,
-                    companyResponse?.response === 'will-not-buy-later'
+                    companyResponse?.response === 'will-not-buy'
                       ? { fontFamily: 'MontserratBold' }
                       : { fontFamily: 'MontserratMedium' },
                   ]}
@@ -210,11 +222,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
               borderWidth: 2,
             }}
           >
-            <MaterialIcons
-              name="thumbs-up-down"
-              size={36}
-              color={theme.dark.hex}
-            />
+            <FontAwesome5 name="smile" size={36} color={theme.dark.hex} />
           </View>
         </Tooltip>
       </View>
@@ -224,9 +232,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
         borderColor={theme.dark.hex}
         size={64}
         borderWidth={2}
-        icon={
-          <FontAwesome name="newspaper-o" size={32} color={theme.dark.hex} />
-        }
+        icon={<FontAwesome name="search" size={32} color={theme.dark.hex} />}
         textStyle={{ fontSize: 14 }}
       />
       <RoundedIconButton

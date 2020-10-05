@@ -22,16 +22,36 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
   const [pacDemocratPercent, setPacDemocratPercent] = useState(0);
   const [pacRepublicanPercent, setPacRepublicanPercent] = useState(0);
 
+  const getPoliticalContributionsValue = (company: ICompany | undefined, property: string) : number => {
+    return company ? company?.parentCompanies.reduce((acc, curr) => {
+      return (
+        curr.politicalContributions?.reduce((p, c) => {
+          return p + c.[property];
+        }, 0) + acc
+      );
+    }, 0) : 0;
+  }
+  const updatePoliticalData = (company: ICompany | undefined) => {
+    if (company?.parentCompanies) {
+      const total = getPoliticalContributionsValue(company, 'total');
+      
+      const indivs = getPoliticalContributionsValue(company, 'indivs');
+      
+      const pacs = getPoliticalContributionsValue(company, 'pacs');
+      
+      const democrat = getPoliticalContributionsValue(company, 'democrats');
+      
+      const republican = getPoliticalContributionsValue(company, 'republicans');
+      
+      const thirdParty = getPoliticalContributionsValue(company, 'thirdParty');      
+
+    }
+  };
+  
   useEffect(() => {
-    const iRepublican = Math.floor(Math.random() * 100);
-    const iDemocrat = 100 - iRepublican;
-    const pRepublican = Math.floor(Math.random() * 100);
-    const pDemocrat = 100 - pRepublican;
-    setIndividualDemocratPercent(iDemocrat);
-    setIndividualRepublicanPercent(iRepublican);
-    setPacDemocratPercent(pDemocrat);
-    setPacRepublicanPercent(pRepublican);
-  }, []);
+    updatePoliticalData(company);
+  }, [company]);
+
   const handlePress = () => setExpanded(!expanded);
 
   return (

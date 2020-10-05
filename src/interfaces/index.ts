@@ -38,10 +38,35 @@ export interface IProduct {
   tags?: ITag[];
 }
 
+export interface ICategory {
+  name: string;
+  logoUrl: string;
+}
+
+export interface IPoliticalContributions {
+  id: string;
+  cycle: number;
+  orgId: string;
+  subsidiaryId: string;
+  subsidiary: string;
+  total: number;
+  indivs: number;
+  pacs: number;
+  democrats: number;
+  republicans: number;
+  thirdParty: number;
+}
+export interface IParentCompany {
+  name: string;
+  orgId: string;
+  politicalContributions?: IPoliticalContributions[];
+}
 export interface ICompany {
   id: string;
   name: string;
-  // parentCompanies?: ICompany[];
   brandUrl?: string;
   brandLogoUrl?: string;
+  parentCompanies?: IParentCompany[];
+  productTypes?: IProductType[];
+  categories?: IProductType[];
 }

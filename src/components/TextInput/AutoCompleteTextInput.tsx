@@ -87,7 +87,7 @@ const AutoCompleteTextInput: FC<IAutoCompleteTextInputProps> = ({
         }
         ref={textInputRef}
         theme={{ colors: { primary: theme.dark.hex } }}
-        placeholderTextColor={theme.text}
+        placeholderTextColor={theme.opaque}
         placeholder={placeholder}
         style={styles.textInput}
         secureTextEntry={secureTextEntry}

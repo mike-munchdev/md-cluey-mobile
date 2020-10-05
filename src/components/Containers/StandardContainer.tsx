@@ -1,13 +1,25 @@
 import React, { FC } from 'react';
 import { StyleSheet, SafeAreaView, StatusBar } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 
 import theme from '../../constants/theme';
 
-const StandardContainer: FC = (props) => {
+export interface IStandardContainerProps {
+  isLoading: boolean;
+}
+const StandardContainer: FC<IStandardContainerProps> = ({
+  isLoading,
+  children,
+}) => {
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <StatusBar translucent backgroundColor="transparent" />
-      {props.children}
+
+      {isLoading ? (
+        <ActivityIndicator size="large" color={theme.dark.hex} />
+      ) : (
+        children
+      )}
     </SafeAreaView>
   );
 };

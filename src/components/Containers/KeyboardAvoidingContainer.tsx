@@ -10,7 +10,14 @@ import {
 import { DismissKeyboard } from '../../components/TextInput';
 import theme from '../../constants/theme';
 
-const KeyboardAvoidingContainer: FC = (props) => {
+export interface IKeyboardAvoidingContainerProps {
+  isLoading: boolean;
+}
+
+const KeyboardAvoidingContainer: FC<IKeyboardAvoidingContainerProps> = ({
+  isLoading,
+  children,
+}) => {
   return (
     <DismissKeyboard>
       <KeyboardAvoidingView
@@ -20,7 +27,7 @@ const KeyboardAvoidingContainer: FC = (props) => {
       >
         <SafeAreaView style={styles.safeAreaContainer}>
           <StatusBar translucent backgroundColor="transparent" />
-          {props.children}
+          {children}
         </SafeAreaView>
       </KeyboardAvoidingView>
     </DismissKeyboard>
