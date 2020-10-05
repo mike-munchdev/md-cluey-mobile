@@ -25,17 +25,29 @@ const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item, title }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    console.log('MyLikesListItem useEffect');
+    // console.log('MyLikesListItem useEffect companyResponse', companyResponse);
     if (companyResponse) {
       const responses = [
         ...user?.companyResponses.filter((r) => r.id !== companyResponse.id),
         companyResponse,
       ];
-      user.companyResponses = responses;
+      const updatedUser = { ...user };
+      updatedUser.companyResponses = responses;
 
-      setUser(user);
+      setUser(updatedUser);
     }
-  }, [companyResponse, user]);
+  }, [companyResponse]);
+
+  useEffect(() => {
+    // console.log('MyLikesListItem: user changed', user);
+    // const getUserCompanyResponse = user?.companyResponses.find(
+    //   (r) => r.id === companyResponse?.id
+    // );
+    // if (getUserCompanyResponse) {
+    //   console.log('getUserCompanyResponse', getUserCompanyResponse);
+    //   setCompanyResponse(getUserCompanyResponse);
+    // }
+  }, [user]);
 
   const [updateCompanyResponseForUser] = useMutation(
     UPDATE_COMPANY_RESPONSE_FOR_USER,

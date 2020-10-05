@@ -34,4 +34,9 @@ export default StyleSheet.create({
     color: theme.dark.hex,
   },
   actionButtonContainer: {},
+  companyNameText: {
+    fontFamily: 'MontserratBold',
+    fontSize: 42,
+    color: theme.dark.hex,
+  },
 });

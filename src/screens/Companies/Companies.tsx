@@ -17,6 +17,7 @@ import { ActivityIndicator, Searchbar } from 'react-native-paper';
 import NavigationHeader from '../../components/Headers/NavigationHeader';
 import { CompaniesList } from '../../components/Lists';
 import { StandardContainer } from '../../components/Containers';
+import { PageHeaderText } from '../../components/Text';
 
 const Companies: FC = () => {
   const route = useRoute();
@@ -72,35 +73,7 @@ const Companies: FC = () => {
     <StandardContainer>
       <View style={styles.overlayContainer}>
         <NavigationHeader goBack />
-        <View
-          style={{
-            width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: 20,
-          }}
-        >
-          <Text
-            style={{
-              fontFamily: 'CoinyRegular',
-              fontSize: 50,
-              color: theme.dark.hex,
-            }}
-          >
-            Companies
-          </Text>
-          <Text
-            style={{
-              fontFamily: 'MontserratMedium',
-              fontSize: 20,
-              color: theme.dark.hex,
-              marginTop: -25,
-              marginBottom: 10,
-            }}
-          >
-            {category.name}
-          </Text>
-        </View>
+        <PageHeaderText title="Brands" subTitle={category.name} />
         <CompaniesList
           list={filteredList}
           searchQuery={searchQuery}

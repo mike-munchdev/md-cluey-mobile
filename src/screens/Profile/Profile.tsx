@@ -284,7 +284,9 @@ const Profile: FC = () => {
             >
               <ListItem.Content>
                 <ListItem.Title>
-                  {user ? moment(user.dob).format('MM/DD/YYYY') : null}
+                  {user && user.dob
+                    ? moment(user.dob).format('MM/DD/YYYY')
+                    : null}
                 </ListItem.Title>
                 <ListItem.Subtitle>Age</ListItem.Subtitle>
               </ListItem.Content>
@@ -373,7 +375,7 @@ const Profile: FC = () => {
             >
               <ListItem.Content>
                 <ListItem.Title>
-                  {user ? user.state.toUpperCase() : ''}
+                  {user && user.state ? user.state.toUpperCase() : ''}
                 </ListItem.Title>
                 <ListItem.Subtitle>State</ListItem.Subtitle>
               </ListItem.Content>

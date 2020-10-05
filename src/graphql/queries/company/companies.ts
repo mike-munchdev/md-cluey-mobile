@@ -8,6 +8,23 @@ export const companyStructure = `{
     name
     brandUrl
     brandLogoUrl     
+    parentCompanies {
+      id
+      name
+      politicalContributions {
+        id
+        cycle
+        orgId
+        subsidiaryId
+        subsidiary
+        total
+        indivs
+        pacs
+        democrats
+        republicans
+        thirdParty
+      }
+    }
   }
 `;
 
@@ -155,6 +172,7 @@ export const getCompanyByIdCompleted = (
   const { ok, company, error } = getCompanyById;
   setLoading(false);
   if (ok) {
+    // console.log('getCompanyByIdCompleted', company);
     setCompany(company);
   } else {
     AlertHelper.show('error', 'Error', error.message);

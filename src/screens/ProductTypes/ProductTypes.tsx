@@ -14,6 +14,7 @@ import { useLazyQuery } from '@apollo/react-hooks';
 import NavigationHeader from '../../components/Headers/NavigationHeader';
 import { ProductTypesList } from '../../components/Lists';
 import { StandardContainer } from '../../components/Containers';
+import { PageHeaderText } from '../../components/Text';
 
 const ProductTypes: FC = () => {
   const route = useRoute();
@@ -54,24 +55,7 @@ const ProductTypes: FC = () => {
     <StandardContainer>
       <View style={styles.overlayContainer}>
         <NavigationHeader goBack />
-        <View
-          style={{
-            width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: 20,
-          }}
-        >
-          <Text
-            style={{
-              fontFamily: 'CoinyRegular',
-              fontSize: 48,
-              color: theme.dark.hex,
-            }}
-          >
-            Subcategories
-          </Text>
-        </View>
+        <PageHeaderText title="Product Types" />
         <ProductTypesList list={productTypes} loading={isLoading} />
       </View>
     </StandardContainer>

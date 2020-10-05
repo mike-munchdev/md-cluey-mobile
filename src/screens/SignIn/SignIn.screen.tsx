@@ -73,7 +73,6 @@ const SignIn: FC = () => {
   };
   const facebookSignin = async () => {
     try {
-      AlertHelper.show('info', 'testing', 'facebook testing');
       const { data, token } = await facebookAuthentication();
 
       const { id, email, first_name, last_name } = data;
@@ -96,7 +95,7 @@ const SignIn: FC = () => {
   };
 
   return (
-    <StandardContainer>
+    <StandardContainer isLoading={signInLoading}>
       <View style={styles.overlayContainer}>
         <View style={styles.top}>
           <View

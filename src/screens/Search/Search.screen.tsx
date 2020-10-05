@@ -6,7 +6,7 @@ import { throttle, debounce } from 'throttle-debounce';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Formik } from 'formik';
-import SearchContainer from './SearchContainer';
+
 import styles from './styles';
 import theme from '../../constants/theme';
 import { ActionButton, RoundedIconButton } from '../../components/Buttons';
@@ -39,6 +39,7 @@ import { sortByFieldName } from '../../utils/sort';
 import { IAutoCompleteItemProps } from '../../components/TextInput/AutoCompleteTextInput';
 import { Button } from 'react-native-paper';
 import { Avatar } from 'react-native-elements';
+import { KeyboardAvoidingContainer } from '../../components/Containers';
 
 const Search: FC = () => {
   const navigation = useNavigation();
@@ -131,9 +132,9 @@ const Search: FC = () => {
     searchTextInputRef.current.blur();
     buttonView.current.bounceInRight(100);
     buttonView.current.fadeIn(1000);
-    const magnifyingGlassImageEndState = magnifyingGlassImageRef.current.animate(
-      fadeInAndShrink
-    );
+    // const magnifyingGlassImageEndState = magnifyingGlassImageRef.current.animate(
+    //   fadeInAndShrink
+    // );
     const searchViewEndState = await searchView.current.animate(
       moveDownAndFadeOut
     );
@@ -176,7 +177,7 @@ const Search: FC = () => {
   };
 
   return (
-    <SearchContainer>
+    <KeyboardAvoidingContainer isLoading={isLoading}>
       <View style={styles.overlayContainer}>
         <TouchableOpacity
           style={{ marginLeft: 20, marginTop: 20 }}
@@ -352,7 +353,7 @@ const Search: FC = () => {
             />
           </View>
         </Animatable.View>
-        <Animatable.Image
+        {/* <Animatable.Image
           ref={magnifyingGlassImageRef}
           source={require('../../../assets/images/magnifying-glass-larger.png')}
           style={{
@@ -365,7 +366,7 @@ const Search: FC = () => {
             zIndex: -10,
           }}
           resizeMode="cover"
-        />
+        /> */}
 
         <Formik
           initialValues={{
@@ -453,7 +454,7 @@ const Search: FC = () => {
           </Animatable.Text>
         </View>
       </View>
-    </SearchContainer>
+    </KeyboardAvoidingContainer>
   );
 };
 export default Search;

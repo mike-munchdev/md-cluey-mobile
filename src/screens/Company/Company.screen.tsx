@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, useContext } from 'react';
 import { View, Text } from 'react-native';
 import { Image } from 'react-native-elements';
 
@@ -32,14 +32,13 @@ import {
 } from '../../graphql/queries/company/companies';
 import { StandardContainer } from '../../components/Containers';
 import { NODE_ENV } from '../../hooks/serverInfo';
+import { AppContext } from '../../config/context';
 
 const Company: FC = () => {
+  const { user, setUser } = useContext(AppContext);
+
   const route = useRoute();
   const [company, setCompany] = useState<ICompany | undefined>();
-
-  const [companyId, setCompanyId] = useState<string | undefined>(
-    route.params.companyId ? route.params.companyId : null
-  );
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -51,11 +50,16 @@ const Company: FC = () => {
 
   useEffect(() => {
     (async () => {
-      if (companyId) {
-        await getCompanyById({ variables: { id: companyId } });
+      // console.log('route.params.company', route.params.company);
+      if (route.params.company) {
+        await getCompanyById({ variables: { id: route.params.company.id } });
       }
     })();
-  }, [companyId]);
+  }, []);
+
+  useEffect(() => {
+    // console.log('Company: user changed', user);
+  }, [user]);
 
   return (
     <Formik
@@ -72,7 +76,7 @@ const Company: FC = () => {
     >
       {({}) => {
         return (
-          <StandardContainer>
+          <StandardContainer isLoading={isLoading}>
             <View style={styles.overlayContainer}>
               <NavigationHeader goBack />
               <View style={styles.brandContainer}>
@@ -97,11 +101,7 @@ const Company: FC = () => {
                   <View>
                     <Text
                       adjustsFontSizeToFit={true}
-                      style={{
-                        fontFamily: 'CoinyRegular',
-                        fontSize: 42,
-                        color: theme.dark.hex,
-                      }}
+                      style={styles.companyNameText}
                     >
                       {company?.name}
                     </Text>

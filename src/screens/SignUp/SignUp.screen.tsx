@@ -1,4 +1,4 @@
-import React, { useContext, FC } from 'react';
+import React, { useContext, FC, useState } from 'react';
 
 import { View, TouchableOpacity } from 'react-native';
 
@@ -23,11 +23,15 @@ import theme from '../../constants/theme';
 import { ActionButton } from '../../components/Buttons';
 import { HrText } from '../../components/Text';
 import { AlertHelper } from '../../utils/alert';
-import { facebookAuthentication } from '../../utils/socialAuth';
+import {
+  facebookAuthentication,
+  googleAuthentication,
+} from '../../utils/socialAuth';
+import { StandardContainer } from '../../components/Containers';
 
 const SignUp: FC = () => {
   const { signUp } = useContext(AuthContext);
-
+  const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
 
   const [userSignup] = useMutation(USER_SIGNUP, {
@@ -37,7 +41,7 @@ const SignUp: FC = () => {
 
   const googleSignup = async () => {
     try {
-      const { data, token } = await facebookAuthentication();
+      const { data, token } = await googleAuthentication();
       const { id, email, familyName, givenName } = data;
       await userSignup({
         variables: {
@@ -76,7 +80,7 @@ const SignUp: FC = () => {
   };
 
   return (
-    <SignUpContainer>
+    <StandardContainer isLoading={isLoading}>
       <View style={styles.overlayContainer}>
         <View style={styles.top}>
           <View
@@ -191,7 +195,9 @@ const SignUp: FC = () => {
                 </View>
                 <View style={styles.buttonsView}>
                   <ActionButton
-                    handlePress={facebookSignup}
+                    handlePress={() => {
+                      facebookSignup();
+                    }}
                     textColor={theme.buttonText}
                     color={theme.facebookBlue}
                     title="Sign Up with Facebook"
@@ -200,7 +206,9 @@ const SignUp: FC = () => {
                     }
                   />
                   <ActionButton
-                    handlePress={googleSignup}
+                    handlePress={() => {
+                      googleSignup();
+                    }}
                     buttonStyles={{ marginTop: 10 }}
                     textColor={theme.buttonText}
                     color={theme.googleBlue}
@@ -215,7 +223,7 @@ const SignUp: FC = () => {
           }}
         </Formik>
       </View>
-    </SignUpContainer>
+    </StandardContainer>
   );
 };
 export default SignUp;

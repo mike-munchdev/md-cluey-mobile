@@ -12,6 +12,7 @@ import { useLazyQuery } from '@apollo/react-hooks';
 import NavigationHeader from '../../components/Headers/NavigationHeader';
 import { CategoriesList } from '../../components/Lists';
 import { StandardContainer } from '../../components/Containers';
+import { PageHeaderText } from '../../components/Text';
 
 const Categories: FC = () => {
   const [] = useState('');
@@ -37,24 +38,10 @@ const Categories: FC = () => {
     <StandardContainer>
       <View style={styles.overlayContainer}>
         <NavigationHeader goBack />
-        <View
-          style={{
-            width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: 20,
-          }}
-        >
-          <Text
-            style={{
-              fontFamily: 'CoinyRegular',
-              fontSize: 50,
-              color: theme.dark.hex,
-            }}
-          >
-            Categories
-          </Text>
-        </View>
+        <PageHeaderText
+          title="Categories"
+          containerStyle={{ marginBottom: 10 }}
+        />
         <CategoriesList list={categories} loading={isLoading} />
       </View>
     </StandardContainer>
