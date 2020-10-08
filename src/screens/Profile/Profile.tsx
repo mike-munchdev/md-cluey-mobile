@@ -1,5 +1,5 @@
 import React, { FC, useState, useContext, Fragment } from 'react';
-import { View, TouchableOpacity, ScrollView } from 'react-native';
+import { View, TouchableOpacity, ScrollView, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { FontAwesome5 } from '@expo/vector-icons';
 
@@ -414,6 +414,40 @@ const Profile: FC = () => {
               <ListItem.Chevron />
             </ListItem>
           </List.Section>
+          <List.Section>
+            <ListItem
+              containerStyle={{
+                backgroundColor: theme.buttonTransparentBackground,
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+              }}
+            >
+              <Paragraph
+                style={{
+                  backgroundColor: 'yellow',
+                  flex: 1,
+                  alignItems: 'flex-start',
+                  justifyContent: 'flex-start',
+                  fontWeight: 'bold',
+                  marginBottom: 10,
+                  color: theme.dark.hex,
+                  fontSize: 16,
+                }}
+              >
+                Why am I being asked for this information?
+              </Paragraph>
+              <Paragraph style={{ color: theme.dark.hex }}>
+                When Cluey users choose to make their likes and dislikes public
+                to companies, Cluey uses the information provided in this
+                section (age, gender, and region) to send on your behalf to
+                companies so they have an anonymized demographic profile behind
+                the likes and dislikes data. This allows your message to
+                companies and the data they receive to be more meaningful. We
+                will never share any account information such as usernames or
+                emails to companies or any third parties.”
+              </Paragraph>
+            </ListItem>
+          </List.Section>
           <List.Section style={{ width: '100%' }}>
             <List.Subheader
               style={{ fontSize: 16, textTransform: 'uppercase' }}
@@ -433,25 +467,6 @@ const Profile: FC = () => {
                 <ListItem.Title>Logout</ListItem.Title>
               </ListItem.Content>
               <ListItem.Chevron />
-            </ListItem>
-          </List.Section>
-          <List.Section>
-            <ListItem
-              containerStyle={{
-                backgroundColor: theme.buttonTransparentBackground,
-              }}
-            >
-              <Paragraph style={{ color: theme.dark.hex }}>
-                “Why am I being asked for this information? When Cluey users
-                choose to make their likes and dislikes public to companies,
-                Cluey uses the information provided in this section (age,
-                gender, and region) to send on your behalf to companies so they
-                have an anonymized demographic profile behind the likes and
-                dislikes data. This allows your message to companies and the
-                data they receive to be more meaningful. We will never share any
-                account information such as usernames or emails to companies or
-                any third parties.”
-              </Paragraph>
             </ListItem>
           </List.Section>
         </ScrollView>
