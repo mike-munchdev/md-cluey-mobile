@@ -147,7 +147,7 @@ const Profile: FC = () => {
                   fieldValue: user?.firstName || '',
                   secureTextEntry: false,
                   isValid: (value: string) => {
-                    return value.length > 0;
+                    return value ? value.length > 0 : false;
                   },
                   captionText: [],
                   placeholder: 'First Name',
@@ -175,7 +175,7 @@ const Profile: FC = () => {
                   fieldValue: user ? user.lastName : '',
                   secureTextEntry: false,
                   isValid: (value: string) => {
-                    return value.length > 0;
+                    return value ? value.length > 0 : false;
                   },
                   captionText: [],
                   placeholder: 'Last Name',
@@ -277,7 +277,7 @@ const Profile: FC = () => {
                   fieldValue: user ? user.username : '',
                   secureTextEntry: false,
                   isValid: (value: string) => {
-                    return value.length > 0;
+                    return value ? value.length > 0 : false;
                   },
                   captionText: [],
                   placeholder: 'Username',
@@ -336,7 +336,7 @@ const Profile: FC = () => {
                   fieldValue: user ? user.gender : '',
                   secureTextEntry: false,
                   isValid: (value: string) => {
-                    return value.length > 0;
+                    return value ? value.length > 0 : false;
                   },
                   captionText: [],
                   placeholder: 'Gender',
@@ -366,7 +366,7 @@ const Profile: FC = () => {
                   fieldValue: user ? user.city : '',
                   secureTextEntry: false,
                   isValid: (value: string) => {
-                    return value.length > 0;
+                    return value ? value.length > 0 : false;
                   },
                   captionText: [],
                   placeholder: 'City',
@@ -395,7 +395,7 @@ const Profile: FC = () => {
                   fieldValue: user ? user.state : '',
                   secureTextEntry: false,
                   isValid: (value: string) => {
-                    return value.length > 0;
+                    return value ? value.length > 0 : false;
                   },
                   captionText: [],
                   placeholder: 'State',

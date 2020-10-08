@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Text, View, SafeAreaView } from 'react-native';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import styles from './styles';
-import colors from '../../constants/colors';
 
-import { AuthContext, AppContext } from '../../config/context';
+import { AppContext } from '../../config/context';
 
 import SidebarMenuItem from './SidebarMenuItem';
 import { HorizontalRule } from '../HorizontalRule/';
@@ -25,7 +24,7 @@ const Sidebar = () => {
 
   const { user, setUser } = useContext(AppContext);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
 
   const [updateUser] = useMutation(UPDATE_USER, {
     onError: updateUserError(setIsLoading),
@@ -33,14 +32,22 @@ const Sidebar = () => {
   });
   const onIsMakeLikesPublicToggleSwitch = async () => {
     // check for consumer profile settings
-    await updateUser({
-      variables: {
-        input: {
-          userId: user?.id,
-          isProfilePublic: !user?.isProfilePublic,
+    if (user?.username && user.dob && user.gender && user.city && user.state) {
+      await updateUser({
+        variables: {
+          input: {
+            userId: user?.id,
+            isProfilePublic: !user?.isProfilePublic,
+          },
         },
-      },
-    });
+      });
+    } else {
+      AlertHelper.show(
+        'error',
+        'Profile',
+        'Cluey Consuer Profile must be set in order to make likes/dislikes public'
+      );
+    }
   };
 
   return (
