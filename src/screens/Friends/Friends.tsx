@@ -89,7 +89,7 @@ const Friends: FC = () => {
                       bottomDivider
                       style={{ marginBottom: 5 }}
                     >
-                      <Avatar source={{ uri: item.avatar_url }} />
+                      <Avatar rounded source={{ uri: item.avatar_url }} />
                       <ListItem.Content>
                         <ListItem.Title>{item.name}</ListItem.Title>
                         <ListItem.Subtitle>{`@${item.userName}`}</ListItem.Subtitle>
