@@ -71,3 +71,10 @@ export interface ICompany {
   productTypes?: IProductType[];
   categories?: IProductType[];
 }
+
+export interface IFriend {
+  id: string;
+  firstName: string;
+  lastName: string;
+  userName: string;
+}

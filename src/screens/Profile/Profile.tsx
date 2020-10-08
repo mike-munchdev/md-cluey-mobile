@@ -443,7 +443,7 @@ const Profile: FC = () => {
                 the likes and dislikes data. This allows your message to
                 companies and the data they receive to be more meaningful. We
                 will never share any account information such as usernames or
-                emails to companies or any third parties.”
+                emails to companies or any third parties.
               </Paragraph>
             </ListItem>
           </List.Section>

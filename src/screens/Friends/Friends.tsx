@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { FlatList, View, Text } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
@@ -14,51 +14,55 @@ import { Avatar, ListItem } from 'react-native-elements';
 import { StandardContainer } from '../../components/Containers';
 import NavigationHeader from '../../components/Headers/NavigationHeader';
 import { PageHeaderText } from '../../components/Text';
+import { useLazyQuery } from '@apollo/react-hooks';
+import {
+  getUserFriendsCompleted,
+  getUserFriendsError,
+  GET_USER_FRIENDS,
+} from '../../graphql/queries/friends/friends';
+import { AppContext } from '../../config/context';
 
-export interface IFriend {
-  id: number;
-  name: string;
-  avatar_url: string;
-  userName: string;
-}
-
-export const friends: IFriend[] = [
-  {
-    id: 1,
-    name: 'Maryclaire Manard',
-    avatar_url:
-      'https://media-exp1.licdn.com/dms/image/C5603AQGd-l7aP66k6Q/profile-displayphoto-shrink_400_400/0?e=1605744000&v=beta&t=IJWMidEMvulNe9cge1DE3o627NInvt7I8IUAt76AExY',
-    userName: 'maryclairemanard',
-  },
-  {
-    id: 2,
-    name: 'Amy Farha',
-    avatar_url:
-      'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-    userName: 'amyfarha',
-  },
-  {
-    id: 3,
-    name: 'Chris Jackson',
-    avatar_url:
-      'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-    userName: 'chris.jackson',
-  },
-];
 const Friends: FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredList, setFilteredList] = useState(friends);
+  const [filteredList, setFilteredList] = useState([]);
+  const [friends, setFriends] = useState([]);
+  const [publicUsers, setPublicUsers] = useState([]);
+  const { user, setUser } = useContext(AppContext);
+
   const navigation = useNavigation();
 
+  const [getUserFriends] = useLazyQuery(GET_USER_FRIENDS, {
+    fetchPolicy: 'network-only',
+    onError: getUserFriendsError(setFriends, setIsLoading),
+    onCompleted: getUserFriendsCompleted(
+      setFriends,
+      setFilteredList,
+      setIsLoading
+    ),
+  });
+
   useEffect(() => {
-    const searchLowercase = searchQuery.toLowerCase();
-    const newList = friends.filter(
-      (f) =>
-        f.name.toLowerCase().includes(searchLowercase) ||
-        f.userName.toLowerCase().includes(searchLowercase)
-    );
-    setFilteredList(newList);
-  }, [searchQuery]);
+    (async () => {
+      if (user) {
+        console.log('user', user);
+        await getUserFriends({
+          variables: {
+            userId: user.id,
+          },
+        });
+      }
+    })();
+  }, []);
+  // useEffect(() => {
+  //   const searchLowercase = searchQuery.toLowerCase();
+  //   const newList = friends.filter(
+  //     (f) =>
+  //       f.name.toLowerCase().includes(searchLowercase) ||
+  //       f.userName.toLowerCase().includes(searchLowercase)
+  //   );
+  //   setFilteredList(newList);
+  // }, [searchQuery]);
 
   const onChangeSearch = (query: string) => setSearchQuery(query);
 
@@ -84,15 +88,18 @@ const Friends: FC = () => {
                       navigation.navigate('Friend', { friendId: item.id })
                     }
                   >
-                    <ListItem
-                      key={item.id}
-                      bottomDivider
-                      style={{ marginBottom: 5 }}
-                    >
-                      <Avatar rounded source={{ uri: item.avatar_url }} />
+                    <ListItem style={{ marginBottom: 5 }}>
+                      <Avatar
+                        icon={{ name: 'user', type: 'font-awesome', size: 20 }}
+                        overlayContainerStyle={{
+                          backgroundColor: theme.dark.hex,
+                        }}
+                        size="small"
+                        rounded
+                      />
                       <ListItem.Content>
-                        <ListItem.Title>{item.name}</ListItem.Title>
-                        <ListItem.Subtitle>{`@${item.userName}`}</ListItem.Subtitle>
+                        <ListItem.Title>{`${item.firstName} ${item.lastName}`}</ListItem.Title>
+                        <ListItem.Subtitle>{`@${item.username}`}</ListItem.Subtitle>
                       </ListItem.Content>
                     </ListItem>
                   </TouchableOpacity>
