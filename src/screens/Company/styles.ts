@@ -34,4 +34,14 @@ export default StyleSheet.create({
     color: theme.dark.hex,
   },
   actionButtonContainer: {},
+  contributionContainer: {
+    marginVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  contributionText: {
+    color: theme.dark.hex,
+    fontWeight: 'bold',
+  },
 });

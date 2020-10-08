@@ -424,7 +424,6 @@ const Profile: FC = () => {
             >
               <Paragraph
                 style={{
-                  backgroundColor: 'yellow',
                   flex: 1,
                   alignItems: 'flex-start',
                   justifyContent: 'flex-start',

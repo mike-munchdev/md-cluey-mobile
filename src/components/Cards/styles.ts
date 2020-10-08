@@ -5,11 +5,7 @@ export default StyleSheet.create({
   politicalContainer: {
     height: 120,
   },
-  politicalInfoText: {
-    fontFamily: 'Montserrat',
-    fontSize: 16,
-    color: theme.dark.hex,
-  },
+
   politicalScoreContainer: {
     marginTop: 10,
     flexDirection: 'row',
@@ -17,10 +13,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
-  politicalSubTextContainer: {
-    alignItems: 'center',
-    width: '100%',
-  },
+
   parentCompanyContainer: {
     height: '15%',
     alignItems: 'center',
@@ -51,13 +44,5 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     color: theme.dark.hex,
     textTransform: 'capitalize',
-  },
-  politicalInfoView: { flexDirection: 'row', width: '90%', marginTop: 10 },
-  politicalInfoHelpView: { justifyContent: 'center', marginRight: 5 },
-  politicalInfoTextView: {
-    flex: 1,
-    marginLeft: 5,
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
   },
 });

@@ -8,7 +8,10 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  titleContainer: { width: '90%' },
   titleText: {
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
     fontFamily: 'MontserratMedium',
     fontSize: 18,
   },
@@ -22,18 +25,35 @@ export default StyleSheet.create({
     color: theme.text,
   },
   republicanView: {
-    backgroundColor: 'blue',
+    backgroundColor: 'red',
     height: 40,
     paddingRight: 5,
     justifyContent: 'center',
     alignItems: 'flex-end',
   },
   democratView: {
-    backgroundColor: 'red',
+    backgroundColor: 'blue',
     height: 40,
 
     paddingLeft: 5,
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
+  politicalSubTextContainer: {
+    alignItems: 'center',
+    width: '100%',
+  },
+  politicalInfoView: { flexDirection: 'row', width: '90%', marginTop: 10 },
+  politicalInfoTextView: {
+    flex: 1,
+    marginLeft: 5,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+  },
+  politicalInfoText: {
+    fontFamily: 'Montserrat',
+    fontSize: 16,
+    color: theme.dark.hex,
+  },
+  politicalInfoHelpView: { justifyContent: 'center', marginRight: 5 },
 });

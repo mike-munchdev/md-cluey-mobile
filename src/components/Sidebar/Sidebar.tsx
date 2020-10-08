@@ -70,7 +70,7 @@ const Sidebar = () => {
       <HorizontalRule styles={{ marginBottom: 20 }} />
       <View style={{ marginLeft: 10, marginBottom: 20 }}>
         <SidebarMenuItem
-          onPress={() => navigation.navigate('Search')}
+          onPress={() => navigation.navigate('Home')}
           iconName="search"
           iconSize={20}
           title="Search"

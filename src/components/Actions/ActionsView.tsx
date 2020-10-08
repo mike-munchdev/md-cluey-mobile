@@ -37,7 +37,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
   useEffect(() => {
     if (company) {
       const response = user?.companyResponses.find(
-        (r) => r.company.id === company.id
+        (r) => r.companyId === company.id
       );
 
       setCompanyResponse(response);

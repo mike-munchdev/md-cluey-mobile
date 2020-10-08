@@ -3,8 +3,8 @@ import theme from '../../constants/theme';
 
 export default StyleSheet.create({
   likesContainer: {
-    position: 'absolute',
-    bottom: 60,
+    // position: 'absolute',
+    // bottom: 60,
     flexDirection: 'row',
 
     alignItems: 'center',

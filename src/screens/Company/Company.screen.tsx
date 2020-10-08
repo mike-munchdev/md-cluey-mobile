@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect, useContext } from 'react';
-import { View } from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
 
 import { useRoute } from '@react-navigation/native';
 import { Formik } from 'formik';
@@ -76,7 +76,7 @@ const Company: FC = () => {
                 />
               </View>
 
-              <View style={styles.infoContainer}>
+              <ScrollView style={styles.infoContainer}>
                 <View>
                   <PoliticalScoreCard company={company} />
                   <HorizontalRule
@@ -96,9 +96,18 @@ const Company: FC = () => {
                   />
                   <PlanetScoreCard company={company} />
                 </View>
+              </ScrollView>
+              <View style={styles.contributionContainer}>
+                <View style={{ flex: 1 }}></View>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.contributionText}>
+                    all contribution data comes from the Center of Responsive
+                    Politics
+                  </Text>
+                </View>
               </View>
+              <ActionsView company={company} />
             </View>
-            <ActionsView company={company} />
           </StandardContainer>
         );
       }}

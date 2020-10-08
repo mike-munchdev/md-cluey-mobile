@@ -18,7 +18,7 @@ export interface IUser {
 }
 export interface ICompanyReponse {
   id: string;
-  company: ICompany;
+  companyId: string;
   response: string;
 }
 

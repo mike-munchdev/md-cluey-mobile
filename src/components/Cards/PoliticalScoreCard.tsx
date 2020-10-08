@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FC, Fragment } from 'react';
-import { Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 
 import styles from './styles';
@@ -47,10 +47,20 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
 
     }
   };
-  
   useEffect(() => {
-    updatePoliticalData(company);
+    const iRepublican = Math.floor(Math.random() * 100);
+    const iDemocrat = 100 - iRepublican;
+    const pRepublican = Math.floor(Math.random() * 100);
+    const pDemocrat = 100 - pRepublican;
+    setIndividualDemocratPercent(iDemocrat);
+    setIndividualRepublicanPercent(iRepublican);
+    setPacDemocratPercent(pDemocrat);
+    setPacRepublicanPercent(pRepublican);
   }, [company]);
+  
+  // useEffect(() => {
+  //   updatePoliticalData(company);
+  // }, [company]);
 
   const handlePress = () => setExpanded(!expanded);
 
@@ -66,36 +76,26 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
           </Fragment>
         }
       >
+        <ScrollView>
         <View style={styles.politicalScoreContainer}>
           <ContributionsProgressBar
-            title="Individual"
+            title="Individual Contributions"
             democrat={individualDemocratPercent}
             republican={individualRepublicanPercent}
+            captionText={`Individual contributions made by employees over the amount of $1,000 to political candidates. Typically, donations of this size are made by high-level executives. Contributions made in the 2016, 2018, and 2020 federal election cycles.`}
           />
         </View>
         <View style={styles.politicalScoreContainer}>
           <ContributionsProgressBar
-            title="PAC"
+            title="PAC Contributions"
             democrat={pacDemocratPercent}
             republican={pacRepublicanPercent}
+            captionText={`Contributions made by Corporate PAC to political candidates in the 2016, 2018, and 2020 federal election cycles.”`}
           />
-        </View>
-        <View style={styles.politicalSubTextContainer}>
-          <View style={styles.politicalInfoView}>
-            <View style={styles.politicalInfoTextView}>
-              <Text style={styles.politicalInfoText}>
-                of corporate PAC contributions support Republicans
-              </Text>
-            </View>
-            <View style={styles.politicalInfoHelpView}>
-              <FontAwesome5
-                name="question-circle"
-                size={16}
-                color={theme.dark.hex}
-              />
-            </View>
-          </View>
-        </View>
+        </View>  
+        
+        </ScrollView>    
+        
       </List.Accordion>
     </Fragment>
   );
