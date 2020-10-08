@@ -1,10 +1,15 @@
 import React, { createContext } from 'react';
 import { IUser, ILocation } from '../interfaces';
 
-type AppContextProps = {
+export type AppContextStateProps = {
   setUser: (user: IUser) => void;
   user: IUser | undefined | null;
-  location: ILocation | undefined | null;
+  // location: ILocation | undefined | null;
+};
+
+export type AppContextActionProps = {
+  type: string;
+  payload: object;
 };
 
 type AuthContextProps = {
@@ -25,4 +30,4 @@ type AuthContextProps = {
 
 export const AuthContext = createContext<Partial<AuthContextProps>>({});
 
-export const AppContext = createContext<Partial<AppContextProps>>({});
+export const AppContext = createContext<Partial<AppContextStateProps>>({});

@@ -25,6 +25,12 @@ export default {
       return hex2rgba(colors.green.dark, alpha);
     },
   },
+  disabled: {
+    hex: colors.green.darker,
+    rgba: (alpha: number) => {
+      return hex2rgba(colors.green.darker, alpha);
+    },
+  },
   light: colors.green.light,
   text: colors.white.normal,
   button: colors.green.light,

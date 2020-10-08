@@ -22,6 +22,7 @@ import {
   activateUserAccountError,
   activateUserAccountCompleted,
 } from '../../graphql/queries/user/user';
+import { LogoText } from '../../components/Text';
 
 const ActivateAccount: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -42,16 +43,12 @@ const ActivateAccount: FC = () => {
     <ActivateAccountContainer>
       <View style={styles.overlayContainer}>
         <View style={styles.top}>
-          <Animatable.Text
+          <LogoText
             animation="fadeIn"
-            style={{
-              fontFamily: 'CoinyRegular',
-              fontSize: 72,
+            textStyle={{
               color: theme.dark.hex,
             }}
-          >
-            Cluey
-          </Animatable.Text>
+          />
         </View>
 
         <Formik

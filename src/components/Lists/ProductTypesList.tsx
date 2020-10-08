@@ -8,10 +8,7 @@ import styles from './styles';
 
 export interface IProductTypesListProps {
   list: [];
-  searchQuery: string;
-  onChangeSearch:
-    | (((text: string) => void) & ((query: string) => void))
-    | undefined;
+
   loading: boolean;
 }
 const ProductTypesList: FC<IProductTypesListProps> = ({ list, loading }) => {
@@ -48,7 +45,7 @@ const ProductTypesList: FC<IProductTypesListProps> = ({ list, loading }) => {
                       color: theme.dark.hex,
                     }}
                   >
-                    No Product Types
+                    No Subcategories
                   </Text>
                 </View>
               );

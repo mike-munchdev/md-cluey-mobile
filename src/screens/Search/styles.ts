@@ -8,12 +8,22 @@ export default StyleSheet.create({
   overlayContainer: {
     flex: 1,
   },
-  top: {
-    height: 75,
-    alignItems: 'center',
-    position: 'absolute',
+  searchContainer: {
     justifyContent: 'center',
-    width: '100%',
-    bottom: 10,
+    alignItems: 'center',
+    marginHorizontal: 20,
+    marginTop: 10,
   },
+  infoContainer: {
+    marginHorizontal: 10,
+    height: '75%',
+    flexDirection: 'column',
+  },
+  searchCaptionText: {
+    fontSize: 26,
+    fontFamily: 'Montserrat',
+    fontWeight: 'bold',
+    color: theme.dark.hex,
+  },
+  actionButtonContainer: {},
 });

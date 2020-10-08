@@ -1,3 +1,5 @@
+import usaCities from './usaCities';
+
 export const genderOptions = [
   { name: 'Male', value: 'male' },
   { name: 'Female', value: 'female' },
@@ -61,4 +63,9 @@ export const states = [
 export const stateOptions = states.map((s) => ({
   name: s.state,
   value: s.code,
+}));
+
+export const cityOptions = usaCities.map((l) => ({
+  name: `${l.city}, ${l.state}`,
+  value: `${l.city}, ${l.state}`,
 }));

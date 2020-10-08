@@ -1,6 +1,5 @@
 import React, { useContext, FC, useState } from 'react';
-
-import { View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
 
 import styles from './styles';
 import * as Animatable from 'react-native-animatable';
@@ -21,17 +20,21 @@ import {
 import SignUpContainer from './SignUpContainer';
 import theme from '../../constants/theme';
 import { ActionButton } from '../../components/Buttons';
-import { HrText } from '../../components/Text';
+import { HrText, LogoText } from '../../components/Text';
 import { AlertHelper } from '../../utils/alert';
 import {
   facebookAuthentication,
   googleAuthentication,
 } from '../../utils/socialAuth';
 import { StandardContainer } from '../../components/Containers';
+import { Paragraph } from 'react-native-paper';
+import { passwordRequirments } from '../../validation/passwordSchema';
+import NavigationHeader from '../../components/Headers/NavigationHeader';
 
 const SignUp: FC = () => {
   const { signUp } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [passwordSecureTextEntry, setPasswordSecureTextEntry] = useState(true);
   const navigation = useNavigation();
 
   const [userSignup] = useMutation(USER_SIGNUP, {
@@ -83,145 +86,141 @@ const SignUp: FC = () => {
     <StandardContainer isLoading={isLoading}>
       <View style={styles.overlayContainer}>
         <View style={styles.top}>
-          <View
-            style={{
-              width: '100%',
-              alignItems: 'center',
+          <LogoText
+            animation="fadeIn"
+            textStyle={{
+              color: theme.dark.hex,
+              marginTop: 5,
               justifyContent: 'center',
-              flexDirection: 'row',
+            }}
+          />
+        </View>
+        <ScrollView>
+          <Formik
+            initialValues={{
+              email: '',
+              firstName: '',
+              lastName: '',
+              password: '',
+            }}
+            validationSchema={signupSchema}
+            onSubmit={async (values) => {
+              const { email, password, firstName, lastName } = values;
+              await userSignup({
+                variables: { input: { email, password, firstName, lastName } },
+              });
             }}
           >
-            <TouchableOpacity
-              onPress={() => {
-                navigation.goBack();
-              }}
-              style={{ position: 'absolute', left: 15 }}
-            >
-              <FontAwesome5
-                name="angle-left"
-                size={24}
-                color={theme.dark.hex}
-              />
-            </TouchableOpacity>
-            <Animatable.Text
-              animation="fadeIn"
+            {({ errors, touched, values, handleChange, handleSubmit }) => {
+              return (
+                <View style={styles.formContainer}>
+                  <View style={styles.inputView}>
+                    <AnimatableTextInput
+                      label="FIRST NAME"
+                      placeholder="Enter First Name"
+                      iconName="account-circle"
+                      name="firstName"
+                      value={values.firstName}
+                      errors={errors}
+                      touched={touched}
+                      handleChange={handleChange('firstName')}
+                    />
+                    <AnimatableTextInput
+                      label="LAST NAME"
+                      placeholder="Enter Last Name"
+                      iconName="account-circle"
+                      name="lastName"
+                      value={values.lastName}
+                      errors={errors}
+                      touched={touched}
+                      handleChange={handleChange('lastName')}
+                      containerStyles={{ marginTop: 10 }}
+                    />
+                    <AnimatableTextInput
+                      label="E-MAIL"
+                      placeholder="Enter email"
+                      iconName="email"
+                      name="email"
+                      value={values.email}
+                      errors={errors}
+                      touched={touched}
+                      handleChange={handleChange('email')}
+                      containerStyles={{ marginTop: 10 }}
+                    />
+                    <AnimatableTextInput
+                      label="PASSWORD"
+                      placeholder="Enter password"
+                      iconName={passwordSecureTextEntry ? 'eye' : 'lock'}
+                      name="password"
+                      value={values.password}
+                      errors={errors}
+                      touched={touched}
+                      handleChange={handleChange('password')}
+                      secureTextEntry={passwordSecureTextEntry}
+                      containerStyles={{ marginTop: 10 }}
+                      handleIconPress={() =>
+                        setPasswordSecureTextEntry(!passwordSecureTextEntry)
+                      }
+                    />
+
+                    <ActionButton
+                      handlePress={() => handleSubmit()}
+                      textColor={theme.buttonText}
+                      color={theme.dark.hex}
+                      title="Sign Up"
+                      buttonStyles={{ marginTop: 30 }}
+                    />
+                  </View>
+                  <View style={{ height: 20 }}>
+                    <HrText text="Or" />
+                  </View>
+                  <View style={styles.buttonsView}>
+                    <ActionButton
+                      handlePress={() => {
+                        facebookSignup();
+                      }}
+                      textColor={theme.buttonText}
+                      color={theme.facebookBlue}
+                      title="Sign Up with Facebook"
+                      leftIcon={
+                        <FontAwesome5 name="facebook" size={24} color="white" />
+                      }
+                    />
+                    <ActionButton
+                      handlePress={() => {
+                        googleSignup();
+                      }}
+                      buttonStyles={{ marginTop: 10 }}
+                      textColor={theme.buttonText}
+                      color={theme.googleBlue}
+                      title="Sign Up with Google"
+                      leftIcon={
+                        <FontAwesome5 name="google" size={24} color="white" />
+                      }
+                    />
+                  </View>
+                </View>
+              );
+            }}
+          </Formik>
+          <View style={{ marginHorizontal: 10 }}>
+            <Text
               style={{
-                fontFamily: 'CoinyRegular',
-                fontSize: 72,
                 color: theme.dark.hex,
-                marginTop: 5,
-                justifyContent: 'center',
+                fontWeight: 'bold',
+                fontSize: 20,
               }}
             >
-              Cluey
-            </Animatable.Text>
+              Password Must be
+            </Text>
+            {passwordRequirments.map((r, index) => (
+              <Text
+                key={index.toString()}
+                style={{ color: theme.dark.hex }}
+              >{`${index + 1}. ${r}`}</Text>
+            ))}
           </View>
-        </View>
-
-        <Formik
-          initialValues={{
-            email: '',
-            firstName: '',
-            lastName: '',
-            password: '',
-          }}
-          validationSchema={signupSchema}
-          onSubmit={async (values) => {
-            const { email, password, firstName, lastName } = values;
-            await userSignup({
-              variables: { input: { email, password, firstName, lastName } },
-            });
-          }}
-        >
-          {({ errors, touched, values, handleChange, handleSubmit }) => {
-            return (
-              <View style={styles.formContainer}>
-                <View style={styles.inputView}>
-                  <AnimatableTextInput
-                    label="FIRST NAME"
-                    placeholder="Enter First Name"
-                    iconName="account-circle"
-                    name="firstName"
-                    value={values.firstName}
-                    errors={errors}
-                    touched={touched}
-                    handleChange={handleChange('firstName')}
-                  />
-                  <AnimatableTextInput
-                    label="LAST NAME"
-                    placeholder="Enter Last Name"
-                    iconName="account-circle"
-                    name="lastName"
-                    value={values.lastName}
-                    errors={errors}
-                    touched={touched}
-                    handleChange={handleChange('lastName')}
-                    containerStyles={{ marginTop: 10 }}
-                  />
-                  <AnimatableTextInput
-                    label="E-MAIL"
-                    placeholder="Enter email"
-                    iconName="email"
-                    name="email"
-                    value={values.email}
-                    errors={errors}
-                    touched={touched}
-                    handleChange={handleChange('email')}
-                    containerStyles={{ marginTop: 10 }}
-                  />
-                  <AnimatableTextInput
-                    label="PASSWORD"
-                    placeholder="Enter password"
-                    iconName="lock"
-                    name="password"
-                    value={values.password}
-                    errors={errors}
-                    touched={touched}
-                    handleChange={handleChange('password')}
-                    secureTextEntry={true}
-                    containerStyles={{ marginTop: 10 }}
-                  />
-
-                  <ActionButton
-                    handlePress={() => handleSubmit()}
-                    textColor={theme.buttonText}
-                    color={theme.dark.hex}
-                    title="Sign Up"
-                    buttonStyles={{ marginTop: 30 }}
-                  />
-                </View>
-                <View style={{ height: 20 }}>
-                  <HrText text="Or" />
-                </View>
-                <View style={styles.buttonsView}>
-                  <ActionButton
-                    handlePress={() => {
-                      facebookSignup();
-                    }}
-                    textColor={theme.buttonText}
-                    color={theme.facebookBlue}
-                    title="Sign Up with Facebook"
-                    leftIcon={
-                      <FontAwesome5 name="facebook" size={24} color="white" />
-                    }
-                  />
-                  <ActionButton
-                    handlePress={() => {
-                      googleSignup();
-                    }}
-                    buttonStyles={{ marginTop: 10 }}
-                    textColor={theme.buttonText}
-                    color={theme.googleBlue}
-                    title="Sign Up with Google"
-                    leftIcon={
-                      <FontAwesome5 name="google" size={24} color="white" />
-                    }
-                  />
-                </View>
-              </View>
-            );
-          }}
-        </Formik>
+        </ScrollView>
       </View>
     </StandardContainer>
   );

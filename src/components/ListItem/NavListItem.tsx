@@ -31,10 +31,16 @@ const NavListItem: FC<INavListItemProps> = ({
 
   return (
     <ListItem
-      onPress={() => navigation.navigate(routeName, params)}
+      onPress={() => {
+        item.isActive ? navigation.navigate(routeName, params) : null;
+      }}
       key={item.id}
       bottomDivider
-      containerStyle={{ backgroundColor: theme.dark.rgba(0.9) }}
+      containerStyle={{
+        backgroundColor: item.isActive
+          ? theme.dark.rgba(0.9)
+          : theme.disabled.hex,
+      }}
       style={{
         marginBottom: 5,
         width: '100%',

@@ -28,6 +28,6 @@ export const passwordRequirments = [
   'At least 1 uppercase letter',
   'At least 1 lowercase letter',
   'At least 2 lowercase letter',
-  'No spaces',
+  'Contain no spaces',
 ];
 export default schema;

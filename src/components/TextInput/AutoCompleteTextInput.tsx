@@ -74,16 +74,18 @@ const AutoCompleteTextInput: FC<IAutoCompleteTextInputProps> = ({
         mode="outlined"
         autoCompleteType="off"
         left={
-          <TextInput.Icon
-            onPress={() => {
-              if (handleIconPress) {
-                handleIconPress();
-              }
-            }}
-            name={iconName || ''}
-            color={theme.dark.hex}
-            size={iconSize || 20}
-          />
+          iconName ? (
+            <TextInput.Icon
+              onPress={() => {
+                if (handleIconPress) {
+                  handleIconPress();
+                }
+              }}
+              name={iconName || ''}
+              color={theme.dark.hex}
+              size={iconSize || 20}
+            />
+          ) : null
         }
         ref={textInputRef}
         theme={{ colors: { primary: theme.dark.hex } }}

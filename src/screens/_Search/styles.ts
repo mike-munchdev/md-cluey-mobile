@@ -9,22 +9,11 @@ export default StyleSheet.create({
     flex: 1,
   },
   top: {
-    height: 80,
-    justifyContent: 'center',
+    height: 75,
     alignItems: 'center',
-  },
-  formContainer: {
-    marginHorizontal: 10,
-    flex: 1,
-    flexDirection: 'column',
-  },
-  inputView: {
-    height: 380,
-    justifyContent: 'flex-start',
-  },
-  buttonsView: {
-    marginTop: 10,
-    height: 200,
-    justifyContent: 'flex-start',
+    position: 'absolute',
+    justifyContent: 'center',
+    width: '100%',
+    bottom: 10,
   },
 });

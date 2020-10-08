@@ -7,12 +7,13 @@ import { companyStructure } from '../company/companies';
 
 export const responseStructure = `{  
     id
-    company ${companyStructure}
+    companyId
     response  
 }`;
 export const userStructure = `{
     id
     email
+    username
     firstName
     middleName
     lastName   

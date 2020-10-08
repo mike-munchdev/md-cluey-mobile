@@ -33,6 +33,7 @@ import { Companies } from '../screens/Companies';
 import { Categories } from '../screens/Categories';
 import { ProductTypes } from '../screens/ProductTypes';
 import { MyLikes } from '../screens/MyLikes';
+import { Home } from '../screens/Home';
 
 const Drawer = createDrawerNavigator();
 const AuthStack = createStackNavigator();
@@ -60,8 +61,8 @@ const FriendsStackScreen = () => (
   </FriendsStack.Navigator>
 );
 const DrawerScreen = () => (
-  <Drawer.Navigator initialRouteName="Search" drawerContent={() => <Sidebar />}>
-    <Drawer.Screen name="Search" component={ClueyStackScreen} />
+  <Drawer.Navigator initialRouteName="Home" drawerContent={() => <Sidebar />}>
+    <Drawer.Screen name="Home" component={ClueyStackScreen} />
     <Drawer.Screen name="Profile" component={ProfileStackScreen} />
     <Drawer.Screen name="Friends" component={FriendsStackScreen} />
     <Drawer.Screen name="MyLikes" component={MyLikesStackScreen} />
@@ -70,10 +71,11 @@ const DrawerScreen = () => (
 
 const ClueyStackScreen = () => (
   <ClueyStack.Navigator
-    initialRouteName="Search"
+    initialRouteName="Home"
     screenOptions={{ headerShown: false }}
-    mode="modal"
+    mode="card"
   >
+    <ClueyStack.Screen name="Home" component={Home} />
     <ClueyStack.Screen name="Search" component={Search} />
     <ClueyStack.Screen name="Company" component={Company} />
     <ClueyStack.Screen name="Companies" component={Companies} />
@@ -153,11 +155,6 @@ export default () => {
     await AsyncStorage.setItem('user', JSON.stringify(user));
   };
 
-  const updateLocation = async (location: any) => {
-    setLocation(location);
-    await AsyncStorage.setItem('location', JSON.stringify(location));
-  };
-
   const authContext = useMemo(() => {
     return {
       getIsStarted: async () => {
@@ -183,7 +180,7 @@ export default () => {
 
           await AsyncStorage.setItem('token', token);
           await AsyncStorage.setItem('user', JSON.stringify(user));
-          navigation.navigate(location ? location : 'Search');
+          navigation.navigate(location ? location : 'Home');
         } catch (error) {
           AlertHelper.show('error', 'Sign In', error.message);
         }
@@ -263,7 +260,7 @@ export default () => {
           user: user,
           setUser: updateUser,
           location: location,
-          setLocationContext: updateLocation,
+          // setLocationContext: updateLocation,
         }}
       >
         <NavigationContainer>

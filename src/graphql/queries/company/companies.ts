@@ -7,7 +7,16 @@ export const companyStructure = `{
     id
     name
     brandUrl
-    brandLogoUrl     
+    brandLogoUrl
+    isActive
+    categories {
+      id
+      name
+    }
+    productTypes {
+      id
+      name
+    }
     parentCompanies {
       id
       name
@@ -172,7 +181,6 @@ export const getCompanyByIdCompleted = (
   const { ok, company, error } = getCompanyById;
   setLoading(false);
   if (ok) {
-    // console.log('getCompanyByIdCompleted', company);
     setCompany(company);
   } else {
     AlertHelper.show('error', 'Error', error.message);

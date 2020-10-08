@@ -1,14 +1,11 @@
 import React, { FC, useState, useEffect, useContext } from 'react';
-import { View, Text } from 'react-native';
-import { Image } from 'react-native-elements';
+import { View } from 'react-native';
 
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
+import { useRoute } from '@react-navigation/native';
 import { Formik } from 'formik';
 
-import { ActivityIndicator, Avatar } from 'react-native-paper';
 import { useLazyQuery } from '@apollo/react-hooks';
-import Constants from 'expo-constants';
+
 import styles from './styles';
 import theme from '../../constants/theme';
 
@@ -21,27 +18,25 @@ import {
 import { ICompany } from '../../interfaces';
 import { HorizontalRule } from '../../components/HorizontalRule';
 
-import { RoundedIconButton } from '../../components/Buttons';
 import NavigationHeader from '../../components/Headers/NavigationHeader';
 import { ActionsView } from '../../components/Actions';
 import {
   getCompanyByIdCompleted,
   getCompanyByIdError,
-  GET_COMPANIES_BY_CATEGORY,
   GET_COMPANY_BY_ID,
 } from '../../graphql/queries/company/companies';
 import { StandardContainer } from '../../components/Containers';
-import { NODE_ENV } from '../../hooks/serverInfo';
 import { AppContext } from '../../config/context';
+import { CompanyLogo } from '../../components/Images';
 
 const Company: FC = () => {
-  const { user, setUser } = useContext(AppContext);
+  const { user } = useContext(AppContext);
 
   const route = useRoute();
   const [company, setCompany] = useState<ICompany | undefined>();
 
   const [isLoading, setIsLoading] = useState(false);
-
+  const [] = useState(false);
   const [getCompanyById] = useLazyQuery(GET_COMPANY_BY_ID, {
     fetchPolicy: 'network-only',
     onError: getCompanyByIdError(setCompany, setIsLoading),
@@ -50,16 +45,11 @@ const Company: FC = () => {
 
   useEffect(() => {
     (async () => {
-      // console.log('route.params.company', route.params.company);
       if (route.params.company) {
         await getCompanyById({ variables: { id: route.params.company.id } });
       }
     })();
   }, []);
-
-  useEffect(() => {
-    // console.log('Company: user changed', user);
-  }, [user]);
 
   return (
     <Formik
@@ -80,33 +70,10 @@ const Company: FC = () => {
             <View style={styles.overlayContainer}>
               <NavigationHeader goBack />
               <View style={styles.brandContainer}>
-                {company?.brandLogoUrl ? (
-                  <Image
-                    source={{
-                      uri: `${
-                        Constants.manifest.extra.appVariables[String(NODE_ENV)]
-                          .brandLogoUrlPrefix
-                      }${company?.brandLogoUrl}`,
-                    }}
-                    style={{
-                      width: 200,
-                      height: 200,
-                      resizeMode: 'contain',
-                    }}
-                    PlaceholderContent={
-                      <ActivityIndicator color={theme.dark.hex} size="large" />
-                    }
-                  />
-                ) : (
-                  <View>
-                    <Text
-                      adjustsFontSizeToFit={true}
-                      style={styles.companyNameText}
-                    >
-                      {company?.name}
-                    </Text>
-                  </View>
-                )}
+                <CompanyLogo
+                  logoUri={company?.brandLogoUrl}
+                  text={company?.name}
+                />
               </View>
 
               <View style={styles.infoContainer}>
@@ -129,7 +96,6 @@ const Company: FC = () => {
                   />
                   <PlanetScoreCard company={company} />
                 </View>
-                <View style={styles.actionButtonContainer}></View>
               </View>
             </View>
             <ActionsView company={company} />

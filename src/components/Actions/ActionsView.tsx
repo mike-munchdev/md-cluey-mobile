@@ -20,12 +20,14 @@ import {
 } from '../../graphql/queries/user/user';
 import { AppContext } from '../../config/context';
 import { ICompany, ICompanyReponse, IUser } from '../../interfaces';
+import { StackActions, useNavigation } from '@react-navigation/native';
 
 export interface IActionsViewProps {
   company?: ICompany;
 }
 
 const ActionsView: FC<IActionsViewProps> = ({ company }) => {
+  const navigation = useNavigation();
   const { user, setUser } = useContext(AppContext);
   const [companyResponse, setCompanyResponse] = useState<
     ICompanyReponse | null | undefined
@@ -34,8 +36,6 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
 
   useEffect(() => {
     if (company) {
-      // console.log('user, user', user);
-      // console.log('user, company', company);
       const response = user?.companyResponses.find(
         (r) => r.company.id === company.id
       );
@@ -45,7 +45,6 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
   }, [company]);
 
   useEffect(() => {
-    // console.log('ActionsView useEffect companyResponse', companyResponse);
     if (companyResponse) {
       const responses = [
         ...user?.companyResponses.filter((r) => r.id !== companyResponse.id),
@@ -53,21 +52,21 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
       ];
       const updatedUser = { ...user };
       updatedUser.companyResponses = responses;
-      // console.log('updateUser', updatedUser);
+
       setUser(updatedUser);
     }
   }, [companyResponse]);
 
-  useEffect(() => {
-    // console.log('ActionsView: user changed', user);
-    // const getUserCompanyResponse = user?.companyResponses.find(
-    //   (r) => r.id === companyResponse?.id
-    // );
-    // if (getUserCompanyResponse) {
-    //   console.log('getUserCompanyResponse', getUserCompanyResponse);
-    //   setCompanyResponse(getUserCompanyResponse);
-    // }
-  }, [user]);
+  // useEffect(() => {
+  //   // console.log('ActionsView: user changed', user);
+  //   // const getUserCompanyResponse = user?.companyResponses.find(
+  //   //   (r) => r.id === companyResponse?.id
+  //   // );
+  //   // if (getUserCompanyResponse) {
+  //   //   console.log('getUserCompanyResponse', getUserCompanyResponse);
+  //   //   setCompanyResponse(getUserCompanyResponse);
+  //   // }
+  // }, [user]);
 
   const [updateCompanyResponseForUser] = useMutation(
     UPDATE_COMPANY_RESPONSE_FOR_USER,
@@ -101,7 +100,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
         <Tooltip
           width={300}
           height={150}
-          containerStyle={{ backgroundColor: theme.opaque }}
+          containerStyle={styles.toolTipContainer}
           backgroundColor={theme.opaque}
           closeOnlyOnBackdropPress={true}
           popover={
@@ -210,33 +209,30 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
             </View>
           }
         >
-          <View
-            style={{
-              width: 64,
-              height: 64,
-              backgroundColor: theme.white.hex,
-              borderRadius: 32,
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderColor: theme.dark.hex,
-              borderWidth: 2,
-            }}
-          >
-            <FontAwesome5 name="smile" size={36} color={theme.dark.hex} />
+          <View style={styles.buttonView}>
+            <View style={styles.iconView}>
+              <FontAwesome5 name="smile" size={36} color={theme.dark.hex} />
+            </View>
+            <Text style={styles.buttonText}>Likes/Dislikes</Text>
           </View>
         </Tooltip>
       </View>
       <RoundedIconButton
-        onPress={() => alert('search by category')}
+        onPress={() => navigation.dispatch(StackActions.popToTop())}
         backgroundColor={theme.white.hex}
         borderColor={theme.dark.hex}
         size={64}
         borderWidth={2}
         icon={<FontAwesome name="search" size={32} color={theme.dark.hex} />}
-        textStyle={{ fontSize: 14 }}
+        textStyle={styles.buttonText}
+        text="Search"
       />
       <RoundedIconButton
-        onPress={() => alert('search by category')}
+        onPress={() =>
+          navigation.navigate('ProductTypes', {
+            productTypes: company?.productTypes,
+          })
+        }
         backgroundColor={theme.white.hex}
         borderColor={theme.dark.hex}
         size={64}
@@ -248,7 +244,8 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
             color={theme.dark.hex}
           />
         }
-        textStyle={{ fontSize: 14 }}
+        textStyle={styles.buttonText}
+        text="Alternatives"
       />
     </View>
   );

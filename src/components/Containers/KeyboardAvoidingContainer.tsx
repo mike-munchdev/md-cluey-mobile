@@ -5,7 +5,9 @@ import {
   Platform,
   SafeAreaView,
   StatusBar,
+  View,
 } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 
 import { DismissKeyboard } from '../../components/TextInput';
 import theme from '../../constants/theme';
@@ -27,7 +29,19 @@ const KeyboardAvoidingContainer: FC<IKeyboardAvoidingContainerProps> = ({
       >
         <SafeAreaView style={styles.safeAreaContainer}>
           <StatusBar translucent backgroundColor="transparent" />
-          {children}
+          {isLoading ? (
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <ActivityIndicator size="large" color={theme.dark.hex} />
+            </View>
+          ) : (
+            children
+          )}
         </SafeAreaView>
       </KeyboardAvoidingView>
     </DismissKeyboard>

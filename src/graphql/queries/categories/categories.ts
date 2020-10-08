@@ -6,7 +6,7 @@ import Bugsnag from '@bugsnag/expo';
 export const categoriesStructure = `{    
     id
     name
-    slug
+    isActive
     logoUrl
   }
 `;

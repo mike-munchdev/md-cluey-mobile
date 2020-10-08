@@ -24,7 +24,7 @@ export default StyleSheet.create({
   },
   infoContainer: {
     marginHorizontal: 10,
-    height: '65%',
+    height: 500,
     flexDirection: 'column',
   },
   searchCaptionText: {
@@ -34,9 +34,4 @@ export default StyleSheet.create({
     color: theme.dark.hex,
   },
   actionButtonContainer: {},
-  companyNameText: {
-    fontFamily: 'MontserratBold',
-    fontSize: 42,
-    color: theme.dark.hex,
-  },
 });
