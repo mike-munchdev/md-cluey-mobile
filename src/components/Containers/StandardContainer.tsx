@@ -1,5 +1,11 @@
 import React, { FC } from 'react';
-import { StyleSheet, SafeAreaView, StatusBar, View } from 'react-native';
+import {
+  StyleSheet,
+  SafeAreaView,
+  StatusBar,
+  View,
+  ImageBackground,
+} from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 
 import theme from '../../constants/theme';
@@ -12,23 +18,33 @@ const StandardContainer: FC<IStandardContainerProps> = ({
   children,
 }) => {
   return (
-    <SafeAreaView style={styles.safeAreaContainer}>
-      <StatusBar translucent backgroundColor="transparent" />
+    <ImageBackground
+      source={require('../../../assets/images/background.jpg')}
+      style={styles.container}
+    >
+      <SafeAreaView style={styles.safeAreaContainer}>
+        <StatusBar translucent backgroundColor="transparent" />
 
-      {isLoading ? (
-        <View
-          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-        >
-          <ActivityIndicator size="large" color={theme.dark.hex} />
-        </View>
-      ) : (
-        children
-      )}
-    </SafeAreaView>
+        {isLoading ? (
+          <View
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+          >
+            <ActivityIndicator size="large" color={theme.dark.hex} />
+          </View>
+        ) : (
+          children
+        )}
+      </SafeAreaView>
+    </ImageBackground>
   );
 };
 export default StandardContainer;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
   safeAreaContainer: { flex: 1, backgroundColor: theme.dark.rgba(0.4) },
 });
