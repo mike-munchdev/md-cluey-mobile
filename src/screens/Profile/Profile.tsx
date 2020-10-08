@@ -13,6 +13,7 @@ import schema from '../../validation/passwordSchema';
 import { List, Paragraph } from 'react-native-paper';
 import { ListItem } from 'react-native-elements';
 import {
+  EditDateValueModal,
   EditOptionsValueModal,
   EditStringValueModal,
 } from '../../components/Modals';
@@ -39,14 +40,26 @@ export interface IOptionsProps {
 export interface IFieldProps {
   fieldLabel: string;
   fieldName: string;
-  fieldValue: string | Date;
+  fieldValue: string | Date | undefined;
   secureTextEntry: boolean;
   isValid: (value: string) => boolean;
   captionText?: string[];
   options: IOptionsProps[] | undefined;
   placeholder: string;
-  maskType?: 'phone' | 'date' | 'money' | 'none' | undefined;
 }
+const initialFieldProps = {
+  fieldLabel: '',
+  fieldName: '',
+  fieldValue: '',
+  secureTextEntry: false,
+  isValid: () => {
+    return false;
+  },
+  captionText: [],
+  placeholder: '',
+
+  options: [],
+};
 
 const Profile: FC = () => {
   const { user, setUser } = useContext(AppContext);
@@ -54,23 +67,13 @@ const Profile: FC = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [isStringDialogVisible, setIsStringDialogVisible] = useState(false);
   const [isOptionsDialogVisible, setIsOptionsDialogVisible] = useState(false);
-  const [fieldProps, setFieldProps] = useState<IFieldProps>({
-    fieldLabel: '',
-    fieldName: '',
-    fieldValue: '',
-    secureTextEntry: false,
-    isValid: () => {
-      return false;
-    },
-    captionText: [],
-    placeholder: '',
-    maskType: 'none',
-    options: [],
-  });
+  const [isDateDialogVisible, setIsDateDialogVisible] = useState(false);
+  const [fieldProps, setFieldProps] = useState<IFieldProps>(initialFieldProps);
 
   const resetDialog = () => {
     setIsStringDialogVisible(false);
     setIsOptionsDialogVisible(false);
+    setIsDateDialogVisible(false);
     setIsSaving(false);
   };
 
@@ -106,6 +109,7 @@ const Profile: FC = () => {
           },
         });
       }
+      setFieldProps(initialFieldProps);
     })();
   };
 
@@ -147,7 +151,7 @@ const Profile: FC = () => {
                   },
                   captionText: [],
                   placeholder: 'First Name',
-                  maskType: 'none',
+
                   options: [],
                 });
                 setIsStringDialogVisible(true);
@@ -170,12 +174,12 @@ const Profile: FC = () => {
                   fieldLabel: 'Last Name',
                   fieldValue: user ? user.lastName : '',
                   secureTextEntry: false,
-                  isValid: (value) => {
+                  isValid: (value: string) => {
                     return value.length > 0;
                   },
                   captionText: [],
                   placeholder: 'Last Name',
-                  maskType: 'none',
+
                   options: [],
                 });
 
@@ -188,6 +192,7 @@ const Profile: FC = () => {
               </ListItem.Content>
               <ListItem.Chevron />
             </ListItem>
+
             {user?.facebookId || user?.googleId ? null : (
               <Fragment>
                 <ListItem
@@ -208,7 +213,7 @@ const Profile: FC = () => {
                       },
                       captionText: [],
                       placeholder: 'E-mail',
-                      maskType: 'none',
+
                       options: [],
                     });
 
@@ -238,7 +243,7 @@ const Profile: FC = () => {
                       },
                       captionText: passwordRequirments,
                       placeholder: 'Password',
-                      maskType: 'none',
+
                       options: [],
                     });
 
@@ -267,19 +272,46 @@ const Profile: FC = () => {
               bottomDivider
               onPress={() => {
                 setFieldProps({
+                  fieldName: 'username',
+                  fieldLabel: 'Username',
+                  fieldValue: user ? user.username : '',
+                  secureTextEntry: false,
+                  isValid: (value: string) => {
+                    return value.length > 0;
+                  },
+                  captionText: [],
+                  placeholder: 'Username',
+                  options: [],
+                });
+
+                setIsStringDialogVisible(true);
+              }}
+            >
+              <ListItem.Content>
+                <ListItem.Title>{user?.username}</ListItem.Title>
+                <ListItem.Subtitle>Username</ListItem.Subtitle>
+              </ListItem.Content>
+              <ListItem.Chevron />
+            </ListItem>
+            <ListItem
+              style={{
+                marginHorizontal: 10,
+              }}
+              bottomDivider
+              onPress={() => {
+                setFieldProps({
                   fieldName: 'dob',
                   fieldLabel: 'Age',
                   fieldValue: user?.dob,
                   secureTextEntry: false,
                   isValid: (value: string) => {
-                    return value.length > 0 && isDate(new Date(value));
+                    return isDate(value);
                   },
                   captionText: [],
                   placeholder: 'MM/DD/YYYY',
-                  maskType: 'date',
                   options: [],
                 });
-                setIsStringDialogVisible(true);
+                setIsDateDialogVisible(true);
               }}
             >
               <ListItem.Content>
@@ -303,7 +335,7 @@ const Profile: FC = () => {
                   fieldLabel: 'Gender',
                   fieldValue: user ? user.gender : '',
                   secureTextEntry: false,
-                  isValid: (value) => {
+                  isValid: (value: string) => {
                     return value.length > 0;
                   },
                   captionText: [],
@@ -333,12 +365,12 @@ const Profile: FC = () => {
                   fieldLabel: 'City',
                   fieldValue: user ? user.city : '',
                   secureTextEntry: false,
-                  isValid: (value) => {
+                  isValid: (value: string) => {
                     return value.length > 0;
                   },
                   captionText: [],
                   placeholder: 'City',
-                  maskType: 'none',
+
                   options: [],
                 });
 
@@ -362,7 +394,7 @@ const Profile: FC = () => {
                   fieldLabel: 'State',
                   fieldValue: user ? user.state : '',
                   secureTextEntry: false,
-                  isValid: (value) => {
+                  isValid: (value: string) => {
                     return value.length > 0;
                   },
                   captionText: [],
@@ -424,16 +456,33 @@ const Profile: FC = () => {
           </List.Section>
         </ScrollView>
       </View>
+      <EditDateValueModal
+        isVisible={isDateDialogVisible}
+        isSaving={isSaving}
+        isValid={fieldProps.isValid}
+        success={updateValue}
+        cancel={() => {
+          setFieldProps(initialFieldProps);
+          setIsDateDialogVisible(false);
+        }}
+        value={fieldProps.fieldValue}
+        title={fieldProps.fieldLabel}
+        secure={fieldProps.secureTextEntry}
+        captionText={fieldProps.captionText}
+        placeholder={fieldProps.placeholder}
+      />
       <EditStringValueModal
         isVisible={isStringDialogVisible}
         isSaving={isSaving}
         isValid={fieldProps.isValid}
         success={updateValue}
         cancel={() => {
+          setFieldProps(initialFieldProps);
           setIsStringDialogVisible(false);
         }}
-        maskType={fieldProps.maskType}
-        value={fieldProps.fieldValue}
+        value={
+          fieldProps.fieldValue ? String(fieldProps.fieldValue) : undefined
+        }
         title={fieldProps.fieldLabel}
         secure={fieldProps.secureTextEntry}
         captionText={fieldProps.captionText}
@@ -445,9 +494,12 @@ const Profile: FC = () => {
         isValid={fieldProps.isValid}
         success={updateValue}
         cancel={() => {
+          setFieldProps(initialFieldProps);
           setIsOptionsDialogVisible(false);
         }}
-        value={fieldProps.fieldValue}
+        value={
+          fieldProps.fieldValue ? String(fieldProps.fieldValue) : undefined
+        }
         title={fieldProps.fieldLabel}
         secure={fieldProps.secureTextEntry}
         captionText={fieldProps.captionText}

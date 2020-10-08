@@ -22,6 +22,7 @@ import {
 import { getProductTypesByCategoryCompleted } from '../../graphql/queries/productTypes/productTypes';
 import { AppContext } from '../../config/context';
 import MyLikesList from '../../components/Lists/MyLikesList';
+import { PageHeaderText } from '../../components/Text';
 
 const MyLikes: FC = () => {
   const { user } = useContext(AppContext);
@@ -67,28 +68,10 @@ const MyLikes: FC = () => {
   const onChangeSearch = (query: string) => setSearchQuery(query);
 
   return (
-    <StandardContainer>
+    <StandardContainer isLoading={isLoading}>
       <View style={styles.overlayContainer}>
         <NavigationHeader goBack />
-        <View
-          style={{
-            width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: 20,
-          }}
-        >
-          <Text
-            style={{
-              fontFamily: 'CoinyRegular',
-              fontSize: 48,
-              color: theme.dark.hex,
-            }}
-          >
-            My Likes
-          </Text>
-        </View>
-
+        <PageHeaderText title="My Likes" />
         <MyLikesList
           list={filteredList}
           searchQuery={searchQuery}

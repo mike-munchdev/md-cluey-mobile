@@ -24,7 +24,7 @@ export interface IEditOptionsValueModalProps {
   isSaving: boolean;
   cancel: () => void;
   success: (updatedValue: string) => void;
-  value: string | Date;
+  value: string | undefined;
   title: string;
   secure: boolean;
   isValid: (value: string) => boolean;

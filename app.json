@@ -2,7 +2,7 @@
   "expo": {
     "name": "Cluey",
     "slug": "cluey-mobile",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/Icon-1024.png",
     "facebookScheme": "fb1187672448283641",
@@ -59,8 +59,8 @@
           "apiServerUrl": "localhost:4004",
           "httpProtocol": "http",
           "wsProtocol": "ws",
-          "categoryImageUrlPrefix": "https://md-cluey-test.herokuapp.com/categories/",
-          "brandLogoUrlPrefix": "https://md-cluey-test.herokuapp.com/logos/"
+          "categoryImageUrlPrefix": "http://localhost:4004/categories/",
+          "brandLogoUrlPrefix": "http://localhost:4004/logos/"
         }
       },
       "uplead": {

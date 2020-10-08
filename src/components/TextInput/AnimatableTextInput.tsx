@@ -13,7 +13,7 @@ import colors from '../../constants/colors';
 import theme from '../../constants/theme';
 import styles from './styles';
 
-import { TextInput } from 'react-native-paper';
+import { Snackbar, TextInput } from 'react-native-paper';
 
 interface ITextInputProps {
   placeholder?: string;
@@ -55,34 +55,36 @@ const AnimatableTextInput: FC<ITextInputProps> = ({
   };
 
   return (
-    <View style={[containerStyles]}>
-      <TextInput
-        mode="outlined"
-        left={
-          <TextInput.Icon
-            onPress={() => {
-              if (handleIconPress) {
-                handleIconPress();
-              }
-            }}
-            name={iconName || ''}
-            color={theme.dark.hex}
-            size={iconSize || 20}
-          />
-        }
-        ref={textInputRef}
-        theme={{ colors: { primary: theme.dark.hex } }}
-        placeholderTextColor={theme.opaque}
-        placeholder={placeholder}
-        style={styles.textInput}
-        secureTextEntry={secureTextEntry}
-        onChangeText={handleChange}
-        autoCapitalize="none"
-        value={value}
-        underlineColorAndroid={theme.text}
-        error={showErrorState(touched, errors, name)}
-      />
-    </View>
+    <Fragment>
+      <View style={[containerStyles]}>
+        <TextInput
+          mode="outlined"
+          left={
+            <TextInput.Icon
+              onPress={() => {
+                if (handleIconPress) {
+                  handleIconPress();
+                }
+              }}
+              name={iconName || ''}
+              color={theme.dark.hex}
+              size={iconSize || 20}
+            />
+          }
+          ref={textInputRef}
+          theme={{ colors: { primary: theme.dark.hex } }}
+          placeholderTextColor={theme.opaque}
+          placeholder={placeholder}
+          style={styles.textInput}
+          secureTextEntry={secureTextEntry}
+          onChangeText={handleChange}
+          autoCapitalize="none"
+          value={value}
+          underlineColorAndroid={theme.text}
+          error={showErrorState(touched, errors, name)}
+        />
+      </View>
+    </Fragment>
   );
 };
 

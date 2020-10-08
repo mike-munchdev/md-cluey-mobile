@@ -4,16 +4,17 @@ export interface IUser {
   middleName: string;
   lastName: string;
   email: string;
+  username?: string;
   googleId: string;
   facebookId: string;
   companyResponses: ICompanyReponse[];
   confirmToken: string;
   isProfilePublic: Boolean;
   isActive: Boolean;
-  dob: Date;
-  city: string;
-  state: string;
-  gender: string;
+  dob?: Date;
+  city?: string;
+  state?: string;
+  gender?: string;
 }
 export interface ICompanyReponse {
   id: string;

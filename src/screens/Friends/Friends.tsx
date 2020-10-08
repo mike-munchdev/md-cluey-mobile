@@ -13,6 +13,7 @@ import { Searchbar } from 'react-native-paper';
 import { Avatar, ListItem } from 'react-native-elements';
 import { StandardContainer } from '../../components/Containers';
 import NavigationHeader from '../../components/Headers/NavigationHeader';
+import { PageHeaderText } from '../../components/Text';
 
 export interface IFriend {
   id: number;
@@ -65,24 +66,7 @@ const Friends: FC = () => {
     <StandardContainer>
       <View style={styles.overlayContainer}>
         <NavigationHeader goBack />
-        <View
-          style={{
-            width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: 20,
-          }}
-        >
-          <Text
-            style={{
-              fontFamily: 'CoinyRegular',
-              fontSize: 48,
-              color: theme.dark.hex,
-            }}
-          >
-            Friends
-          </Text>
-        </View>
+        <PageHeaderText title="Friends" />
         <View style={styles.friendsContainer}>
           <Searchbar
             placeholder="Name or @username"

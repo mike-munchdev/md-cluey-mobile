@@ -25,7 +25,7 @@ import theme from '../../constants/theme';
 import SignInContainer from './SignInContainer';
 import { ActionButton } from '../../components/Buttons';
 import TextButton from '../../components/Buttons/TextButton';
-import { HrText } from '../../components/Text';
+import { HrText, LogoText } from '../../components/Text';
 import { AlertHelper } from '../../utils/alert';
 import {
   facebookAuthentication,
@@ -46,7 +46,7 @@ const SignIn: FC = () => {
     onCompleted: getUserTokenCompleted(
       signIn,
       navigation,
-      'Search',
+      'Home',
       setSignInLoading
     ),
   });
@@ -55,6 +55,7 @@ const SignIn: FC = () => {
     try {
       const { data, token } = await googleAuthentication();
       const { id, email, familyName, givenName } = data;
+      setSignInLoading(true);
       await getUserToken({
         variables: {
           email,
@@ -76,7 +77,7 @@ const SignIn: FC = () => {
       const { data, token } = await facebookAuthentication();
 
       const { id, email, first_name, last_name } = data;
-
+      setSignInLoading(true);
       await getUserToken({
         variables: {
           email,
@@ -106,30 +107,14 @@ const SignIn: FC = () => {
               flexDirection: 'row',
             }}
           >
-            {/* <TouchableOpacity
-              onPress={() => {
-                navigation.dispatch(StackActions.replace('GetStarted'));
-              }}
-              style={{ position: 'absolute', left: 15 }}
-            >
-              <FontAwesome5
-                name="angle-left"
-                size={24}
-                color={theme.dark.hex}
-              />
-            </TouchableOpacity> */}
-            <Animatable.Text
+            <LogoText
               animation="fadeIn"
-              style={{
-                fontFamily: 'CoinyRegular',
-                fontSize: 72,
+              textStyle={{
                 color: theme.dark.hex,
                 marginTop: 5,
                 justifyContent: 'center',
               }}
-            >
-              Cluey
-            </Animatable.Text>
+            />
           </View>
         </View>
         <Formik
@@ -232,6 +217,14 @@ const SignIn: FC = () => {
                     leftIcon={
                       <FontAwesome5 name="google" size={24} color="white" />
                     }
+                  />
+                  <ActionButton
+                    handlePress={() => navigation.navigate('SignUp')}
+                    textColor={theme.buttonText}
+                    color={theme.dark.hex}
+                    title="Sign Up"
+                    buttonStyles={{ marginTop: 10 }}
+                    isLoading={signInLoading}
                   />
                 </View>
               </View>

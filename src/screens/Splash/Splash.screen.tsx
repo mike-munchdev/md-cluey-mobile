@@ -5,6 +5,7 @@ import * as Animatable from 'react-native-animatable';
 
 import styles from './styles';
 import theme from '../../constants/theme';
+import { LogoText } from '../../components/Text';
 
 export interface ISplashProps {
   finishLoading?: Function;
@@ -46,16 +47,7 @@ const Splash: FC<ISplashProps> = ({ finishLoading }) => {
         onAnimationEnd={() => finishLoading()}
       />
       <View style={{ marginHorizontal: 50 }}>
-        <Animatable.Text
-          animation={fadeIn}
-          style={{
-            fontFamily: 'CoinyRegular',
-            fontSize: 72,
-            color: theme.text,
-          }}
-        >
-          Cluey
-        </Animatable.Text>
+        <LogoText animation={fadeIn} />
       </View>
     </Animatable.View>
   );

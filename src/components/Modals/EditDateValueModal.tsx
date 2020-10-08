@@ -1,54 +1,49 @@
 import React, { useState, useEffect, FC } from 'react';
-import { Text, View } from 'react-native';
 import {
   ActivityIndicator,
   Button,
-  Card,
   Dialog,
   Paragraph,
   Portal,
-  TextInput,
-  Title,
 } from 'react-native-paper';
-import { MaskService } from 'react-native-masked-text';
-import { isDate } from 'lodash';
-import moment from 'moment';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import theme from '../../constants/theme';
 
-export interface IEditStringValueModalProps {
+export interface IEditDateValueModalProps {
   isVisible: boolean;
   isSaving: boolean;
   cancel: () => void;
   success: (updatedValue: string) => void;
-  value: string | undefined;
+  value: string | Date | undefined;
   title: string;
   secure: boolean;
-  isValid: (value: string) => boolean;
+  isValid: (value: Date) => boolean;
   captionText?: string[];
   placeholder: string;
 }
-const EditStringValueModal: FC<IEditStringValueModalProps> = ({
+const EditDateValueModal: FC<IEditDateValueModalProps> = ({
   isVisible,
   isSaving,
   cancel,
   success,
-  value,
   title,
   secure,
   isValid,
   captionText,
-  placeholder,
+  value,
 }) => {
-  const [modalValue, setModalValue] = useState('');
-  const [secureTextEntry, setSecureTextEntry] = useState(false);
+  const [modalValue, setModalValue] = useState<Date | undefined>();
 
   useEffect(() => {
-    setModalValue(value ? value.toString() : '');
+    if (value) {
+      setModalValue(new Date(value));
+    }
   }, [value]);
 
-  useEffect(() => {
-    setSecureTextEntry(secure);
-  }, [secure]);
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || modalValue;
+    setModalValue(currentDate);
+  };
 
   return (
     <Portal>
@@ -62,28 +57,13 @@ const EditStringValueModal: FC<IEditStringValueModalProps> = ({
               color={theme.dark.hex}
             />
           ) : (
-            <TextInput
-              mode="outlined"
-              left={
-                <TextInput.Icon
-                  name="pencil"
-                  color={theme.dark.hex}
-                  size={20}
-                  onPress={() => {
-                    if (secure) {
-                      setSecureTextEntry(!secureTextEntry);
-                    }
-                  }}
-                />
-              }
-              theme={{ colors: { primary: theme.dark.hex } }}
-              placeholderTextColor={theme.opaque}
-              placeholder={placeholder}
-              autoCapitalize="none"
-              value={modalValue || ''}
-              underlineColorAndroid={theme.text}
-              onChangeText={(v) => setModalValue(v)}
-              secureTextEntry={secureTextEntry}
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={modalValue || new Date()}
+              mode={'date'}
+              is24Hour={false}
+              display="default"
+              onChange={onChange}
             />
           )}
           {captionText
@@ -110,4 +90,4 @@ const EditStringValueModal: FC<IEditStringValueModalProps> = ({
     </Portal>
   );
 };
-export default EditStringValueModal;
+export default EditDateValueModal;

@@ -5,7 +5,8 @@ import Bugsnag from '@bugsnag/expo';
 
 export const productTypesStructure = `{    
     id
-    name    
+    name
+    isActive 
   }
 `;
 

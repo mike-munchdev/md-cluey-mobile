@@ -18,9 +18,10 @@ import { PageHeaderText } from '../../components/Text';
 
 const ProductTypes: FC = () => {
   const route = useRoute();
-  const [] = useState('');
 
-  const [productTypes, setProductTypes] = useState([]);
+  const [productTypes, setProductTypes] = useState(
+    route.params.productTypes ? route.params.productTypes : []
+  );
 
   const [isLoading, setIsLoading] = useState(false);
   const [categoryId] = useState(
@@ -52,10 +53,12 @@ const ProductTypes: FC = () => {
   }, [categoryId]);
 
   return (
-    <StandardContainer>
+    <StandardContainer isLoading={false}>
       <View style={styles.overlayContainer}>
         <NavigationHeader goBack />
-        <PageHeaderText title="Product Types" />
+        <PageHeaderText
+          title={route.params.productTypes ? 'Alternatives' : 'Subcategories'}
+        />
         <ProductTypesList list={productTypes} loading={isLoading} />
       </View>
     </StandardContainer>

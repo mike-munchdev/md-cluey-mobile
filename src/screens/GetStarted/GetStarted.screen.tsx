@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../config/context';
 import theme from '../../constants/theme';
 import { ActionButton } from '../../components/Buttons';
+import { LogoText } from '../../components/Text';
 
 const GetStarted = () => {
   const navigation = useNavigation();
@@ -21,16 +22,7 @@ const GetStarted = () => {
     >
       <View style={styles.overlayContainer}>
         <View style={styles.top}>
-          <Animatable.Text
-            animation="fadeIn"
-            style={{
-              fontFamily: 'CoinyRegular',
-              fontSize: 72,
-              color: theme.text,
-            }}
-          >
-            Cluey
-          </Animatable.Text>
+          <LogoText animation="fadeIn" />
         </View>
         <View style={styles.sloganContainer}>
           <Text style={styles.slogan}>Informed and Conscious Consumerism</Text>

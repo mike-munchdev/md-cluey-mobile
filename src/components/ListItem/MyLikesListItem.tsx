@@ -25,7 +25,6 @@ const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item, title }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // console.log('MyLikesListItem useEffect companyResponse', companyResponse);
     if (companyResponse) {
       const responses = [
         ...user?.companyResponses.filter((r) => r.id !== companyResponse.id),

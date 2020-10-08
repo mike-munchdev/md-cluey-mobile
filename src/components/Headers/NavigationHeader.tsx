@@ -7,8 +7,9 @@ import theme from '../../constants/theme';
 
 export interface INavigationHeaderProps {
   goBack?: boolean;
+  showMenu?: boolean;
 }
-const NavigationHeader: FC<INavigationHeaderProps> = ({ goBack }) => {
+const NavigationHeader: FC<INavigationHeaderProps> = ({ goBack, showMenu }) => {
   const navigation = useNavigation();
   return (
     <View style={{ flexDirection: 'row' }}>
@@ -19,17 +20,19 @@ const NavigationHeader: FC<INavigationHeaderProps> = ({ goBack }) => {
             navigation.goBack();
           }}
         >
-          <FontAwesome5 name="times" size={24} color={theme.dark.hex} />
+          <FontAwesome5 name="angle-left" size={30} color={theme.dark.hex} />
         </TouchableOpacity>
       )}
-      <TouchableOpacity
-        style={styles.barsContainer}
-        onPress={() => {
-          navigation.openDrawer();
-        }}
-      >
-        <FontAwesome name="bars" size={24} color={theme.dark.hex} />
-      </TouchableOpacity>
+      {showMenu && (
+        <TouchableOpacity
+          style={styles.barsContainer}
+          onPress={() => {
+            navigation.openDrawer();
+          }}
+        >
+          <FontAwesome name="bars" size={24} color={theme.dark.hex} />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

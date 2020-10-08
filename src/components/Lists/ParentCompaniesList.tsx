@@ -52,7 +52,7 @@ const ParentCompaniesList: FC<IParentCompaniesListProps> = ({
                 }}
                 textStyle={{
                   color: theme.text,
-                  // fontFamily: 'CoinyRegular',
+
                   fontWeight: 'bold',
                   fontSize: 16,
                   marginTop: 2,
