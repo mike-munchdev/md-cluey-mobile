@@ -9,11 +9,12 @@ export default StyleSheet.create({
     flex: 1,
   },
   brandContainer: {
-    height: '20%',
+    // height: '20%',
     justifyContent: 'center',
     alignItems: 'center',
     // backgroundColor: 'red',
     marginHorizontal: 10,
+    marginBottom: 30,
     // marginTop: 50,
   },
   brandsContainer: {

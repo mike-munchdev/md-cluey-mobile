@@ -38,13 +38,21 @@ export const facebookAuthentication = async () => {
 export const googleAuthentication = async () => {
   return new Promise(async (resolve, reject) => {
     try {
+      const iosClientId =
+        '576013538553-pdsto80kets3kd92o2jguikmkvtvnas5.apps.googleusercontent.com';
+      // const iosClientId = Constants.manifest.extra.appVariables[String(NODE_ENV)]
+      // .googleClientIdIos;
+      const androidClientId =
+        '576013538553-d8gffmivuiibqtcilddvcd8ajs91e2vj.apps.googleusercontent.com';
+      // const androidClientId =
+      //   Constants.manifest.extra.appVariables[String(NODE_ENV)]
+      //     .googleClientIdAndroid;
       const { type, accessToken, user } = await Google.logInAsync({
-        iosClientId:
-          Constants.manifest.extra.appVariables[String(NODE_ENV)]
-            .googleClientIdIos,
-        androidClientId:
-          Constants.manifest.extra.appVariables[String(NODE_ENV)]
-            .googleClientIdAndroid,
+        iosClientId,
+        androidClientId,
+        iosStandaloneAppClientId: iosClientId,
+        androidStandaloneAppClientId: androidClientId,
+        scopes: ['profile', 'email'],
       });
 
       if (type === 'success') {
@@ -58,7 +66,7 @@ export const googleAuthentication = async () => {
       }
     } catch (error) {
       Bugsnag.notify(error);
-      reject(error.message);
+      reject(error);
     }
   });
 };

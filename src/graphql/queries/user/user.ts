@@ -8,6 +8,7 @@ import { companyStructure } from '../company/companies';
 export const responseStructure = `{  
     id
     companyId
+    company ${companyStructure}
     response  
 }`;
 export const userStructure = `{

@@ -25,7 +25,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
   },
   percentText: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: '900',
     color: theme.text,
   },
@@ -33,16 +33,17 @@ export default StyleSheet.create({
     backgroundColor: 'red',
     height: 40,
     paddingRight: 5,
-    justifyContent: 'center',
-    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   democratView: {
     backgroundColor: 'blue',
     height: 40,
-
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexDirection: 'row',
     paddingLeft: 5,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
   },
   politicalSubTextContainer: {
     alignItems: 'center',

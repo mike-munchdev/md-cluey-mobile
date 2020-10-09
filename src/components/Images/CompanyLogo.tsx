@@ -15,19 +15,14 @@ export interface ICompanyLogoProps {
   text?: string;
 }
 
+const IMAGE_HEIGHT = 150;
+const IMAGE_WIDTH = 150;
 const CompanyLogo: FC<ICompanyLogoProps> = ({ logoUri, text }) => {
   const [extension, setExtension] = useState<string | undefined>('');
   const [imageError, setImageError] = useState<boolean>(false);
 
   useEffect(() => {
     const extension = logoUri?.slice(logoUri?.lastIndexOf('.') + 1);
-    console.log(
-      'logoUri',
-      `${
-        Constants.manifest.extra.appVariables[String(NODE_ENV)]
-          .brandLogoUrlPrefix
-      }${logoUri}`
-    );
     setExtension(extension);
   }, [logoUri]);
 
@@ -41,7 +36,7 @@ const CompanyLogo: FC<ICompanyLogoProps> = ({ logoUri, text }) => {
     );
 
   if (extension === 'svg')
-    return <SvgUri width="100%" height="100%" uri={logoUri} />;
+    return <SvgUri width={IMAGE_WIDTH} height={IMAGE_HEIGHT} uri={logoUri} />;
 
   return (
     <Image
@@ -52,8 +47,8 @@ const CompanyLogo: FC<ICompanyLogoProps> = ({ logoUri, text }) => {
         }${logoUri}`,
       }}
       style={{
-        width: 150,
-        height: 150,
+        width: IMAGE_WIDTH,
+        height: IMAGE_HEIGHT,
         resizeMode: 'contain',
       }}
       PlaceholderContent={

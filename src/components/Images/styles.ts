@@ -9,7 +9,7 @@ export default StyleSheet.create({
   },
   companyNameText: {
     fontFamily: 'MontserratBold',
-    fontSize: 42,
+    fontSize: 28,
     color: theme.dark.hex,
   },
 });

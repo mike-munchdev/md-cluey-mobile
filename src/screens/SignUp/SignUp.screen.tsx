@@ -26,10 +26,13 @@ import {
 } from '../../utils/socialAuth';
 import { StandardContainer } from '../../components/Containers';
 import { passwordRequirments } from '../../validation/passwordSchema';
+import { Overlay, Button } from 'react-native-elements';
+import { TextInput } from 'react-native-paper';
 
 const SignUp: FC = () => {
   const { signUp } = useContext(AuthContext);
   const [isLoading] = useState(false);
+  const [passwordSnackVisible, setPasswordSnackVisible] = useState(false);
   const [passwordSecureTextEntry, setPasswordSecureTextEntry] = useState(true);
   const navigation = useNavigation();
 
@@ -116,7 +119,7 @@ const SignUp: FC = () => {
                     <AnimatableTextInput
                       label="FIRST NAME"
                       placeholder="Enter First Name"
-                      iconName="account-circle"
+                      leftIconName="account-circle"
                       name="firstName"
                       value={values.firstName}
                       errors={errors}
@@ -126,7 +129,7 @@ const SignUp: FC = () => {
                     <AnimatableTextInput
                       label="LAST NAME"
                       placeholder="Enter Last Name"
-                      iconName="account-circle"
+                      leftIconName="account-circle"
                       name="lastName"
                       value={values.lastName}
                       errors={errors}
@@ -137,7 +140,7 @@ const SignUp: FC = () => {
                     <AnimatableTextInput
                       label="E-MAIL"
                       placeholder="Enter email"
-                      iconName="email"
+                      leftIconName="email"
                       name="email"
                       value={values.email}
                       errors={errors}
@@ -148,7 +151,17 @@ const SignUp: FC = () => {
                     <AnimatableTextInput
                       label="PASSWORD"
                       placeholder="Enter password"
-                      iconName={passwordSecureTextEntry ? 'eye' : 'lock'}
+                      leftIconName={passwordSecureTextEntry ? 'eye' : 'lock'}
+                      rightIcon={
+                        <TextInput.Icon
+                          onPress={() => {
+                            setPasswordSnackVisible(!passwordSnackVisible);
+                          }}
+                          name="help-circle-outline"
+                          color={theme.dark.hex}
+                          size={20}
+                        />
+                      }
                       name="password"
                       value={values.password}
                       errors={errors}
@@ -156,7 +169,7 @@ const SignUp: FC = () => {
                       handleChange={handleChange('password')}
                       secureTextEntry={passwordSecureTextEntry}
                       containerStyles={{ marginTop: 10 }}
-                      handleIconPress={() =>
+                      handleLeftIconPress={() =>
                         setPasswordSecureTextEntry(!passwordSecureTextEntry)
                       }
                     />
@@ -201,23 +214,50 @@ const SignUp: FC = () => {
               );
             }}
           </Formik>
-          <View style={{ marginHorizontal: 10 }}>
-            <Text
-              style={{
-                color: theme.dark.hex,
-                fontWeight: 'bold',
-                fontSize: 20,
-              }}
-            >
-              Password Must be
-            </Text>
-            {passwordRequirments.map((r, index) => (
+          <Overlay
+            isVisible={passwordSnackVisible}
+            onBackdropPress={() => setPasswordSnackVisible(false)}
+            overlayStyle={{ width: '90%' }}
+          >
+            <View>
               <Text
-                key={index.toString()}
-                style={{ color: theme.dark.hex }}
-              >{`${index + 1}. ${r}`}</Text>
-            ))}
-          </View>
+                style={{
+                  color: theme.dark.hex,
+                  fontSize: 16,
+                  fontWeight: 'bold',
+                  marginBottom: 10,
+                }}
+              >
+                Password Requirements
+              </Text>
+              {passwordRequirments.map((r, index) => (
+                <Text
+                  key={index.toString()}
+                  style={{
+                    color: theme.dark.hex,
+                    fontSize: 16,
+                  }}
+                >{`${index + 1}. ${r}`}</Text>
+              ))}
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginTop: 10,
+                }}
+              >
+                <Button
+                  onPress={() => setPasswordSnackVisible(false)}
+                  title="Close"
+                  buttonStyle={{
+                    backgroundColor: theme.dark.hex,
+                    width: 100,
+                  }}
+                  titleStyle={{ color: theme.white.hex }}
+                />
+              </View>
+            </View>
+          </Overlay>
         </ScrollView>
       </View>
     </StandardContainer>

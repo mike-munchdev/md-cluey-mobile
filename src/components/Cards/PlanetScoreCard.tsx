@@ -15,13 +15,12 @@ const PlanetScoreCard: FC<IPlanetScoreCardProps> = ({}) => {
     <List.Section
       title={
         <Fragment>
-          <Text style={styles.cardTitleText}>Planet </Text>
-          <FontAwesome5
-            name="globe-americas"
-            size={24}
-            color={theme.dark.hex}
-          />
-          <Text style={styles.cardTitleText}> COMING SOON!</Text>
+          <Text style={styles.cardTitleTextDisabled}>Planet </Text>
+          <FontAwesome5 name="globe-americas" size={24} color={theme.light} />
+          <Text style={[styles.cardTitleTextDisabled, { fontSize: 15 }]}>
+            {' '}
+            [Impact Score Coming Soon!]
+          </Text>
         </Fragment>
       }
     />

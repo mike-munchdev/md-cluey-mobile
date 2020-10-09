@@ -28,7 +28,7 @@
 
       "config": {
         "googleSignIn": {
-          "reservedClientId": "com.googleusercontent.apps.726028660917-it17vlgku3ska4dm57h87cbequljvno3"
+          "reservedClientId": "576013538553-pdsto80kets3kd92o2jguikmkvtvnas5.apps.googleusercontent.com"
         }
       }
     },
@@ -43,7 +43,8 @@
           "wsProtocol": "wss",
           "categoryImageUrlPrefix": "http://md-cluey-test.herokuapp.com/categories/",
           "brandLogoUrlPrefix": "http://md-cluey-test.herokuapp.com/logos/",
-          "googleClientIdIos": "576013538553-pdsto80kets3kd92o2jguikmkvtvnas5.apps.googleusercontent.com"
+          "googleClientIdIos": "576013538553-pdsto80kets3kd92o2jguikmkvtvnas5.apps.googleusercontent.com",
+          "googleClientIdAndroid": "576013538553-d8gffmivuiibqtcilddvcd8ajs91e2vj.apps.googleusercontent.com"
         },
         "heroku-test": {
           "apiServerUrl": "md-cluey-test.herokuapp.com",
@@ -51,7 +52,8 @@
           "wsProtocol": "wss",
           "categoryImageUrlPrefix": "http://md-cluey-test.herokuapp.com/categories/",
           "brandLogoUrlPrefix": "http://md-cluey-test.herokuapp.com/logos/",
-          "googleClientIdIos": "576013538553-pdsto80kets3kd92o2jguikmkvtvnas5.apps.googleusercontent.com"
+          "googleClientIdIos": "576013538553-pdsto80kets3kd92o2jguikmkvtvnas5.apps.googleusercontent.com",
+          "googleClientIdAndroid": "576013538553-d8gffmivuiibqtcilddvcd8ajs91e2vj.apps.googleusercontent.com"
         },
         "staging": {
           "apiServerUrl": "md-cluey-staging.herokuapp.com",
@@ -59,7 +61,8 @@
           "wsProtocol": "wss",
           "categoryImageUrlPrefix": "http://md-cluey-test.herokuapp.com/categories/",
           "brandLogoUrlPrefix": "http://md-cluey-test.herokuapp.com/logos/",
-          "googleClientIdIos": "576013538553-pdsto80kets3kd92o2jguikmkvtvnas5.apps.googleusercontent.com"
+          "googleClientIdIos": "576013538553-pdsto80kets3kd92o2jguikmkvtvnas5.apps.googleusercontent.com",
+          "googleClientIdAndroid": "576013538553-d8gffmivuiibqtcilddvcd8ajs91e2vj.apps.googleusercontent.com"
         },
         "development": {
           "apiServerUrl": "localhost:4004",

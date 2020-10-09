@@ -5,18 +5,21 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import styles from './styles';
 import theme from '../../constants/theme';
 import { Tooltip } from 'react-native-elements';
+import { Paragraph } from 'react-native-paper';
 
 export interface IContributionProgrsessBarProps {
   title: string;
   tooltipText: string;
   democrat: number;
   republican: number;
+  tooltipHeight?: number | undefined;
 }
 const ContributionsProgressBar: FC<IContributionProgrsessBarProps> = ({
   title,
   democrat,
   republican,
   tooltipText,
+  tooltipHeight,
 }) => {
   return (
     <View style={styles.container}>
@@ -24,11 +27,13 @@ const ContributionsProgressBar: FC<IContributionProgrsessBarProps> = ({
         <Text style={styles.titleText}>{title}</Text>
         <Tooltip
           width={300}
-          height={100}
+          height={tooltipHeight || 150}
           containerStyle={{ backgroundColor: theme.opaqueLight }}
           popover={
             <View style={{ flex: 1 }}>
-              <Text>{tooltipText}</Text>
+              {tooltipText.split('\n').map((t, index) => (
+                <Text key={index.toString()}>{t}</Text>
+              ))}
             </View>
           }
         >

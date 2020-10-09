@@ -220,7 +220,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
         borderWidth={2}
         icon={<FontAwesome name="search" size={32} color={theme.dark.hex} />}
         textStyle={styles.buttonText}
-        text="Search"
+        text="Search/Home"
       />
       <RoundedIconButton
         onPress={() =>

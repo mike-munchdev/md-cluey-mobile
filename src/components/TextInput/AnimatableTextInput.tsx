@@ -9,14 +9,15 @@ interface ITextInputProps {
   placeholder?: string;
   label?: string;
   secureTextEntry?: boolean;
-  iconName?: string;
-  iconSize?: number;
+  leftIconName?: string;
+  leftIconSize?: number;
+  rightIcon?: React.ReactNode;
   name: string;
   value: string;
   errors: any[];
   touched: any[];
   handleChange: (name: string) => void;
-  handleIconPress?: () => void;
+  handleLeftIconPress?: () => void;
   containerStyles?: StyleProp<ViewStyle>;
   textInputRef:
     | ((instance: TextInput | null) => void)
@@ -28,8 +29,9 @@ interface ITextInputProps {
 const AnimatableTextInput: FC<ITextInputProps> = ({
   placeholder,
   secureTextEntry,
-  iconName,
-  iconSize,
+  leftIconName,
+  leftIconSize,
+  rightIcon,
   name,
   value,
   errors,
@@ -37,7 +39,7 @@ const AnimatableTextInput: FC<ITextInputProps> = ({
   handleChange,
   containerStyles,
   textInputRef,
-  handleIconPress,
+  handleLeftIconPress,
 }) => {
   const showErrorState = (touched: any, errors: any, name: string) => {
     return touched[name] !== undefined && errors[name] !== undefined;
@@ -49,17 +51,20 @@ const AnimatableTextInput: FC<ITextInputProps> = ({
         <TextInput
           mode="outlined"
           left={
-            <TextInput.Icon
-              onPress={() => {
-                if (handleIconPress) {
-                  handleIconPress();
-                }
-              }}
-              name={iconName || ''}
-              color={theme.dark.hex}
-              size={iconSize || 20}
-            />
+            leftIconName ? (
+              <TextInput.Icon
+                onPress={() => {
+                  if (handleLeftIconPress) {
+                    handleLeftIconPress();
+                  }
+                }}
+                name={leftIconName || ''}
+                color={theme.dark.hex}
+                size={leftIconSize || 20}
+              />
+            ) : null
           }
+          right={rightIcon || null}
           ref={textInputRef}
           theme={{ colors: { primary: theme.dark.hex } }}
           placeholderTextColor={theme.opaque}

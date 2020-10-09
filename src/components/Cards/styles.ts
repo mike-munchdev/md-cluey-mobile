@@ -35,6 +35,12 @@ export default StyleSheet.create({
     color: theme.dark.hex,
     paddingRight: 10,
   },
+  cardTitleTextDisabled: {
+    fontFamily: 'MontserratBold',
+    fontSize: 24,
+    color: theme.light,
+    paddingRight: 10,
+  },
   peopleScoreCardContainer: {
     height: 120,
   },

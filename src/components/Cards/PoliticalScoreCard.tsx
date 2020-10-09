@@ -65,7 +65,8 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
             title="Individual Contributions"
             democrat={individualDemocratPercent}
             republican={individualRepublicanPercent}
-            tooltipText={`Individual contributions made by employees over the amount of $1,000 to political candidates. Typically, donations of this size are made by high-level executives. Contributions made in the 2016, 2018, and 2020 federal election cycles.`}
+            tooltipText={`Individual contributions made by employees over the amount of $1,000 to political candidates in the 2016, 2018, and 2020 federal election cycles.. Typically, donations of this size are made by high-level executives. Contributions made in the 2016, 2018, and 2020 federal election cycles.`}
+            tooltipHeight={170}
           />
         </View>
         <View style={styles.politicalScoreContainer}>
@@ -73,7 +74,8 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
             title="PAC Contributions"
             democrat={pacDemocratPercent}
             republican={pacRepublicanPercent}
-            tooltipText={`Contributions made by Corporate PAC to political candidates in the 2016, 2018, and 2020 federal election cycles.`}
+            tooltipText={`Contributions made by Corporate PAC to political candidates in the 2016, 2018, and 2020 federal election cycles.\n\n\nData from the Center of Responsive Politics.`}
+            tooltipHeight={150}
           />
         </View>  
         
