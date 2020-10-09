@@ -1,19 +1,9 @@
-import React, { Fragment, useState, FC, useCallback } from 'react';
-import { FieldProps } from 'formik';
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  ViewStyle,
-  StyleProp,
-} from 'react-native';
-import { FontAwesome, Feather } from '@expo/vector-icons';
-import * as Animatable from 'react-native-animatable';
-import colors from '../../constants/colors';
+import React, { Fragment, FC } from 'react';
+import { View, ViewStyle, StyleProp } from 'react-native';
 import theme from '../../constants/theme';
 import styles from './styles';
 
-import { Snackbar, TextInput } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 
 interface ITextInputProps {
   placeholder?: string;
@@ -37,7 +27,6 @@ interface ITextInputProps {
 
 const AnimatableTextInput: FC<ITextInputProps> = ({
   placeholder,
-  label,
   secureTextEntry,
   iconName,
   iconSize,

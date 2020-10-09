@@ -1,6 +1,8 @@
 import Bugsnag from '@bugsnag/expo';
+import Constants from 'expo-constants';
 import * as Facebook from 'expo-facebook';
 import * as Google from 'expo-google-app-auth';
+import { NODE_ENV } from '../hooks/serverInfo';
 
 export const facebookAuthentication = async () => {
   return new Promise(async (resolve, reject) => {
@@ -34,26 +36,29 @@ export const facebookAuthentication = async () => {
 };
 
 export const googleAuthentication = async () => {
-  try {
-    const { type, accessToken, user } = await Google.logInAsync({
-      iosClientId: `854065862128-d6n6v1m2gjf1bgml4am349bf1s43fvkc.apps.googleusercontent.com`,
-      androidClientId: `854065862128-c9qbpsi1m8frp0a39n6bqq8dhkp2555f.apps.googleusercontent.com`,
-      // iosStandaloneAppClientId: `854065862128-d6n6v1m2gjf1bgml4am349bf1s43fvkc.apps.googleusercontent.com`,
-      // androidStandaloneAppClientId: `854065862128-c9qbpsi1m8frp0a39n6bqq8dhkp2555f.apps.googleusercontent.com`,
-    });
+  return new Promise(async (resolve, reject) => {
+    try {
+      const { type, accessToken, user } = await Google.logInAsync({
+        iosClientId:
+          Constants.manifest.extra.appVariables[String(NODE_ENV)]
+            .googleClientIdIos,
+        androidClientId:
+          Constants.manifest.extra.appVariables[String(NODE_ENV)]
+            .googleClientIdAndroid,
+      });
 
-    if (type === 'success') {
-      const response = await fetch(
-        `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`
-      );
-      const data = await response.json();
-
-      Promise.resolve({ data, token: accessToken });
-    } else {
-      throw new Error('Could not successfully connect to Google Login');
+      if (type === 'success') {
+        const response = await fetch(
+          `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`
+        );
+        const data = await response.json();
+        resolve({ data, token: accessToken });
+      } else {
+        throw new Error('Could not successfully connect to Google Login');
+      }
+    } catch (error) {
+      Bugsnag.notify(error);
+      reject(error.message);
     }
-  } catch (error) {
-    Bugsnag.notify(error);
-    Promise.reject(error.message);
-  }
+  });
 };

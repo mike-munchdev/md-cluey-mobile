@@ -9,6 +9,7 @@ import * as Facebook from 'expo-facebook';
 import App from './src/index';
 import theme from './src/constants/theme';
 import { AlertHelper } from './src/utils/alert';
+import { NODE_ENV } from './src/hooks/serverInfo';
 
 Bugsnag.start(Constants.manifest.extra.bugsnag.apiKey);
 const ErrorBoundary = Bugsnag.getPlugin('react');

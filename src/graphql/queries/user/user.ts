@@ -22,8 +22,7 @@ export const userStructure = `{
     state
     gender     
     googleId
-    facebookId
-    pushTokens
+    facebookId    
     createdAt
     isProfilePublic
     isActive

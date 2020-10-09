@@ -1,8 +1,8 @@
-import React, { useState, useEffect, FC, Fragment } from 'react';
+import React, { FC, Fragment } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { ActivityIndicator, Searchbar } from 'react-native-paper';
 import theme from '../../constants/theme';
-import { MyLikesListItem, NavListItem } from '../ListItem';
+import { MyLikesListItem } from '../ListItem';
 
 import styles from './styles';
 
@@ -37,7 +37,7 @@ const MyLikesList: FC<IMyLikesListProps> = ({
           <FlatList
             style={{ width: '100%' }}
             data={list}
-            keyExtractor={(item, index) => item.id.toString()}
+            keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => {
               return <MyLikesListItem item={item} title={item.company.name} />;
             }}

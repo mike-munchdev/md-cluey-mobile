@@ -1,5 +1,5 @@
-import React, { FC, useContext, useRef, useState, useEffect } from 'react';
-import { View, Image } from 'react-native';
+import React, { FC, useRef, useState, useEffect } from 'react';
+import { View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { throttle, debounce } from 'throttle-debounce';
 
@@ -13,15 +13,10 @@ import { ActionButton, RoundedIconButton } from '../../components/Buttons';
 import { HrText, LogoText } from '../../components/Text';
 
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { AutoCompleteTextInput } from '../../components/TextInput';
 import {
-  AnimatableTextInput,
-  AutoCompleteTextInput,
-} from '../../components/TextInput';
-import {
-  moveUpAndFadeIn,
   fadeOutAndGrow,
   moveDownAndFadeOut,
-  fadeInAndShrink,
   getOutOfTheWay,
   buttonViewAnimateOut,
   searchViewGetOutOfTheWay,
@@ -37,7 +32,6 @@ import {
 } from '../../graphql/queries/company/companies';
 import { sortByFieldName } from '../../utils/sort';
 import { IAutoCompleteItemProps } from '../../components/TextInput/AutoCompleteTextInput';
-import { Button } from 'react-native-paper';
 import { Avatar } from 'react-native-elements';
 import { KeyboardAvoidingContainer } from '../../components/Containers';
 
@@ -50,7 +44,7 @@ const Search: FC = () => {
   const magnifyingGlassImageRef = useRef(null);
   const [companies, setCompanies] = useState([]);
   const [searchText, setSearchText] = useState('');
-  const [waitingFor, setWaitingFor] = useState('');
+  const [] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [autoCompleteCache, setAutoCompleteCache] = useState({});
   const [
@@ -99,7 +93,7 @@ const Search: FC = () => {
     ),
   });
 
-  const autocompleteSearch = (query: string) => {
+  const autocompleteSearch = () => {
     getCompanysByName({
       variables: {
         name: searchText,
@@ -114,7 +108,6 @@ const Search: FC = () => {
   const searchByNameTransitionIn = async () => {
     const buttonViewEndState = await buttonView.current.fadeOut(400);
 
-    const searchViewEndState = searchView.current.animate(moveUpAndFadeIn);
     if (buttonViewEndState.finished) {
       buttonView.current.animate(buttonViewAnimateOut);
     }
@@ -142,24 +135,6 @@ const Search: FC = () => {
     if (searchViewEndState.finished) {
       searchView.current.animate(searchViewGetOutOfTheWay);
     }
-  };
-
-  const searchByCategoryTransitionIn = async () => {
-    const buttonViewEndState = await buttonView.current.fadeOut(400);
-
-    const searchViewEndState = categoryView.current.animate(fadeIn);
-    if (buttonViewEndState.finished) {
-      buttonView.current.animate(buttonViewAnimateOut);
-    }
-    // const magnifyingGlassImageEndState = await magnifyingGlassImageRef.current.animate(
-    //   fadeOutAndGrow
-    // );
-
-    // if (magnifyingGlassImageEndState.finished) {
-    //   magnifyingGlassImageRef.current.animate(getOutOfTheWay);
-    // }
-
-    // searchTextInputRef.current.focus();
   };
 
   const searchByCategoryTransitionOut = async () => {
@@ -373,21 +348,14 @@ const Search: FC = () => {
             searchText: '',
           }}
           validationSchema={searchSchema}
-          onSubmit={async (values) => {
+          onSubmit={async () => {
             // const { search } = values;
             // await userSignup({
             //   variables: { input: { email, password, firstName, lastName } },
             // });
           }}
         >
-          {({
-            errors,
-            touched,
-            values,
-            handleChange,
-            handleSubmit,
-            resetForm,
-          }) => {
+          {({ errors, touched, values, handleChange, resetForm }) => {
             return (
               <Animatable.View
                 style={{

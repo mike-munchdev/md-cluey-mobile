@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
-import { Avatar, ListItem } from 'react-native-elements';
+import { Text } from 'react-native';
+import { ListItem } from 'react-native-elements';
 
 import { useNavigation } from '@react-navigation/native';
 import theme from '../../constants/theme';

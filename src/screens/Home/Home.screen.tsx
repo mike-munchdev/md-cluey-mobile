@@ -1,7 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Text, View } from 'react-native';
-import * as Animatable from 'react-native-animatable';
 import { Avatar } from 'react-native-elements';
 import { StandardContainer } from '../../components/Containers';
 import NavigationHeader from '../../components/Headers/NavigationHeader';

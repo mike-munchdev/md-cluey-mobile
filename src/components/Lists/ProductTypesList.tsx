@@ -1,6 +1,6 @@
 import React, { FC, Fragment } from 'react';
 import { FlatList, Text, View } from 'react-native';
-import { ActivityIndicator, Searchbar } from 'react-native-paper';
+import { ActivityIndicator } from 'react-native-paper';
 import theme from '../../constants/theme';
 import { NavListItem } from '../ListItem';
 
@@ -22,7 +22,7 @@ const ProductTypesList: FC<IProductTypesListProps> = ({ list, loading }) => {
             contentContainerStyle={{ width: '100%' }}
             style={{ width: '100%' }}
             data={list}
-            keyExtractor={(item, index) => item.id.toString()}
+            keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => {
               return (
                 <NavListItem

@@ -1,6 +1,6 @@
 import React, { FC, useState, useContext, Fragment } from 'react';
 import { View, TouchableOpacity, ScrollView, Text } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { FontAwesome5 } from '@expo/vector-icons';
 
 import * as EmailValidator from 'email-validator';
@@ -30,7 +30,6 @@ import { AppContext, AuthContext } from '../../config/context';
 import { passwordRequirments } from '../../validation/passwordSchema';
 import moment from 'moment';
 import { genderOptions, stateOptions } from '../../utils/optionLists';
-import colors from '../../constants/colors';
 import { StandardContainer } from '../../components/Containers';
 
 export interface IOptionsProps {
@@ -413,8 +412,6 @@ const Profile: FC = () => {
               </ListItem.Content>
               <ListItem.Chevron />
             </ListItem>
-          </List.Section>
-          <List.Section>
             <ListItem
               containerStyle={{
                 backgroundColor: theme.buttonTransparentBackground,
@@ -427,15 +424,14 @@ const Profile: FC = () => {
                   flex: 1,
                   alignItems: 'flex-start',
                   justifyContent: 'flex-start',
-                  fontWeight: 'bold',
-                  marginBottom: 10,
+                  lineHeight: 14,
                   color: theme.dark.hex,
-                  fontSize: 16,
+                  fontSize: 12,
                 }}
               >
-                Why am I being asked for this information?
-              </Paragraph>
-              <Paragraph style={{ color: theme.dark.hex }}>
+                <Text style={{ fontWeight: 'bold' }}>
+                  Why am I being asked for this information?{' '}
+                </Text>
                 When Cluey users choose to make their likes and dislikes public
                 to companies, Cluey uses the information provided in this
                 section (age, gender, and region) to send on your behalf to

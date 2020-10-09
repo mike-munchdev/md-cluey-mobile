@@ -1,5 +1,5 @@
 import Constants from 'expo-constants';
-import React, { useState, useEffect, FC } from 'react';
+import React, { FC } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import theme from '../../constants/theme';
 import { NODE_ENV } from '../../hooks/serverInfo';
@@ -12,14 +12,14 @@ export interface ICategoriesListProps {
   loading: boolean;
 }
 
-const CategoriesList: FC<ICategoriesListProps> = ({ list, loading }) => {
+const CategoriesList: FC<ICategoriesListProps> = ({ list }) => {
   return (
     <View style={styles.categoriesContainer}>
       <FlatList
         contentContainerStyle={{ width: '100%' }}
         style={{ width: '100%' }}
         data={list}
-        keyExtractor={(item, index) => item.id.toString()}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => {
           return (
             <NavListItem

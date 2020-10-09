@@ -1,22 +1,9 @@
 import React, { useState, useEffect, FC } from 'react';
-import { ScrollView, Text, View } from 'react-native';
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Dialog,
-  Paragraph,
-  Portal,
-  RadioButton,
-  TextInput,
-  Title,
-} from 'react-native-paper';
+import { ScrollView } from 'react-native';
+import { ActivityIndicator, Button, Dialog, Portal } from 'react-native-paper';
 
-import { isDate } from 'lodash';
-import moment from 'moment';
 import theme from '../../constants/theme';
 import { IOptionsProps } from '../../screens/Profile/Profile';
-import { ListItem } from 'react-native-elements';
 import { OptionListItem } from '../ListItem';
 
 export interface IEditOptionsValueModalProps {
@@ -38,7 +25,6 @@ const EditOptionsValueModal: FC<IEditOptionsValueModalProps> = ({
   success,
   value,
   title,
-  secure,
   isValid,
 
   options,

@@ -3,10 +3,9 @@ import { ScrollView, Text, View } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 
 import styles from './styles';
-import { ProgressBar, Colors, Button, List } from 'react-native-paper';
+import { List } from 'react-native-paper';
 import { ICompany } from '../../interfaces';
 import theme from '../../constants/theme';
-import { Card, Icon } from 'react-native-elements';
 import { ContributionsProgressBar } from '../ProgresBar';
 export interface IPoliticalScoreCardProps {
   company?: ICompany;
@@ -31,22 +30,6 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
       );
     }, 0) : 0;
   }
-  const updatePoliticalData = (company: ICompany | undefined) => {
-    if (company?.parentCompanies) {
-      const total = getPoliticalContributionsValue(company, 'total');
-      
-      const indivs = getPoliticalContributionsValue(company, 'indivs');
-      
-      const pacs = getPoliticalContributionsValue(company, 'pacs');
-      
-      const democrat = getPoliticalContributionsValue(company, 'democrats');
-      
-      const republican = getPoliticalContributionsValue(company, 'republicans');
-      
-      const thirdParty = getPoliticalContributionsValue(company, 'thirdParty');      
-
-    }
-  };
   useEffect(() => {
     const iRepublican = Math.floor(Math.random() * 100);
     const iDemocrat = 100 - iRepublican;
@@ -76,13 +59,13 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
           </Fragment>
         }
       >
-        <ScrollView>
+        
         <View style={styles.politicalScoreContainer}>
           <ContributionsProgressBar
             title="Individual Contributions"
             democrat={individualDemocratPercent}
             republican={individualRepublicanPercent}
-            captionText={`Individual contributions made by employees over the amount of $1,000 to political candidates. Typically, donations of this size are made by high-level executives. Contributions made in the 2016, 2018, and 2020 federal election cycles.`}
+            tooltipText={`Individual contributions made by employees over the amount of $1,000 to political candidates. Typically, donations of this size are made by high-level executives. Contributions made in the 2016, 2018, and 2020 federal election cycles.`}
           />
         </View>
         <View style={styles.politicalScoreContainer}>
@@ -90,11 +73,11 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
             title="PAC Contributions"
             democrat={pacDemocratPercent}
             republican={pacRepublicanPercent}
-            captionText={`Contributions made by Corporate PAC to political candidates in the 2016, 2018, and 2020 federal election cycles.”`}
+            tooltipText={`Contributions made by Corporate PAC to political candidates in the 2016, 2018, and 2020 federal election cycles.`}
           />
         </View>  
         
-        </ScrollView>    
+         
         
       </List.Accordion>
     </Fragment>

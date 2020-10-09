@@ -8,12 +8,17 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  titleContainer: { width: '90%' },
+  titleContainer: {
+    width: '90%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   titleText: {
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     fontFamily: 'MontserratMedium',
     fontSize: 18,
+    color: theme.dark.hex,
   },
   percentContainer: {
     width: '90%',
@@ -52,7 +57,7 @@ export default StyleSheet.create({
   },
   politicalInfoText: {
     fontFamily: 'Montserrat',
-    fontSize: 16,
+    fontSize: 12,
     color: theme.dark.hex,
   },
   politicalInfoHelpView: { justifyContent: 'center', marginRight: 5 },

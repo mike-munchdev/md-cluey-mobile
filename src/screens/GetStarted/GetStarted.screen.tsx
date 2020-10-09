@@ -1,13 +1,10 @@
-import React, { useEffect, useContext } from 'react';
+import React from 'react';
 
 import { ImageBackground, Text, View, TouchableOpacity } from 'react-native';
-
-import * as Animatable from 'react-native-animatable';
 
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 
-import { AuthContext } from '../../config/context';
 import theme from '../../constants/theme';
 import { ActionButton } from '../../components/Buttons';
 import { LogoText } from '../../components/Text';

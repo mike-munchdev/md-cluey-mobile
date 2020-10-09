@@ -1,9 +1,8 @@
-import React, { useState, useEffect, Fragment, FC } from 'react';
+import React, { FC } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import {
   Text,
   View,
-  SafeAreaView,
   TouchableOpacity,
   GestureResponderEvent,
   ViewStyle,

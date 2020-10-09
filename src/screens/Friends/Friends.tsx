@@ -3,7 +3,7 @@ import { FlatList, View, Text } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesome5 } from '@expo/vector-icons';
-import FriendsContainer from './FriendsContainer';
+
 import styles from './styles';
 import theme from '../../constants/theme';
 
@@ -45,7 +45,6 @@ const Friends: FC = () => {
   useEffect(() => {
     (async () => {
       if (user) {
-        console.log('user', user);
         await getUserFriends({
           variables: {
             userId: user.id,

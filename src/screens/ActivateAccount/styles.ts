@@ -1,9 +1,5 @@
-import { StyleSheet, Dimensions } from 'react-native';
-import colors from '../../constants/colors';
-import theme from '../../constants/theme';
+import { StyleSheet } from 'react-native';
 
-const { height } = Dimensions.get('screen');
-const logoHeight = height * 0.7 * 0.4;
 export default StyleSheet.create({
   overlayContainer: {
     flex: 1,

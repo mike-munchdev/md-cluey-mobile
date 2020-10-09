@@ -1,8 +1,6 @@
 import React, { FC, Fragment, useContext, useEffect, useState } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
-import { Avatar, ListItem } from 'react-native-elements';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { Text } from 'react-native';
+import { ListItem } from 'react-native-elements';
 import theme from '../../constants/theme';
 import { useMutation } from '@apollo/react-hooks';
 import {
@@ -20,7 +18,6 @@ export interface IMyLikesListItemProps {
 
 const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item, title }) => {
   const { user, setUser } = useContext(AppContext);
-  const navigation = useNavigation();
   const [companyResponse, setCompanyResponse] = useState(item);
   const [isLoading, setIsLoading] = useState(false);
 

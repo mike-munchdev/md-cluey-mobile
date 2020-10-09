@@ -1,9 +1,5 @@
-import React, { useEffect, useState, useMemo, createContext } from 'react';
-import {
-  NavigationContainer,
-  useNavigation,
-  StackActions,
-} from '@react-navigation/native';
+import React, { useEffect, useState, useMemo } from 'react';
+import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useMutation } from '@apollo/react-hooks';
@@ -142,9 +138,9 @@ export default () => {
   const [isRequesting, setIsRequesting] = useState(true);
   const [userToken, setUserToken] = useState<string | null>(null);
   const [user, setUser] = useState(null);
-  const [location, setLocation] = useState(null);
+  const [location] = useState(null);
 
-  const [addPushToken] = useMutation(ADD_PUSH_TOKEN, {
+  const [] = useMutation(ADD_PUSH_TOKEN, {
     fetchPolicy: 'no-cache',
     onError: addPushTokenError(setIsLoading, setIsRequesting),
     onCompleted: addPushTokenCompleted(setIsLoading, setUser, setIsRequesting),
@@ -164,7 +160,7 @@ export default () => {
       setIsStarted: async (value: boolean) => {
         await AsyncStorage.setItem('isStarted', String(value));
       },
-      redirect: (location: string) => {
+      redirect: () => {
         // history.push(location);
       },
       signIn: async (
@@ -222,7 +218,6 @@ export default () => {
     (async () => {
       const token = await AsyncStorage.getItem('token');
       const userJson = await AsyncStorage.getItem('user');
-      const pharmacyJson = await AsyncStorage.getItem('pharmacy');
       if (token) {
         setUserToken(token);
       }

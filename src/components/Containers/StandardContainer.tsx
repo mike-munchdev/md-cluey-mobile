@@ -1,11 +1,5 @@
 import React, { FC } from 'react';
-import {
-  StyleSheet,
-  SafeAreaView,
-  StatusBar,
-  View,
-  ImageBackground,
-} from 'react-native';
+import { StyleSheet, SafeAreaView, StatusBar, View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 
 import theme from '../../constants/theme';
@@ -18,24 +12,19 @@ const StandardContainer: FC<IStandardContainerProps> = ({
   children,
 }) => {
   return (
-    <ImageBackground
-      source={require('../../../assets/images/background.jpg')}
-      style={styles.container}
-    >
-      <SafeAreaView style={styles.safeAreaContainer}>
-        <StatusBar translucent backgroundColor="transparent" />
+    <SafeAreaView style={styles.safeAreaContainer}>
+      <StatusBar translucent backgroundColor="transparent" />
 
-        {isLoading ? (
-          <View
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-          >
-            <ActivityIndicator size="large" color={theme.dark.hex} />
-          </View>
-        ) : (
-          children
-        )}
-      </SafeAreaView>
-    </ImageBackground>
+      {isLoading ? (
+        <View
+          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+        >
+          <ActivityIndicator size="large" color={theme.dark.hex} />
+        </View>
+      ) : (
+        children
+      )}
+    </SafeAreaView>
   );
 };
 export default StandardContainer;

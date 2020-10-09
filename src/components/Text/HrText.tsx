@@ -1,7 +1,5 @@
-import React, { useState, useEffect, FC } from 'react';
+import React, { FC } from 'react';
 import { Text, View, ViewStyle, StyleProp } from 'react-native';
-
-import styles from './styles';
 
 export interface IHrTextProps {
   text: string;

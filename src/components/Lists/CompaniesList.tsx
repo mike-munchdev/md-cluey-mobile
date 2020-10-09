@@ -1,5 +1,5 @@
-import React, { useState, useEffect, FC, Fragment } from 'react';
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import React, { FC, Fragment } from 'react';
+import { FlatList, Text, View } from 'react-native';
 import { ActivityIndicator, Searchbar } from 'react-native-paper';
 import Constants from 'expo-constants';
 import theme from '../../constants/theme';
@@ -38,7 +38,7 @@ const CompaniesList: FC<ICompaniesListProps> = ({
           <FlatList
             style={{ width: '100%' }}
             data={list}
-            keyExtractor={(item, index) => item.id.toString()}
+            keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => {
               return (
                 <NavListItem

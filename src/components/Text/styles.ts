@@ -16,7 +16,7 @@ export default StyleSheet.create({
   },
   pageHeaderText: {
     fontFamily: 'MontserratBold',
-    fontSize: 50,
+    fontSize: 36,
     color: theme.dark.hex,
     marginBottom: 10,
   },

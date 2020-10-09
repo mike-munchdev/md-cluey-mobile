@@ -54,7 +54,7 @@ const SignIn: FC = () => {
   const googleSignin = async () => {
     try {
       const { data, token } = await googleAuthentication();
-      const { id, email, familyName, givenName } = data;
+      const { id, email, family_name, give_name } = data;
       setSignInLoading(true);
       await getUserToken({
         variables: {
@@ -191,10 +191,8 @@ const SignIn: FC = () => {
                 </View>
                 <View style={styles.buttonsView}>
                   <ActionButton
-                    handlePress={() => {
-                      (async () => {
-                        await facebookSignin();
-                      })();
+                    handlePress={async () => {
+                      await facebookSignin();
                     }}
                     buttonStyles={{ marginTop: 10 }}
                     textColor={theme.buttonText}
@@ -205,10 +203,8 @@ const SignIn: FC = () => {
                     }
                   />
                   <ActionButton
-                    handlePress={() => {
-                      (async () => {
-                        await googleSignin();
-                      })();
+                    handlePress={async () => {
+                      await googleSignin();
                     }}
                     buttonStyles={{ marginTop: 10 }}
                     textColor={theme.buttonText}

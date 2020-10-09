@@ -1,8 +1,7 @@
 import React, { useContext, FC, useState } from 'react';
-import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, ScrollView } from 'react-native';
 
 import styles from './styles';
-import * as Animatable from 'react-native-animatable';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../config/context';
 
@@ -17,7 +16,6 @@ import {
   userSignupCompleted,
   USER_SIGNUP,
 } from '../../graphql/queries/user/user';
-import SignUpContainer from './SignUpContainer';
 import theme from '../../constants/theme';
 import { ActionButton } from '../../components/Buttons';
 import { HrText, LogoText } from '../../components/Text';
@@ -27,13 +25,11 @@ import {
   googleAuthentication,
 } from '../../utils/socialAuth';
 import { StandardContainer } from '../../components/Containers';
-import { Paragraph } from 'react-native-paper';
 import { passwordRequirments } from '../../validation/passwordSchema';
-import NavigationHeader from '../../components/Headers/NavigationHeader';
 
 const SignUp: FC = () => {
   const { signUp } = useContext(AuthContext);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
   const [passwordSecureTextEntry, setPasswordSecureTextEntry] = useState(true);
   const navigation = useNavigation();
 
@@ -45,13 +41,15 @@ const SignUp: FC = () => {
   const googleSignup = async () => {
     try {
       const { data, token } = await googleAuthentication();
-      const { id, email, familyName, givenName } = data;
+
+      const { id, email, family_name, given_name } = data;
+
       await userSignup({
         variables: {
           input: {
             email,
-            firstName: givenName,
-            lastName: familyName,
+            firstName: given_name,
+            lastName: family_name,
             googleId: id,
             googleAuthToken: token,
           },
@@ -176,8 +174,8 @@ const SignUp: FC = () => {
                   </View>
                   <View style={styles.buttonsView}>
                     <ActionButton
-                      handlePress={() => {
-                        facebookSignup();
+                      handlePress={async () => {
+                        await facebookSignup();
                       }}
                       textColor={theme.buttonText}
                       color={theme.facebookBlue}
@@ -187,8 +185,8 @@ const SignUp: FC = () => {
                       }
                     />
                     <ActionButton
-                      handlePress={() => {
-                        googleSignup();
+                      handlePress={async () => {
+                        await googleSignup();
                       }}
                       buttonStyles={{ marginTop: 10 }}
                       textColor={theme.buttonText}

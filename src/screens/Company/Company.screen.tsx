@@ -96,16 +96,16 @@ const Company: FC = () => {
                   />
                   <PlanetScoreCard company={company} />
                 </View>
-              </ScrollView>
-              <View style={styles.contributionContainer}>
-                <View style={{ flex: 1 }}></View>
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.contributionText}>
-                    all contribution data comes from the Center of Responsive
-                    Politics
-                  </Text>
+                <View style={styles.contributionContainer}>
+                  <View style={{ flex: 1 }}></View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.contributionText}>
+                      Contribution data from the Center for Responsive Politics
+                    </Text>
+                  </View>
                 </View>
-              </View>
+              </ScrollView>
+
               <ActionsView company={company} />
             </View>
           </StandardContainer>

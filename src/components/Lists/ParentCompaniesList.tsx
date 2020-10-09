@@ -1,13 +1,11 @@
-import React, { useState, useEffect, FC, Fragment } from 'react';
-import { Text, View, FlatList } from 'react-native';
+import React, { FC, Fragment } from 'react';
+import { View, FlatList } from 'react-native';
 
 import styles from './styles';
 import { Chip } from 'react-native-paper';
 import theme from '../../constants/theme';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { AlertHelper } from '../../utils/alert';
 import { ICompany } from '../../interfaces';
-import { useNavigation } from '@react-navigation/native';
 
 export interface IParentCompaniesListProps {
   company?: ICompany;
@@ -19,7 +17,6 @@ const ParentCompaniesList: FC<IParentCompaniesListProps> = ({
   company,
   setCompany,
 }) => {
-  const navigation = useNavigation();
   if (!company) return <Fragment />;
   if (!company.parentCompanies || company.parentCompanies.length === 0)
     return <Fragment />;

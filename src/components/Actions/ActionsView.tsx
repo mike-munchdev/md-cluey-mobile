@@ -1,12 +1,7 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
-import {
-  MaterialIcons,
-  FontAwesome5,
-  Entypo,
-  FontAwesome,
-} from '@expo/vector-icons';
-import { useLazyQuery, useMutation } from '@apollo/react-hooks';
+import { FontAwesome5, Entypo, FontAwesome } from '@expo/vector-icons';
+import { useMutation } from '@apollo/react-hooks';
 import theme from '../../constants/theme';
 import { RoundedIconButton } from '../Buttons';
 
@@ -19,7 +14,7 @@ import {
   UPDATE_COMPANY_RESPONSE_FOR_USER,
 } from '../../graphql/queries/user/user';
 import { AppContext } from '../../config/context';
-import { ICompany, ICompanyReponse, IUser } from '../../interfaces';
+import { ICompany, ICompanyReponse } from '../../interfaces';
 import { StackActions, useNavigation } from '@react-navigation/native';
 
 export interface IActionsViewProps {
@@ -32,7 +27,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
   const [companyResponse, setCompanyResponse] = useState<
     ICompanyReponse | null | undefined
   >(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (company) {

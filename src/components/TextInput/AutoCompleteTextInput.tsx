@@ -1,17 +1,11 @@
-import React, { Fragment, useState, FC, useCallback } from 'react';
-import { FieldProps } from 'formik';
+import React, { FC } from 'react';
 import {
-  Text,
   View,
   TouchableOpacity,
   ViewStyle,
   StyleProp,
   FlatList,
-  ScrollView,
 } from 'react-native';
-import { FontAwesome, Feather } from '@expo/vector-icons';
-import * as Animatable from 'react-native-animatable';
-import colors from '../../constants/colors';
 import theme from '../../constants/theme';
 import styles from './styles';
 
@@ -48,7 +42,6 @@ export interface IAutoCompleteTextInputProps {
 
 const AutoCompleteTextInput: FC<IAutoCompleteTextInputProps> = ({
   placeholder,
-  label,
   secureTextEntry,
   iconName,
   iconSize,
@@ -108,7 +101,7 @@ const AutoCompleteTextInput: FC<IAutoCompleteTextInputProps> = ({
       ) : data.length > 0 ? (
         <FlatList
           data={data}
-          keyExtractor={(item, index) => item.id}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
             return (
               <TouchableOpacity onPress={() => handleItemPress(item)}>

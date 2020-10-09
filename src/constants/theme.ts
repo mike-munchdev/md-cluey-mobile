@@ -51,4 +51,5 @@ export default {
   willNotBuyLater: colors.yellow.normal,
   willNotBuy: colors.orange.normal,
   opaque: colors.gray.dark,
+  opaqueLight: colors.gray.light,
 };

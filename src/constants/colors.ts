@@ -3,6 +3,7 @@ export default {
     normal: 'gray',
     neutral: 'lightgrey',
     dark: 'darkgrey',
+    light: 'lightgrey',
   },
   white: {
     normal: 'white',
