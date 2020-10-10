@@ -58,8 +58,7 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
             <FontAwesome5 name="flag-usa" size={24} color={theme.dark.hex} />
           </Fragment>
         }
-      >
-        
+      > 
         <View style={styles.politicalScoreContainer}>
           <ContributionsProgressBar
             title="Individual Contributions"

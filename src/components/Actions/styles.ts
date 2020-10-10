@@ -6,7 +6,6 @@ export default StyleSheet.create({
     // position: 'absolute',
     // bottom: 60,
     flexDirection: 'row',
-
     alignItems: 'center',
     justifyContent: 'center',
   },

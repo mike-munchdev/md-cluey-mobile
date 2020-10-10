@@ -9,13 +9,23 @@ export default StyleSheet.create({
     flex: 1,
   },
   brandContainer: {
-    // height: '20%',
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'red',
+    height: height * 0.1,
     marginHorizontal: 10,
     marginBottom: 30,
     // marginTop: 50,
+  },
+  infoContainer: {
+    marginHorizontal: 10,
+    height: height * 0.6,
+    flexDirection: 'column',
+    // backgroundColor: 'red',
+  },
+  actionButtonContainer: {
+    height: height * 0.2,
+    alignItems: 'baseline',
+    justifyContent: 'flex-end',
   },
   brandsContainer: {
     justifyContent: 'center',
@@ -23,18 +33,14 @@ export default StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 10,
   },
-  infoContainer: {
-    marginHorizontal: 10,
-    height: 500,
-    flexDirection: 'column',
-  },
+
   searchCaptionText: {
     fontSize: 26,
     fontFamily: 'Montserrat',
     fontWeight: 'bold',
     color: theme.dark.hex,
   },
-  actionButtonContainer: {},
+
   contributionContainer: {
     marginVertical: 10,
     flexDirection: 'row',

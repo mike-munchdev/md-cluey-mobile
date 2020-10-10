@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FC } from 'react';
-import { Text, View } from 'react-native';
+import { Dimensions, Text, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { SvgUri } from 'react-native-svg';
 import Constants from 'expo-constants';
@@ -14,9 +14,12 @@ export interface ICompanyLogoProps {
   logoUri: string | undefined;
   text?: string;
 }
-
-const IMAGE_HEIGHT = 150;
+const { height } = Dimensions.get('screen');
+console.log('height', height);
+const IMAGE_HEIGHT = height * 0.1;
+console.log('IMAGE_HEIGHT', IMAGE_HEIGHT);
 const IMAGE_WIDTH = 150;
+
 const CompanyLogo: FC<ICompanyLogoProps> = ({ logoUri, text }) => {
   const [extension, setExtension] = useState<string | undefined>('');
   const [imageError, setImageError] = useState<boolean>(false);
@@ -30,10 +33,11 @@ const CompanyLogo: FC<ICompanyLogoProps> = ({ logoUri, text }) => {
     return (
       <View
         style={{
-          width: IMAGE_WIDTH,
+          width: '90%',
           height: IMAGE_HEIGHT,
           alignItems: 'center',
           justifyContent: 'center',
+          backgroundColor: 'red',
         }}
       >
         <Text adjustsFontSizeToFit={true} style={styles.companyNameText}>

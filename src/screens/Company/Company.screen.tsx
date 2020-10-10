@@ -76,29 +76,28 @@ const Company: FC = () => {
                 />
               </View>
 
-              <View style={styles.infoContainer}>
-                <View>
-                  <PoliticalScoreCard company={company} />
-                  <HorizontalRule
-                    styles={{
-                      marginTop: 20,
-                      marginBottom: 20,
-                      backgroundColor: theme.dark.hex,
-                    }}
-                  />
-                  <PeopleScoreCard company={company} />
-                  <HorizontalRule
-                    styles={{
-                      marginTop: 20,
-                      marginBottom: 20,
-                      backgroundColor: theme.dark.hex,
-                    }}
-                  />
-                  <PlanetScoreCard company={company} />
-                </View>
-              </View>
+              <ScrollView style={styles.infoContainer}>
+                <PoliticalScoreCard company={company} />
+                <HorizontalRule
+                  styles={{
+                    marginTop: 5,
 
-              <ActionsView company={company} />
+                    backgroundColor: theme.dark.hex,
+                  }}
+                />
+                <PeopleScoreCard company={company} />
+                <HorizontalRule
+                  styles={{
+                    marginTop: 5,
+
+                    backgroundColor: theme.dark.hex,
+                  }}
+                />
+                <PlanetScoreCard company={company} />
+              </ScrollView>
+              <View style={styles.actionButtonContainer}>
+                <ActionsView company={company} />
+              </View>
             </View>
           </StandardContainer>
         );

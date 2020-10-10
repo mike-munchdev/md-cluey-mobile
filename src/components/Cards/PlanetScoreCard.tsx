@@ -21,7 +21,7 @@ const PlanetScoreCard: FC<IPlanetScoreCardProps> = ({}) => {
             size={24}
             color={theme.disabled.hex}
           />
-          <Text style={[styles.cardTitleTextDisabled, { fontSize: 15 }]}>
+          <Text style={styles.impactScoreTextDisabled}>
             {' '}
             [Impact Score Coming Soon!]
           </Text>

@@ -103,7 +103,6 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
               style={{
                 height: '100%',
                 width: '100%',
-
                 alignItems: 'flex-start',
                 justifyContent: 'space-evenly',
                 flexDirection: 'column',

@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import theme from '../../constants/theme';
-
+const { height } = Dimensions.get('screen');
 export default StyleSheet.create({
   container: {
     width: '100%',
@@ -12,12 +12,13 @@ export default StyleSheet.create({
     width: '90%',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 5,
   },
   titleText: {
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     fontFamily: 'MontserratMedium',
-    fontSize: 18,
+    fontSize: height * 0.02,
     color: theme.dark.hex,
   },
   percentContainer: {
@@ -25,7 +26,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
   },
   percentText: {
-    fontSize: 16,
+    fontSize: height * 0.02,
     fontWeight: '900',
     color: theme.text,
   },
