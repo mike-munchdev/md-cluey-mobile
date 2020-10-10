@@ -37,7 +37,6 @@ const CompanyLogo: FC<ICompanyLogoProps> = ({ logoUri, text }) => {
           height: IMAGE_HEIGHT,
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: 'red',
         }}
       >
         <Text adjustsFontSizeToFit={true} style={styles.companyNameText}>

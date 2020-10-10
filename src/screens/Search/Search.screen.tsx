@@ -20,6 +20,7 @@ import {
 } from '../../graphql/queries/company/companies';
 import { useLazyQuery } from '@apollo/react-hooks';
 import { sortByFieldName } from '../../utils/sort';
+import { NavHeader } from '../../components/Headers';
 
 const Search: FC = () => {
   const [searchText, setSearchText] = useState('');
@@ -60,6 +61,8 @@ const Search: FC = () => {
         setIsLoading(true);
         autocompleteSearchDebounced(searchText);
       }
+    } else {
+      setCompanies([]);
     }
   }, [searchText]);
 
@@ -89,7 +92,7 @@ const Search: FC = () => {
   return (
     <StandardContainer isLoading={false}>
       <View style={styles.overlayContainer}>
-        <NavigationHeader goBack />
+        <NavHeader goBack />
         <Formik
           initialValues={{
             searchText: '',
@@ -107,7 +110,7 @@ const Search: FC = () => {
               <AutoCompleteTextInput
                 containerStyles={{
                   marginBottom: 20,
-                  marginTop: 10,
+                  // marginTop: 10,
                   marginHorizontal: 40,
                 }}
                 isLoading={isLoading}

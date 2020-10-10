@@ -28,6 +28,7 @@ import {
 import { StandardContainer } from '../../components/Containers';
 import { AppContext } from '../../config/context';
 import { CompanyLogo } from '../../components/Images';
+import { NavHeader } from '../../components/Headers';
 
 const Company: FC = () => {
   const { user } = useContext(AppContext);
@@ -68,7 +69,7 @@ const Company: FC = () => {
         return (
           <StandardContainer isLoading={isLoading}>
             <View style={styles.overlayContainer}>
-              <NavigationHeader goBack />
+              <NavHeader goBack />
               <View style={styles.brandContainer}>
                 <CompanyLogo
                   logoUri={company?.brandLogoUrl}

@@ -16,13 +16,13 @@ export default StyleSheet.create({
   },
   pageHeaderText: {
     fontFamily: 'MontserratBold',
-    fontSize: 36,
+    fontSize: 20,
     color: theme.dark.hex,
     marginBottom: 10,
   },
   pageSubtitleText: {
     fontFamily: 'MontserratMedium',
-    fontSize: 20,
+    fontSize: 12,
     color: theme.dark.hex,
     // marginTop: -25,
     marginBottom: 10,

@@ -3,6 +3,7 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { StandardContainer } from '../../components/Containers';
+import { NavHeader } from '../../components/Headers';
 import NavigationHeader from '../../components/Headers/NavigationHeader';
 import { LogoText } from '../../components/Text';
 import theme from '../../constants/theme';
@@ -14,7 +15,7 @@ const Home = () => {
   return (
     <StandardContainer isLoading={false}>
       <View style={styles.overlayContainer}>
-        <NavigationHeader showMenu />
+        <NavHeader showMenu />
         <View style={styles.linksContainer}>
           <View
             style={{

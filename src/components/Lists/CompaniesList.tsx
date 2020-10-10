@@ -39,7 +39,7 @@ const CompaniesList: FC<ICompaniesListProps> = ({
   return (
     <View style={styles.companiesContainer}>
       {loading ? (
-        <ActivityIndicator />
+        <ActivityIndicator color={theme.dark.hex} size="large" />
       ) : (
         <Fragment>
           <Searchbar

@@ -28,7 +28,7 @@ const ProductTypesList: FC<IProductTypesListProps> = ({ list, loading }) => {
   return (
     <View style={styles.productTypesContainer}>
       {loading ? (
-        <ActivityIndicator />
+        <ActivityIndicator color={theme.dark.hex} size="large" />
       ) : (
         <Fragment>
           <FlatList

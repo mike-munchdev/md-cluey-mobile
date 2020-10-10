@@ -14,6 +14,7 @@ import NavigationHeader from '../../components/Headers/NavigationHeader';
 import { CompaniesList } from '../../components/Lists';
 import { StandardContainer } from '../../components/Containers';
 import { PageHeaderText } from '../../components/Text';
+import { NavHeader } from '../../components/Headers';
 
 const Companies: FC = () => {
   const route = useRoute();
@@ -21,7 +22,7 @@ const Companies: FC = () => {
 
   const [companies, setCompanies] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
-  const [, setIsLoading] = useState(false);
+  const [loading, setIsLoading] = useState(true);
   const [category] = useState(route.params.category);
 
   const [getCompaniesByProductType] = useLazyQuery(
@@ -67,10 +68,11 @@ const Companies: FC = () => {
   return (
     <StandardContainer>
       <View style={styles.overlayContainer}>
-        <NavigationHeader goBack />
-        <PageHeaderText title="Brands" subTitle={category.name} />
+        <NavHeader goBack title="Brands" subTitle={category.name} />
+
         <CompaniesList
           list={filteredList}
+          loading={loading}
           searchQuery={searchQuery}
           onChangeSearch={onChangeSearch}
         />
