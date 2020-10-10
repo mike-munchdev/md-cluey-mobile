@@ -76,7 +76,7 @@ const Company: FC = () => {
                 />
               </View>
 
-              <ScrollView style={styles.infoContainer}>
+              <View style={styles.infoContainer}>
                 <View>
                   <PoliticalScoreCard company={company} />
                   <HorizontalRule
@@ -96,7 +96,7 @@ const Company: FC = () => {
                   />
                   <PlanetScoreCard company={company} />
                 </View>
-              </ScrollView>
+              </View>
 
               <ActionsView company={company} />
             </View>

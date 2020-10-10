@@ -139,7 +139,7 @@ const SignIn: FC = () => {
                   <AnimatableTextInput
                     label="E-MAIL"
                     placeholder="Enter email"
-                    iconName="email"
+                    leftIconName="email"
                     name="email"
                     value={values.email}
                     errors={errors}
@@ -148,7 +148,7 @@ const SignIn: FC = () => {
                   />
                   <AnimatableTextInput
                     placeholder="Enter password"
-                    iconName="lock"
+                    leftIconName="lock"
                     name="password"
                     value={values.password}
                     errors={errors}

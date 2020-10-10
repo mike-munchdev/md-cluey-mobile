@@ -28,7 +28,14 @@ const CompanyLogo: FC<ICompanyLogoProps> = ({ logoUri, text }) => {
 
   if (!logoUri || imageError)
     return (
-      <View>
+      <View
+        style={{
+          width: IMAGE_WIDTH,
+          height: IMAGE_HEIGHT,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         <Text adjustsFontSizeToFit={true} style={styles.companyNameText}>
           {text}
         </Text>

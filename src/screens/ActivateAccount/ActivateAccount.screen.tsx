@@ -71,7 +71,7 @@ const ActivateAccount: FC = () => {
                   <AnimatableTextInput
                     label="Token"
                     placeholder="Enter confirm token"
-                    iconName="ticket-confirmation"
+                    leftIconName="ticket-confirmation"
                     name="confirmToken"
                     value={values.confirmToken}
                     errors={errors}

@@ -17,7 +17,7 @@ const PeopleScoreCard: FC<IPeopleScoreCardProps> = ({}) => {
       title={
         <Fragment>
           <Text style={styles.cardTitleTextDisabled}>People </Text>
-          <FontAwesome5 name="users" size={24} color={theme.light} />
+          <FontAwesome5 name="users" size={24} color={theme.disabled.hex} />
           <Text style={[styles.cardTitleTextDisabled, { fontSize: 15 }]}>
             {' '}
             [Impact Score Coming Soon!]

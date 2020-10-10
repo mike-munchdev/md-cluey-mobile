@@ -26,9 +26,9 @@ export default {
     },
   },
   disabled: {
-    hex: colors.green.darker,
+    hex: colors.gray.normal,
     rgba: (alpha: number) => {
-      return hex2rgba(colors.green.darker, alpha);
+      return hex2rgba(colors.gray.normal, alpha);
     },
   },
   light: colors.green.light,

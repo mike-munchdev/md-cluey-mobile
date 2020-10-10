@@ -49,7 +49,7 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
 
   return (
     <Fragment>
-      <List.Accordion
+      <List.Section
         onPress={handlePress}
         expanded={expanded}
         title={
@@ -65,8 +65,12 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
             title="Individual Contributions"
             democrat={individualDemocratPercent}
             republican={individualRepublicanPercent}
-            tooltipText={`Individual contributions made by employees over the amount of $1,000 to political candidates in the 2016, 2018, and 2020 federal election cycles.. Typically, donations of this size are made by high-level executives. Contributions made in the 2016, 2018, and 2020 federal election cycles.`}
-            tooltipHeight={170}
+            toolTipPopover={<View style={{ flex: 1 }}>            
+            <Text>Individual contributions made by employees over the amount of $1,000 to political candidates in the 2016, 2018, and 2020 federal election cycles. Typically, donations of this size are made by high-level executives.</Text>
+            <Text style={{marginTop: 10, fontSize: 12, fontWeight: 'bold'}}>Data from the Center of Responsive Politics</Text>            
+        </View>}
+            
+            tooltipHeight={150}
           />
         </View>
         <View style={styles.politicalScoreContainer}>
@@ -74,14 +78,18 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
             title="PAC Contributions"
             democrat={pacDemocratPercent}
             republican={pacRepublicanPercent}
-            tooltipText={`Contributions made by Corporate PAC to political candidates in the 2016, 2018, and 2020 federal election cycles.\n\n\nData from the Center of Responsive Politics.`}
-            tooltipHeight={150}
+            toolTipPopover={<View style={{ flex: 1 }}>            
+              <Text>Contributions made by Corporate PAC to political candidates in the 2016, 2018, and 2020 federal election cycles.</Text>
+              <Text style={{marginTop: 10, fontSize: 12, fontWeight: 'bold'}}>Data from the Center of Responsive Politics</Text>            
+          </View>}
+            
+            tooltipHeight={100}
           />
         </View>  
         
          
         
-      </List.Accordion>
+      </List.Section>
     </Fragment>
   );
  

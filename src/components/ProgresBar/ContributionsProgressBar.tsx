@@ -9,7 +9,7 @@ import { Paragraph } from 'react-native-paper';
 
 export interface IContributionProgrsessBarProps {
   title: string;
-  tooltipText: string;
+  toolTipPopover: React.ReactElement<{}>;
   democrat: number;
   republican: number;
   tooltipHeight?: number | undefined;
@@ -18,7 +18,7 @@ const ContributionsProgressBar: FC<IContributionProgrsessBarProps> = ({
   title,
   democrat,
   republican,
-  tooltipText,
+  toolTipPopover,
   tooltipHeight,
 }) => {
   return (
@@ -29,13 +29,7 @@ const ContributionsProgressBar: FC<IContributionProgrsessBarProps> = ({
           width={300}
           height={tooltipHeight || 150}
           containerStyle={{ backgroundColor: theme.opaqueLight }}
-          popover={
-            <View style={{ flex: 1 }}>
-              {tooltipText.split('\n').map((t, index) => (
-                <Text key={index.toString()}>{t}</Text>
-              ))}
-            </View>
-          }
+          popover={toolTipPopover}
         >
           <FontAwesome5
             name="question-circle"
@@ -50,7 +44,7 @@ const ContributionsProgressBar: FC<IContributionProgrsessBarProps> = ({
         >
           <Text
             style={styles.percentText}
-            adjustsFontSizeToFit
+            numberOfLines={1}
           >{`${democrat}% (D)`}</Text>
         </View>
         <View
@@ -61,7 +55,7 @@ const ContributionsProgressBar: FC<IContributionProgrsessBarProps> = ({
         >
           <Text
             style={styles.percentText}
-            adjustsFontSizeToFit
+            numberOfLines={1}
           >{`${republican}% (R)`}</Text>
         </View>
       </View>

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, Fragment } from 'react';
 import { Text, View, SafeAreaView } from 'react-native';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -18,6 +18,8 @@ import {
   updateUserError,
   UPDATE_USER,
 } from '../../graphql/queries/user/user';
+import { Button, Overlay } from 'react-native-elements';
+import { ActionButton } from '../Buttons';
 
 const Sidebar = () => {
   const navigation = useNavigation();
@@ -25,7 +27,7 @@ const Sidebar = () => {
   const { user, setUser } = useContext(AppContext);
 
   const [, setIsLoading] = useState(false);
-
+  const [overlayVisible, setOverlayVisible] = useState(false);
   const [updateUser] = useMutation(UPDATE_USER, {
     onError: updateUserError(setIsLoading),
     onCompleted: updateUserCompleted(setIsLoading, setUser),
@@ -42,11 +44,7 @@ const Sidebar = () => {
         },
       });
     } else {
-      AlertHelper.show(
-        'error',
-        'Profile',
-        'Cluey Consuer Profile must be set in order to make likes/dislikes public'
-      );
+      setOverlayVisible(true);
     }
   };
 
@@ -209,6 +207,45 @@ const Sidebar = () => {
       </View>
 
       <HorizontalRule styles={{ marginBottom: 20 }} />
+      <Overlay
+        isVisible={overlayVisible}
+        onBackdropPress={() => setOverlayVisible(false)}
+        overlayStyle={{ width: '90%' }}
+      >
+        <Fragment>
+          <Text style={{ fontSize: 18 }}>
+            Cluey Consumer Profile must be set in order to make likes/dislikes
+            public. Go to “View Profile”.
+          </Text>
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 10,
+            }}
+          >
+            <ActionButton
+              title="View Profile"
+              handlePress={() => {
+                setOverlayVisible(false);
+                navigation.navigate('Profile');
+              }}
+              buttonStyles={{ marginTop: 15 }}
+              textColor={theme.buttonText}
+              color={theme.dark.hex}
+            />
+            <ActionButton
+              title="Close"
+              handlePress={() => {
+                setOverlayVisible(false);
+              }}
+              buttonStyles={{ marginTop: 15 }}
+              textColor={theme.buttonText}
+              color={theme.dark.hex}
+            />
+          </View>
+        </Fragment>
+      </Overlay>
     </SafeAreaView>
   );
 };

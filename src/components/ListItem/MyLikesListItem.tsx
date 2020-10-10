@@ -105,22 +105,12 @@ const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item, title }) => {
         <Fragment>
           <ListItem.Chevron
             style={{ marginHorizontal: 7 }}
-            name="laugh"
-            type="font-awesome-5"
-            size={companyResponse.response === 'will-buy' ? 34 : 22}
-            color={theme.successText}
-            onPress={() =>
-              updateResponse('will-buy', companyResponse.company.id)
-            }
-          />
-          <ListItem.Chevron
-            style={{ marginHorizontal: 7 }}
-            name="emoji-happy"
+            name="emoji-sad"
             type="entypo"
-            size={companyResponse.response === 'will-buy-later' ? 30 : 22}
-            color={theme.successText}
+            size={companyResponse.response === 'will-not-buy' ? 30 : 22}
+            color={theme.dark.hex}
             onPress={() =>
-              updateResponse('will-buy-later', companyResponse.company.id)
+              updateResponse('will-not-buy', companyResponse.company.id)
             }
           />
           <ListItem.Chevron
@@ -128,19 +118,30 @@ const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item, title }) => {
             name="emoji-neutral"
             type="entypo"
             size={companyResponse.response === 'will-not-buy-later' ? 30 : 22}
-            color={theme.successText}
+            color={theme.dark.hex}
             onPress={() =>
               updateResponse('will-not-buy-later', companyResponse.company.id)
             }
           />
+
           <ListItem.Chevron
             style={{ marginHorizontal: 7 }}
-            name="emoji-sad"
+            name="emoji-happy"
             type="entypo"
-            size={companyResponse.response === 'will-not-buy' ? 30 : 22}
-            color={theme.successText}
+            size={companyResponse.response === 'will-buy-later' ? 30 : 22}
+            color={theme.dark.hex}
             onPress={() =>
-              updateResponse('will-not-buy', companyResponse.company.id)
+              updateResponse('will-buy-later', companyResponse.company.id)
+            }
+          />
+          <ListItem.Chevron
+            style={{ marginHorizontal: 7 }}
+            name="laugh"
+            type="font-awesome-5"
+            size={companyResponse.response === 'will-buy' ? 34 : 22}
+            color={theme.dark.hex}
+            onPress={() =>
+              updateResponse('will-buy', companyResponse.company.id)
             }
           />
         </Fragment>

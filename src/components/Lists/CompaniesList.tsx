@@ -1,4 +1,4 @@
-import React, { FC, Fragment } from 'react';
+import React, { FC, Fragment, useEffect, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { ActivityIndicator, Searchbar } from 'react-native-paper';
 import Constants from 'expo-constants';
@@ -7,6 +7,7 @@ import { NavListItem } from '../ListItem';
 
 import styles from './styles';
 import { NODE_ENV } from '../../hooks/serverInfo';
+import { ICompany } from '../../interfaces';
 
 export interface ICompaniesListProps {
   list: [];
@@ -22,6 +23,19 @@ const CompaniesList: FC<ICompaniesListProps> = ({
   onChangeSearch,
   loading,
 }) => {
+  const [orderedList, setOrderedList] = useState(list);
+
+  useEffect(() => {
+    const orderedList = list.sort((a: ICompany, b: ICompany) => {
+      return a.name > b.name;
+    });
+    // .sort((a: ICompany, b: ICompany) => {
+    //   return !a.isActive;
+    // });
+
+    setOrderedList(orderedList);
+  }, [list]);
+
   return (
     <View style={styles.companiesContainer}>
       {loading ? (
@@ -37,7 +51,7 @@ const CompaniesList: FC<ICompaniesListProps> = ({
 
           <FlatList
             style={{ width: '100%' }}
-            data={list}
+            data={orderedList}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => {
               return (
@@ -47,7 +61,6 @@ const CompaniesList: FC<ICompaniesListProps> = ({
                   routeName="Company"
                   params={{ company: item }}
                   title={item.name}
-                  subTitle={item.brandUrl}
                   showLogo={true}
                   logoUrl={
                     item.brandLogoUrl
@@ -71,7 +84,7 @@ const CompaniesList: FC<ICompaniesListProps> = ({
                       color: theme.dark.hex,
                     }}
                   >
-                    No companies
+                    No Brands
                   </Text>
                 </View>
               );

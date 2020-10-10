@@ -31,6 +31,7 @@ export interface ITag {
 }
 export interface IProductType {
   name: string;
+  isActive: boolean;
 }
 export interface IProduct {
   name: string;
@@ -42,6 +43,7 @@ export interface IProduct {
 export interface ICategory {
   name: string;
   logoUrl: string;
+  isActive: boolean;
 }
 
 export interface IPoliticalContributions {
@@ -70,6 +72,7 @@ export interface ICompany {
   parentCompanies?: IParentCompany[];
   productTypes?: IProductType[];
   categories?: IProductType[];
+  isActive: boolean;
 }
 
 export interface IFriend {

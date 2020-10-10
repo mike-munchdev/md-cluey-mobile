@@ -1,16 +1,22 @@
-import React, { FC } from 'react';
+import React, { FC, Fragment, useState } from 'react';
 import { StyleSheet, SafeAreaView, StatusBar, View } from 'react-native';
+import { Button, Overlay } from 'react-native-elements';
 import { ActivityIndicator } from 'react-native-paper';
 
 import theme from '../../constants/theme';
 
 export interface IStandardContainerProps {
   isLoading?: boolean;
+  showOverlay?: boolean;
+  overlay?: React.ReactNode;
 }
 const StandardContainer: FC<IStandardContainerProps> = ({
   isLoading,
   children,
+  showOverlay,
+  overlay,
 }) => {
+  const [overlayVisible, setOverlayVisible] = useState(showOverlay);
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <StatusBar translucent backgroundColor="transparent" />
@@ -24,6 +30,32 @@ const StandardContainer: FC<IStandardContainerProps> = ({
       ) : (
         children
       )}
+      <Overlay
+        isVisible={showOverlay || false}
+        onBackdropPress={() => setOverlayVisible(false)}
+        overlayStyle={{ width: '90%' }}
+      >
+        <Fragment>
+          {overlay}
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 10,
+            }}
+          >
+            <Button
+              onPress={() => setOverlayVisible(false)}
+              title="Close"
+              buttonStyle={{
+                backgroundColor: theme.dark.hex,
+                width: 100,
+              }}
+              titleStyle={{ color: theme.white.hex }}
+            />
+          </View>
+        </Fragment>
+      </Overlay>
     </SafeAreaView>
   );
 };

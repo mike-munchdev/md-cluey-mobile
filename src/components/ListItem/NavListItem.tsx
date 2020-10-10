@@ -56,7 +56,7 @@ const NavListItem: FC<INavListItemProps> = ({
               color: theme.white.hex,
             }}
           >
-            {title || ''}
+            {`${title}${!item.isActive ? ' (coming soon)' : ''}`}
           </Text>
         </ListItem.Title>
         {subTitle && (

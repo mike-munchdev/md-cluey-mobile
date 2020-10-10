@@ -25,7 +25,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
   },
   percentText: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '900',
     color: theme.text,
   },
