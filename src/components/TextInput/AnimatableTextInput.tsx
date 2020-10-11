@@ -24,6 +24,21 @@ interface ITextInputProps {
     | React.RefObject<TextInput>
     | null
     | undefined;
+  autoCompleteType?:
+    | 'name'
+    | 'username'
+    | 'password'
+    | 'cc-csc'
+    | 'cc-exp'
+    | 'cc-exp-month'
+    | 'cc-exp-year'
+    | 'cc-number'
+    | 'email'
+    | 'postal-code'
+    | 'street-address'
+    | 'tel'
+    | 'off'
+    | undefined;
 }
 
 const AnimatableTextInput: FC<ITextInputProps> = ({
@@ -40,6 +55,7 @@ const AnimatableTextInput: FC<ITextInputProps> = ({
   containerStyles,
   textInputRef,
   handleLeftIconPress,
+  autoCompleteType,
 }) => {
   const showErrorState = (touched: any, errors: any, name: string) => {
     return touched[name] !== undefined && errors[name] !== undefined;
@@ -64,6 +80,7 @@ const AnimatableTextInput: FC<ITextInputProps> = ({
               />
             ) : null
           }
+          autoCompleteType={autoCompleteType}
           right={rightIcon || null}
           ref={textInputRef}
           theme={{ colors: { primary: theme.dark.hex } }}

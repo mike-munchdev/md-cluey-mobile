@@ -24,7 +24,7 @@ const OptionListItem: FC<IOptionListItemProps> = ({
       bottomDivider
       style={{
         marginBottom: 5,
-        backgroundColor: theme.light,
+
         width: '100%',
       }}
     >

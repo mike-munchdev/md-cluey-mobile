@@ -24,7 +24,10 @@ import {
   facebookAuthentication,
   googleAuthentication,
 } from '../../utils/socialAuth';
-import { StandardContainer } from '../../components/Containers';
+import {
+  KeyboardAvoidingContainer,
+  StandardContainer,
+} from '../../components/Containers';
 import { passwordRequirments } from '../../validation/passwordSchema';
 import { Overlay, Button } from 'react-native-elements';
 import { TextInput } from 'react-native-paper';
@@ -84,7 +87,7 @@ const SignUp: FC = () => {
   };
 
   return (
-    <StandardContainer isLoading={isLoading}>
+    <KeyboardAvoidingContainer isLoading={isLoading}>
       <View style={styles.overlayContainer}>
         <View style={styles.top}>
           <LogoText
@@ -125,6 +128,7 @@ const SignUp: FC = () => {
                       errors={errors}
                       touched={touched}
                       handleChange={handleChange('firstName')}
+                      autoCompleteType="name"
                     />
                     <AnimatableTextInput
                       label="LAST NAME"
@@ -136,6 +140,7 @@ const SignUp: FC = () => {
                       touched={touched}
                       handleChange={handleChange('lastName')}
                       containerStyles={{ marginTop: 10 }}
+                      autoCompleteType="name"
                     />
                     <AnimatableTextInput
                       label="E-MAIL"
@@ -147,6 +152,7 @@ const SignUp: FC = () => {
                       touched={touched}
                       handleChange={handleChange('email')}
                       containerStyles={{ marginTop: 10 }}
+                      autoCompleteType="email"
                     />
                     <AnimatableTextInput
                       label="PASSWORD"
@@ -172,6 +178,7 @@ const SignUp: FC = () => {
                       handleLeftIconPress={() =>
                         setPasswordSecureTextEntry(!passwordSecureTextEntry)
                       }
+                      autoCompleteType="password"
                     />
 
                     <ActionButton
@@ -260,7 +267,7 @@ const SignUp: FC = () => {
           </Overlay>
         </ScrollView>
       </View>
-    </StandardContainer>
+    </KeyboardAvoidingContainer>
   );
 };
 export default SignUp;

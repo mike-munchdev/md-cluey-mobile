@@ -29,7 +29,11 @@ import {
 import { AppContext, AuthContext } from '../../config/context';
 import { passwordRequirments } from '../../validation/passwordSchema';
 import moment from 'moment';
-import { genderOptions, stateOptions } from '../../utils/optionLists';
+import {
+  genderOptions,
+  getCityOptionsFromStateName,
+  stateOptions,
+} from '../../utils/optionLists';
 import { StandardContainer } from '../../components/Containers';
 
 export interface IOptionsProps {
@@ -99,11 +103,18 @@ const Profile: FC = () => {
           },
         });
       } else {
+        let updateObject = {
+          [fieldProps.fieldName]: updatedValue,
+        };
+        if (fieldProps.fieldName === 'state') {
+          if (updatedValue !== user?.state)
+            updateObject = { ...updateObject, city: null };
+        }
         await updateUser({
           variables: {
             input: {
               userId: user?.id,
-              [fieldProps.fieldName]: updatedValue,
+              ...updateObject,
             },
           },
         });
@@ -370,10 +381,10 @@ const Profile: FC = () => {
                   captionText: [],
                   placeholder: 'City',
 
-                  options: [],
+                  options: getCityOptionsFromStateName(user?.state),
                 });
 
-                setIsStringDialogVisible(true);
+                setIsOptionsDialogVisible(true);
               }}
             >
               <ListItem.Content>

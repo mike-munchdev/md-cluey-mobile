@@ -1,5 +1,5 @@
-import React, { useState, useEffect, FC } from 'react';
-import { ScrollView } from 'react-native';
+import React, { useState, useEffect, FC, useRef, useCallback } from 'react';
+import { FlatList } from 'react-native';
 import { ActivityIndicator, Button, Dialog, Portal } from 'react-native-paper';
 
 import theme from '../../constants/theme';
@@ -26,10 +26,34 @@ const EditOptionsValueModal: FC<IEditOptionsValueModalProps> = ({
   value,
   title,
   isValid,
-
   options,
 }) => {
   const [modalValue, setModalValue] = useState('');
+
+  const flatListRef = useCallback(
+    (node) => {
+      if (node !== null) {
+        if (isVisible) {
+          const selectedIndex = options.findIndex((o) => o.value === value);
+
+          if (selectedIndex >= 0) {
+            node.scrollToIndex({
+              animated: false,
+              index: selectedIndex,
+            });
+          }
+        }
+      }
+    },
+    [value]
+  );
+  const getItemLayout = (data, index: number) => {
+    return {
+      length: 51,
+      offset: 51 * index,
+      index,
+    };
+  };
 
   useEffect(() => {
     setModalValue(value ? value.toString() : '');
@@ -47,20 +71,22 @@ const EditOptionsValueModal: FC<IEditOptionsValueModalProps> = ({
               color={theme.dark.hex}
             />
           ) : (
-            <ScrollView
-              contentContainerStyle={{
-                paddingHorizontal: 24,
+            <FlatList
+              ref={flatListRef}
+              style={{}}
+              getItemLayout={getItemLayout}
+              data={options}
+              renderItem={({ item, index }) => {
+                return (
+                  <OptionListItem
+                    selected={modalValue === item.value}
+                    title={item.name}
+                    onPress={() => setModalValue(item.value)}
+                  />
+                );
               }}
-            >
-              {options.map((o, index) => (
-                <OptionListItem
-                  key={index.toString()}
-                  selected={modalValue === o.value}
-                  title={o.name}
-                  onPress={() => setModalValue(o.value)}
-                />
-              ))}
-            </ScrollView>
+              keyExtractor={(item, index) => index.toString()}
+            />
           )}
         </Dialog.ScrollArea>
 
