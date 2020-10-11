@@ -49,6 +49,7 @@ export interface IFieldProps {
   captionText?: string[];
   options: IOptionsProps[] | undefined;
   placeholder: string;
+  emptyText?: string;
 }
 const initialFieldProps = {
   fieldLabel: '',
@@ -60,7 +61,7 @@ const initialFieldProps = {
   },
   captionText: [],
   placeholder: '',
-
+  emptyText: '',
   options: [],
 };
 
@@ -380,7 +381,7 @@ const Profile: FC = () => {
                   },
                   captionText: [],
                   placeholder: 'City',
-
+                  emptyText: 'Must Select State First',
                   options: getCityOptionsFromStateName(user?.state),
                 });
 
@@ -526,6 +527,7 @@ const Profile: FC = () => {
         captionText={fieldProps.captionText}
         options={fieldProps.options}
         placeholder={fieldProps.placeholder}
+        emptyText={fieldProps.emptyText}
       />
     </StandardContainer>
   );

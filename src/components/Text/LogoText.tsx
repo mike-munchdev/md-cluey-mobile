@@ -13,17 +13,7 @@ export interface ILogoTextProps {
 
 const LogoText: FC<ILogoTextProps> = ({ animation, textStyle }) => {
   return (
-    <Animatable.Text
-      animation={animation}
-      style={[
-        {
-          fontFamily: 'CoinyRegular',
-          fontSize: 58,
-          color: theme.text,
-        },
-        textStyle,
-      ]}
-    >
+    <Animatable.Text animation={animation} style={textStyle}>
       Cluey
     </Animatable.Text>
   );

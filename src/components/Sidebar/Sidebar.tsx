@@ -164,26 +164,14 @@ const Sidebar = () => {
           <Text style={{ fontSize: 14 }}>Coming Soon</Text>
         </View>
         <SidebarMenuItem
-          onPress={async () => {
-            AlertHelper.show(
-              'info',
-              'Under Development',
-              'Feature is currently under development!'
-            );
-          }}
+          onPress={() => {}}
           iconName="globe-americas"
           iconColor={theme.disabledText}
           iconSize={20}
           title="Manage Planet Preferences"
         />
         <SidebarMenuItem
-          onPress={async () => {
-            AlertHelper.show(
-              'info',
-              'Under Development',
-              'Feature is currently under development!'
-            );
-          }}
+          onPress={() => {}}
           iconName="users"
           iconSize={20}
           iconColor={theme.disabledText}
@@ -191,13 +179,7 @@ const Sidebar = () => {
           title="Manage People Preferences"
         />
         <SidebarMenuItem
-          onPress={async () => {
-            AlertHelper.show(
-              'info',
-              'Under Development',
-              'Feature is currently under development!'
-            );
-          }}
+          onPress={() => {}}
           iconName="clipboard-list"
           iconSize={20}
           title="Create Shopping List"

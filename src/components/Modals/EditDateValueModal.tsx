@@ -8,6 +8,7 @@ import {
 } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import theme from '../../constants/theme';
+import { isDate } from 'lodash';
 
 export interface IEditDateValueModalProps {
   isVisible: boolean;
@@ -35,7 +36,7 @@ const EditDateValueModal: FC<IEditDateValueModalProps> = ({
   const [modalValue, setModalValue] = useState<Date | undefined>();
 
   useEffect(() => {
-    if (value) {
+    if (isDate(value)) {
       setModalValue(new Date(value));
     }
   }, [value]);

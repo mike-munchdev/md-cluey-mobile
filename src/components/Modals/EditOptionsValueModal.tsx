@@ -1,5 +1,5 @@
-import React, { useState, useEffect, FC, useRef, useCallback } from 'react';
-import { FlatList } from 'react-native';
+import React, { useState, useEffect, FC, useCallback } from 'react';
+import { FlatList, Text } from 'react-native';
 import { ActivityIndicator, Button, Dialog, Portal } from 'react-native-paper';
 
 import theme from '../../constants/theme';
@@ -15,7 +15,7 @@ export interface IEditOptionsValueModalProps {
   title: string;
   secure: boolean;
   isValid: (value: string) => boolean;
-
+  emptyText?: string;
   options: IOptionsProps[];
 }
 const EditOptionsValueModal: FC<IEditOptionsValueModalProps> = ({
@@ -27,6 +27,7 @@ const EditOptionsValueModal: FC<IEditOptionsValueModalProps> = ({
   title,
   isValid,
   options,
+  emptyText,
 }) => {
   const [modalValue, setModalValue] = useState('');
 
@@ -86,6 +87,7 @@ const EditOptionsValueModal: FC<IEditOptionsValueModalProps> = ({
                 );
               }}
               keyExtractor={(item, index) => index.toString()}
+              ListEmptyComponent={<Text>{emptyText}</Text>}
             />
           )}
         </Dialog.ScrollArea>
