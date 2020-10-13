@@ -89,23 +89,13 @@ const Sidebar = () => {
       <View style={{ marginLeft: 10, marginBottom: 20 }}>
         <SidebarMenuItem
           onPress={async () => {
-            navigation.navigate('Friends');
-          }}
-          iconName="user-friends"
-          iconSize={20}
-          title="Manage Cluey Friends"
-          iconColor={theme.dark.hex}
-        />
-
-        <SidebarMenuItem
-          onPress={async () => {
             navigation.navigate('MyLikes');
           }}
           iconName="thumbs-up"
           iconSize={20}
           title="My likes and dislikes"
           iconColor={theme.dark.hex}
-          viewStyles={{ marginTop: 20 }}
+          // viewStyles={{ marginTop: 20 }}
         />
         <SidebarMenuItem
           onPress={onIsMakeLikesPublicToggleSwitch}
@@ -165,10 +155,19 @@ const Sidebar = () => {
         </View>
         <SidebarMenuItem
           onPress={() => {}}
+          iconName="user-friends"
+          iconSize={20}
+          title="Manage Cluey Friends"
+          iconColor={theme.disabledText}
+        />
+
+        <SidebarMenuItem
+          onPress={() => {}}
           iconName="globe-americas"
           iconColor={theme.disabledText}
           iconSize={20}
           title="Manage Planet Preferences"
+          viewStyles={{ marginTop: 20 }}
         />
         <SidebarMenuItem
           onPress={() => {}}

@@ -412,7 +412,6 @@ export const getPublicAndActiveNonFriendsByNameCompleted = (
   const { ok, users, error, searchText } = getPublicAndActiveNonFriendsByName;
   setLoading(false);
   if (ok) {
-    console.log('users', users);
     if (searchText) setCache({ ...cache, [searchText]: users });
     setUsers(users);
   } else {

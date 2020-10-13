@@ -18,7 +18,7 @@ export default StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    minHeight: 40,
+    height: 60,
     marginBottom: 5,
     justifyContent: 'center',
     alignItems: 'center',

@@ -16,6 +16,7 @@ import {
 import { AppContext } from '../../config/context';
 import MyLikesList from '../../components/Lists/MyLikesList';
 import { PageHeaderText } from '../../components/Text';
+import { NavHeader } from '../../components/Headers';
 
 const MyLikes: FC = () => {
   const { user } = useContext(AppContext);
@@ -62,8 +63,8 @@ const MyLikes: FC = () => {
   return (
     <StandardContainer isLoading={isLoading}>
       <View style={styles.overlayContainer}>
-        <NavigationHeader goBack />
-        <PageHeaderText title="My Likes" />
+        <NavHeader goBack title="My Likes" />
+
         <MyLikesList
           list={filteredList}
           searchQuery={searchQuery}

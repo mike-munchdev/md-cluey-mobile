@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 export interface ISidebarMenuItemProps {
-  onPress: (event: GestureResponderEvent) => void;
+  onPress?: (event: GestureResponderEvent) => void;
   iconName?: string;
   iconColor?: string;
   iconSize?: number;

@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { View } from 'react-native';
 
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 
 import styles from './styles';
 import {
@@ -10,10 +10,8 @@ import {
   GET_COMPANIES_BY_PRODUCT_TYPE,
 } from '../../graphql/queries/company/companies';
 import { useLazyQuery } from '@apollo/react-hooks';
-import NavigationHeader from '../../components/Headers/NavigationHeader';
 import { CompaniesList } from '../../components/Lists';
 import { StandardContainer } from '../../components/Containers';
-import { PageHeaderText } from '../../components/Text';
 import { NavHeader } from '../../components/Headers';
 
 const Companies: FC = () => {

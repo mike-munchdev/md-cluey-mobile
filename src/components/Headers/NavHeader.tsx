@@ -53,7 +53,6 @@ const NavHeader: FC<INavHeaderProps> = ({
           </TouchableOpacity>
         )}
       </View>
-
       <View style={styles.headerCenter}>
         {title && <PageHeaderText title={title} subTitle={subTitle} />}
       </View>

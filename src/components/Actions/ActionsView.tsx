@@ -16,6 +16,7 @@ import {
 import { AppContext } from '../../config/context';
 import { ICompany, ICompanyReponse } from '../../interfaces';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import { MyLikesIcon } from '../Icons';
 
 export interface IActionsViewProps {
   company?: ICompany;
@@ -27,7 +28,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
   const [companyResponse, setCompanyResponse] = useState<
     ICompanyReponse | null | undefined
   >(null);
-  const [, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (company) {
@@ -205,7 +206,11 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
         >
           <View style={styles.buttonView}>
             <View style={styles.iconView}>
-              <FontAwesome5 name="smile" size={36} color={theme.dark.hex} />
+              <MyLikesIcon
+                response={companyResponse}
+                size={36}
+                color={theme.dark.hex}
+              />
             </View>
             <Text style={styles.buttonText}>Likes/Dislikes</Text>
           </View>
