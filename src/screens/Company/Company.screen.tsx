@@ -70,10 +70,7 @@ const Company: FC = () => {
         return (
           <StandardContainer isLoading={isLoading}>
             <View style={styles.overlayContainer}>
-              <NavHeader
-                goBack
-                title={`${imageErrored ? 'Company' : company?.name}`}
-              />
+              <NavHeader goBack />
               <View style={styles.brandContainer}>
                 <CompanyLogo
                   logoUri={company?.brandLogoUrl}

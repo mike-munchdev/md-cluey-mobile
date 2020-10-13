@@ -13,7 +13,6 @@ export default StyleSheet.create({
   barsContainer: { marginLeft: 20, marginTop: 20 },
   backContainer: {
     height: 60,
-    backgroundColor: 'red',
   },
   container: {
     flex: 1,
