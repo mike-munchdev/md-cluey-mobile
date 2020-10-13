@@ -17,7 +17,7 @@ export interface ICompanyLogoProps {
 const { height } = Dimensions.get('screen');
 
 const IMAGE_HEIGHT = height * 0.1;
-console.log('IMAGE_HEIGHT', IMAGE_HEIGHT);
+
 const IMAGE_WIDTH = 150;
 
 const CompanyLogo: FC<ICompanyLogoProps> = ({ logoUri, text }) => {

@@ -29,6 +29,12 @@ export const userStructure = `{
     isActive
     companyResponses ${responseStructure}
 }`;
+export const publicUserStructure = `{
+  id
+  firstName
+  lastName
+  username
+}`;
 
 export const GET_USER_COMPANY_RESPONSES = gql`
   query GetUserCompanyResponses($userId: String!) {
@@ -144,6 +150,18 @@ export const UPDATE_COMPANY_RESPONSE_FOR_USER = gql`
       ok
       companyResponse ${responseStructure}
       error {
+        message
+      }
+    }
+  }
+`;
+
+export const GET_PUBLIC_AND_ACTVE_NON_FRIENDS_BY_NAME = gql`
+  query GetPublicAndActiveNonFriendsByName($name: String!, $exact: Boolean) {
+    getPublicAndActiveNonFriendsByName(name: $name, exact: $exact) {
+      ok
+      users ${publicUserStructure}
+      error {        
         message
       }
     }
@@ -372,6 +390,32 @@ export const getUserCompanyResponsesCompleted = (
     reset();
   } else {
     reset();
+    AlertHelper.show('error', 'Error', error.message);
+  }
+};
+
+export const getPublicAndActiveNonFriendsByNameError = (
+  setUsers: Function,
+  setLoading: Function
+) => (e: ApolloError) => {
+  setLoading(false);
+  setUsers([]);
+  AlertHelper.show('error', 'Error', 'An error occurred. Please try again.');
+};
+
+export const getPublicAndActiveNonFriendsByNameCompleted = (
+  setUsers: Function,
+  setLoading: Function,
+  setCache: Function,
+  cache: any
+) => async ({ getPublicAndActiveNonFriendsByName }) => {
+  const { ok, users, error, searchText } = getPublicAndActiveNonFriendsByName;
+  setLoading(false);
+  if (ok) {
+    console.log('users', users);
+    if (searchText) setCache({ ...cache, [searchText]: users });
+    setUsers(users);
+  } else {
     AlertHelper.show('error', 'Error', error.message);
   }
 };

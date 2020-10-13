@@ -22,6 +22,12 @@ export default StyleSheet.create({
     flexDirection: 'column',
     // backgroundColor: 'red',
   },
+  parentCompanyContainer: {
+    marginHorizontal: 10,
+    height: height * 0.05,
+    flexDirection: 'column',
+    // backgroundColor: 'red',
+  },
   actionButtonContainer: {
     height: height * 0.2,
     alignItems: 'baseline',

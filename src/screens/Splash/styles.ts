@@ -50,4 +50,18 @@ export default StyleSheet.create({
     color: colors.white.normal,
     fontWeight: 'bold',
   },
+  parentCompaniesTextContainer: {
+    flexDirection: 'column',
+    width: '90%',
+
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  parentCompaniesCaptionText: {
+    fontFamily: 'MontserratBold',
+  },
+  parentCompaniesText: {
+    color: theme.dark.hex,
+    fontFamily: 'MontserratMedium',
+  },
 });

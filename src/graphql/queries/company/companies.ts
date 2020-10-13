@@ -19,20 +19,26 @@ export const companyStructure = `{
     }
     parentCompanies {
       id
-      name
-      politicalContributions {
-        id
-        cycle
-        orgId
-        subsidiaryId
-        subsidiary
-        total
-        indivs
-        pacs
-        democrats
-        republicans
-        thirdParty
-      }
+      name     
+    }
+    politicalContributions {
+      id
+      cycle
+      org_id
+      org_name
+      total
+      democrats
+      republicans 
+      third_party
+      indivs
+      indivs_dems
+      indivs_repubs
+      indivs_third
+      pacs
+      pacs_dems
+      pacs_repubs
+      pacs_third
+      
     }
   }
 `;

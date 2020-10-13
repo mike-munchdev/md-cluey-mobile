@@ -55,4 +55,16 @@ export default StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  flatListHeaderContainer: {
+    backgroundColor: theme.dark.hex,
+    marginBottom: 5,
+    height: 25,
+    justifyContent: 'center',
+  },
+  flatListHeaderText: {
+    color: theme.white.hex,
+    fontFamily: 'MontserratBold',
+    fontSize: 16,
+    marginLeft: 5,
+  },
 });

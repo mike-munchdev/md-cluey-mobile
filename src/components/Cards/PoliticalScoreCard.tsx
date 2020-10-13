@@ -4,7 +4,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 import styles from './styles';
 import { List } from 'react-native-paper';
-import { ICompany } from '../../interfaces';
+import { ICompany, IPoliticalContribution } from '../../interfaces';
 import theme from '../../constants/theme';
 import { ContributionsProgressBar } from '../ProgresBar';
 export interface IPoliticalScoreCardProps {
@@ -21,29 +21,46 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
   const [pacDemocratPercent, setPacDemocratPercent] = useState(0);
   const [pacRepublicanPercent, setPacRepublicanPercent] = useState(0);
 
-  const getPoliticalContributionsValue = (company: ICompany | undefined, property: string) : number => {
-    return company ? company?.parentCompanies.reduce((acc, curr) => {
-      return (
-        curr.politicalContributions?.reduce((p, c) => {
-          return p + c.[property];
-        }, 0) + acc
-      );
-    }, 0) : 0;
-  }
+  const getPoliticalContributionsValue = (
+    company: ICompany | undefined,
+    property: string
+  ): number => {
+    return company
+      ? company?.politicalContributions.reduce(
+          (acc, curr: IPoliticalContribution) => {
+            return acc + curr[property];
+          },
+          0
+        )
+      : 0;
+  };
+
   useEffect(() => {
-    const iRepublican = Math.floor(Math.random() * 100);
-    const iDemocrat = 100 - iRepublican;
-    const pRepublican = Math.floor(Math.random() * 100);
-    const pDemocrat = 100 - pRepublican;
-    setIndividualDemocratPercent(iDemocrat);
-    setIndividualRepublicanPercent(iRepublican);
-    setPacDemocratPercent(pDemocrat);
-    setPacRepublicanPercent(pRepublican);
+    if (company && company.politicalContributions) {
+      const indivs = getPoliticalContributionsValue(company, 'indivs');
+      const indivsDems = getPoliticalContributionsValue(company, 'indivs_dems');
+      const indivsRepubs = getPoliticalContributionsValue(
+        company,
+        'indivs_repubs'
+      );
+      const pacs = getPoliticalContributionsValue(company, 'pacs');
+      const pacsDems = getPoliticalContributionsValue(company, 'pacs_dems');
+      const pacsRepubs = getPoliticalContributionsValue(company, 'pacs_repubs');
+      const pacsThird = getPoliticalContributionsValue(company, 'pacs_third');
+
+      setIndividualDemocratPercent(Math.round((indivsDems / indivs) * 100));
+      setIndividualRepublicanPercent(Math.round((indivsRepubs / indivs) * 100));
+
+      setPacDemocratPercent(Math.round((pacsDems / pacs) * 100));
+      setPacRepublicanPercent(Math.round((pacsRepubs / pacs) * 100));
+      console.log('pacs', pacs);
+      console.log('pacsDems', pacsDems);
+      console.log('pacsRepubs', pacsRepubs);
+      console.log('pacsThird', pacsThird);
+    }
+
+    // console.log('company', company);
   }, [company]);
-  
-  // useEffect(() => {
-  //   updatePoliticalData(company);
-  // }, [company]);
 
   const handlePress = () => setExpanded(!expanded);
 
@@ -58,17 +75,27 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
             <FontAwesome5 name="flag-usa" size={24} color={theme.dark.hex} />
           </Fragment>
         }
-      > 
+      >
         <View style={styles.politicalScoreContainer}>
           <ContributionsProgressBar
             title="Individual Contributions"
             democrat={individualDemocratPercent}
             republican={individualRepublicanPercent}
-            toolTipPopover={<View style={{ flex: 1 }}>            
-            <Text>Individual contributions made by employees over the amount of $1,000 to political candidates in the 2016, 2018, and 2020 federal election cycles. Typically, donations of this size are made by high-level executives.</Text>
-            <Text style={{marginTop: 10, fontSize: 12, fontWeight: 'bold'}}>Data from the Center of Responsive Politics</Text>            
-        </View>}
-            
+            toolTipPopover={
+              <View style={{ flex: 1 }}>
+                <Text>
+                  Individual contributions made by employees over the amount of
+                  $1,000 to political candidates in the 2016, 2018, and 2020
+                  federal election cycles. Typically, donations of this size are
+                  made by high-level executives.
+                </Text>
+                <Text
+                  style={{ marginTop: 10, fontSize: 12, fontWeight: 'bold' }}
+                >
+                  Data from the Center of Responsive Politics
+                </Text>
+              </View>
+            }
             tooltipHeight={150}
           />
         </View>
@@ -77,20 +104,24 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
             title="PAC Contributions"
             democrat={pacDemocratPercent}
             republican={pacRepublicanPercent}
-            toolTipPopover={<View style={{ flex: 1 }}>            
-              <Text>Contributions made by Corporate PAC to political candidates in the 2016, 2018, and 2020 federal election cycles.</Text>
-              <Text style={{marginTop: 10, fontSize: 12, fontWeight: 'bold'}}>Data from the Center of Responsive Politics</Text>            
-          </View>}
-            
+            toolTipPopover={
+              <View style={{ flex: 1 }}>
+                <Text>
+                  Contributions made by Corporate PAC to political candidates in
+                  the 2016, 2018, and 2020 federal election cycles.
+                </Text>
+                <Text
+                  style={{ marginTop: 10, fontSize: 12, fontWeight: 'bold' }}
+                >
+                  Data from the Center of Responsive Politics
+                </Text>
+              </View>
+            }
             tooltipHeight={100}
           />
-        </View>  
-        
-         
-        
+        </View>
       </List.Section>
     </Fragment>
   );
- 
 };
 export default PoliticalScoreCard;

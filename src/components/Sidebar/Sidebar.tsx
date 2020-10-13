@@ -34,7 +34,7 @@ const Sidebar = () => {
   });
   const onIsMakeLikesPublicToggleSwitch = async () => {
     // check for consumer profile settings
-    if (user?.username && user.dob && user.gender && user.city && user.state) {
+    if (user.dob && user.gender && user.city && user.state) {
       await updateUser({
         variables: {
           input: {

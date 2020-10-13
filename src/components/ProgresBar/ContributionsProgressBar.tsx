@@ -39,25 +39,34 @@ const ContributionsProgressBar: FC<IContributionProgrsessBarProps> = ({
         </Tooltip>
       </View>
       <View style={styles.percentContainer}>
-        <View
-          style={{ ...styles.democratView, width: `${Math.floor(democrat)}%` }}
-        >
-          <Text
-            style={styles.percentText}
-            numberOfLines={1}
-          >{`${democrat}% (D)`}</Text>
-        </View>
-        <View
-          style={{
-            ...styles.republicanView,
-            width: `${Math.floor(republican)}%`,
-          }}
-        >
-          <Text
-            style={styles.percentText}
-            numberOfLines={1}
-          >{`${republican}% (R)`}</Text>
-        </View>
+        {democrat >= 0 && republican >= 0 ? (
+          <>
+            <View
+              style={{
+                ...styles.democratView,
+                width: `${Math.floor(democrat)}%`,
+              }}
+            >
+              <Text
+                style={styles.percentText}
+                numberOfLines={1}
+              >{`${democrat}% (D)`}</Text>
+            </View>
+            <View
+              style={{
+                ...styles.republicanView,
+                width: `${Math.floor(republican)}%`,
+              }}
+            >
+              <Text
+                style={styles.percentText}
+                numberOfLines={1}
+              >{`${republican}% (R)`}</Text>
+            </View>
+          </>
+        ) : (
+          <Text style={{ color: theme.dark.hex }}>No contributions found</Text>
+        )}
       </View>
       {/* <View style={styles.politicalSubTextContainer}>
         <View style={styles.politicalInfoView}>

@@ -18,17 +18,20 @@ const CategoriesList: FC<ICategoriesListProps> = ({ list, loading }) => {
   const [orderedList, setOrderedList] = useState(list);
 
   useEffect(() => {
-    const orderedList = list.sort((a: ICategory, b: ICategory) => {
-      if (a.name > b.name) return -1;
-      if (a.name < b.name) return 1;
+    const activeRecords = list.filter((l) => l.isActive === true);
+    const inActiveRecords = list.filter((l) => l.isActive !== true);
+    const activeListOrdered = activeRecords.sort(
+      (a: ICategory, b: ICategory) => {
+        return a.name > b.name;
+      }
+    );
+    const inactiveListOrdered = inActiveRecords.sort(
+      (a: ICategory, b: ICategory) => {
+        return a.name > b.name;
+      }
+    );
 
-      if (a.isActive > b.isActive) return 1;
-      if (a.isActive < b.isActive) return -1;
-
-      return 0;
-    });
-
-    setOrderedList(orderedList);
+    setOrderedList([...activeListOrdered, ...inactiveListOrdered]);
   }, [list]);
 
   return (

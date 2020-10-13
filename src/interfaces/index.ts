@@ -46,23 +46,27 @@ export interface ICategory {
   isActive: boolean;
 }
 
-export interface IPoliticalContributions {
+export interface IPoliticalContribution {
   id: string;
   cycle: number;
-  orgId: string;
-  subsidiaryId: string;
-  subsidiary: string;
+  org_id: string;
+  org_name: string;
   total: number;
-  indivs: number;
-  pacs: number;
   democrats: number;
   republicans: number;
-  thirdParty: number;
+  third_party: number;
+  indivs: number;
+  indivs_dems: number;
+  indivs_repubs: number;
+  indivs_third: number;
+  pacs: number;
+  pacs_dems: number;
+  pacs_repubs: number;
+  pacs_third: number;
 }
 export interface IParentCompany {
   name: string;
   orgId: string;
-  politicalContributions?: IPoliticalContributions[];
 }
 export interface ICompany {
   id: string;
@@ -72,6 +76,7 @@ export interface ICompany {
   parentCompanies?: IParentCompany[];
   productTypes?: IProductType[];
   categories?: IProductType[];
+  politicalContributions?: IPoliticalContribution[];
   isActive: boolean;
 }
 
@@ -80,4 +85,11 @@ export interface IFriend {
   firstName: string;
   lastName: string;
   userName: string;
+}
+
+export interface IFriendship {
+  id: string;
+  requester: IFriend;
+  recipient: IFriend;
+  status: string;
 }

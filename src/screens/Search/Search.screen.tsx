@@ -92,7 +92,7 @@ const Search: FC = () => {
   return (
     <StandardContainer isLoading={false}>
       <View style={styles.overlayContainer}>
-        <NavHeader goBack />
+        <NavHeader goBack title="Search By Name" />
         <Formik
           initialValues={{
             searchText: '',

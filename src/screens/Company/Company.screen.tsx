@@ -29,6 +29,7 @@ import { StandardContainer } from '../../components/Containers';
 import { AppContext } from '../../config/context';
 import { CompanyLogo } from '../../components/Images';
 import { NavHeader } from '../../components/Headers';
+import { ParentCompaniesText } from '../../components/Text';
 
 const Company: FC = () => {
   const { user } = useContext(AppContext);
@@ -76,7 +77,9 @@ const Company: FC = () => {
                   text={company?.name}
                 />
               </View>
-
+              <View style={styles.parentCompanyContainer}>
+                <ParentCompaniesText company={company} />
+              </View>
               <ScrollView style={styles.infoContainer}>
                 <PoliticalScoreCard company={company} />
                 <HorizontalRule

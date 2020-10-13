@@ -237,7 +237,34 @@ const Profile: FC = () => {
                   </ListItem.Content>
                   <ListItem.Chevron />
                 </ListItem>
+                <ListItem
+                  style={{
+                    marginHorizontal: 10,
+                  }}
+                  bottomDivider
+                  onPress={() => {
+                    setFieldProps({
+                      fieldName: 'username',
+                      fieldLabel: 'Username',
+                      fieldValue: user ? user.username : '',
+                      secureTextEntry: false,
+                      isValid: (value: string) => {
+                        return value ? value.length > 0 : false;
+                      },
+                      captionText: [],
+                      placeholder: 'Username',
+                      options: [],
+                    });
 
+                    setIsStringDialogVisible(true);
+                  }}
+                >
+                  <ListItem.Content>
+                    <ListItem.Title>{user?.username}</ListItem.Title>
+                    <ListItem.Subtitle>Username</ListItem.Subtitle>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
                 <ListItem
                   style={{
                     marginHorizontal: 10,
@@ -276,34 +303,7 @@ const Profile: FC = () => {
             >
               Cluey Consumer profile
             </List.Subheader>
-            <ListItem
-              style={{
-                marginHorizontal: 10,
-              }}
-              bottomDivider
-              onPress={() => {
-                setFieldProps({
-                  fieldName: 'username',
-                  fieldLabel: 'Username',
-                  fieldValue: user ? user.username : '',
-                  secureTextEntry: false,
-                  isValid: (value: string) => {
-                    return value ? value.length > 0 : false;
-                  },
-                  captionText: [],
-                  placeholder: 'Username',
-                  options: [],
-                });
 
-                setIsStringDialogVisible(true);
-              }}
-            >
-              <ListItem.Content>
-                <ListItem.Title>{user?.username}</ListItem.Title>
-                <ListItem.Subtitle>Username</ListItem.Subtitle>
-              </ListItem.Content>
-              <ListItem.Chevron />
-            </ListItem>
             <ListItem
               style={{
                 marginHorizontal: 10,
