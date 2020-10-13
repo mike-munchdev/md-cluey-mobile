@@ -18,6 +18,7 @@ import {
   EditStringValueModal,
 } from '../../components/Modals';
 import { useMutation } from '@apollo/react-hooks';
+
 import {
   updateUserCompleted,
   updateUserError,

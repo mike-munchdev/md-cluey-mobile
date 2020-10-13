@@ -34,7 +34,7 @@ const NavHeader: FC<INavHeaderProps> = ({
       <View style={styles.headerLeft}>
         {goBack && (
           <TouchableOpacity
-            style={styles.closeContainer}
+            style={styles.backContainer}
             onPress={() => {
               navigation.goBack();
             }}

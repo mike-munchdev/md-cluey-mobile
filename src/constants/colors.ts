@@ -4,6 +4,7 @@ export default {
     neutral: 'lightgrey',
     dark: 'darkgrey',
     light: 'lightgrey',
+    charcoal: '#2b2d2f',
   },
   white: {
     normal: 'white',

@@ -51,6 +51,8 @@ export default {
   willNotBuyLater: colors.yellow.normal,
   willNotBuy: colors.orange.normal,
   opaque: colors.gray.dark,
+  charcoal: colors.gray.charcoal,
   opaqueLight: colors.gray.light,
   transparent: 'transparent',
+  black: 'black',
 };

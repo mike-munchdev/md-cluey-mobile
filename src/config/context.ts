@@ -24,6 +24,7 @@ type AuthContextProps = {
   ) => void;
   signOut: (navigation: any) => void;
   activateAccount: (message: string, navigation: any) => void;
+  resetPasswordReset: (message: string, navigation: any) => void;
   signUp: (message: string, navigation: any) => void;
   isLoggedIn: boolean;
 };

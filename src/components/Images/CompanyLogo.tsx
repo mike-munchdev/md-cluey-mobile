@@ -13,6 +13,8 @@ import { NODE_ENV } from '../../hooks/serverInfo';
 export interface ICompanyLogoProps {
   logoUri: string | undefined;
   text?: string;
+  imageErrored?: boolean;
+  setImageErrored: (value: boolean) => void;
 }
 const { height } = Dimensions.get('screen');
 
@@ -20,16 +22,20 @@ const IMAGE_HEIGHT = height * 0.1;
 
 const IMAGE_WIDTH = 150;
 
-const CompanyLogo: FC<ICompanyLogoProps> = ({ logoUri, text }) => {
+const CompanyLogo: FC<ICompanyLogoProps> = ({
+  logoUri,
+  text,
+  imageErrored,
+  setImageErrored,
+}) => {
   const [extension, setExtension] = useState<string | undefined>('');
-  const [imageError, setImageError] = useState<boolean>(false);
 
   useEffect(() => {
     const extension = logoUri?.slice(logoUri?.lastIndexOf('.') + 1);
     setExtension(extension);
   }, [logoUri]);
 
-  if (!logoUri || imageError)
+  if (!logoUri || imageErrored)
     return (
       <View
         style={{
@@ -39,9 +45,7 @@ const CompanyLogo: FC<ICompanyLogoProps> = ({ logoUri, text }) => {
           justifyContent: 'center',
         }}
       >
-        <Text adjustsFontSizeToFit={true} style={styles.companyNameText}>
-          {text}
-        </Text>
+        <Text style={styles.companyNameText}>{text}</Text>
       </View>
     );
 
@@ -65,7 +69,7 @@ const CompanyLogo: FC<ICompanyLogoProps> = ({ logoUri, text }) => {
         <ActivityIndicator color={theme.dark.hex} size="large" />
       }
       onError={(error) => {
-        setImageError(true);
+        setImageErrored(true);
       }}
     />
   );

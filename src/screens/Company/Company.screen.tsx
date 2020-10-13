@@ -38,7 +38,7 @@ const Company: FC = () => {
   const [company, setCompany] = useState<ICompany | undefined>();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [] = useState(false);
+  const [imageErrored, setImageErrored] = useState(false);
   const [getCompanyById] = useLazyQuery(GET_COMPANY_BY_ID, {
     fetchPolicy: 'network-only',
     onError: getCompanyByIdError(setCompany, setIsLoading),
@@ -70,11 +70,16 @@ const Company: FC = () => {
         return (
           <StandardContainer isLoading={isLoading}>
             <View style={styles.overlayContainer}>
-              <NavHeader goBack />
+              <NavHeader
+                goBack
+                title={`${imageErrored ? 'Company' : company?.name}`}
+              />
               <View style={styles.brandContainer}>
                 <CompanyLogo
                   logoUri={company?.brandLogoUrl}
                   text={company?.name}
+                  imageErrored={imageErrored}
+                  setImageErrored={setImageErrored}
                 />
               </View>
               <View style={styles.parentCompanyContainer}>

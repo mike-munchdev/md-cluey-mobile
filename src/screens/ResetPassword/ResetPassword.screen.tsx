@@ -8,38 +8,44 @@ import { Formik } from 'formik';
 
 import styles from './styles';
 
-import { AnimatableTextInput } from '../../components/TextInput/';
+import { AnimatableTextInput } from '../../components/TextInput';
 import { AuthContext } from '../../config/context';
 import theme from '../../constants/theme';
 import { ActionButton } from '../../components/Buttons';
 
 import { activateAccountSchema } from '../../validation/activateAccount';
 import {
-  ACTIVATE_USER_ACCOUNT,
-  activateUserAccountError,
-  activateUserAccountCompleted,
+  resetPasswordError,
+  resetPasswordCompleted,
+  RESET_PASSWORD,
 } from '../../graphql/queries/user/user';
 import { LogoText } from '../../components/Text';
-import { StandardContainer } from '../../components/Containers';
+import {
+  KeyboardAvoidingContainer,
+  StandardContainer,
+} from '../../components/Containers';
+import { NavHeader } from '../../components/Headers';
+import { resetPasswordSchema } from '../../validation/resetPassword';
 
 const ActivateAccount: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { activateAccount } = useContext(AuthContext);
+  const { resetPasswordReset } = useContext(AuthContext);
   const navigation = useNavigation();
 
-  const [activateUserAccount] = useMutation(ACTIVATE_USER_ACCOUNT, {
+  const [resetPassword] = useMutation(RESET_PASSWORD, {
     fetchPolicy: 'no-cache',
-    onError: activateUserAccountError(setIsLoading),
-    onCompleted: activateUserAccountCompleted(
-      activateAccount,
+    onError: resetPasswordError(setIsLoading),
+    onCompleted: resetPasswordCompleted(
+      resetPasswordReset,
       setIsLoading,
       navigation
     ),
   });
 
   return (
-    <StandardContainer>
+    <KeyboardAvoidingContainer isLoading={false}>
       <View style={styles.overlayContainer}>
+        <NavHeader goBack />
         <View style={styles.top}>
           <LogoText
             animation="fadeIn"
@@ -48,18 +54,17 @@ const ActivateAccount: FC = () => {
             }}
           />
         </View>
-
         <Formik
           initialValues={{
-            confirmToken: '',
+            email: '',
           }}
-          validationSchema={activateAccountSchema}
+          validationSchema={resetPasswordSchema}
           onSubmit={(values, { setSubmitting }) => {
             setIsLoading(true);
-            const { confirmToken } = values;
+            const { email } = values;
 
-            activateUserAccount({
-              variables: { confirmToken },
+            resetPassword({
+              variables: { email },
             });
             setSubmitting(false);
           }}
@@ -69,20 +74,21 @@ const ActivateAccount: FC = () => {
               <View style={styles.formContainer}>
                 <View style={styles.inputView}>
                   <AnimatableTextInput
-                    label="Token"
-                    placeholder="Enter confirm token"
-                    leftIconName="ticket-confirmation"
-                    name="confirmToken"
-                    value={values.confirmToken}
+                    autoCompleteType="email"
+                    label="Email"
+                    placeholder="Enter email"
+                    leftIconName="email"
+                    name="email"
+                    value={values.email}
                     errors={errors}
                     touched={touched}
-                    handleChange={handleChange('confirmToken')}
+                    handleChange={handleChange('email')}
                   />
                   <ActionButton
                     handlePress={() => handleSubmit()}
                     textColor={theme.buttonText}
                     color={theme.dark.hex}
-                    title="Activate Account"
+                    title="Reset Password"
                     buttonStyles={{ marginTop: 20 }}
                     isLoading={isLoading}
                   />
@@ -92,7 +98,7 @@ const ActivateAccount: FC = () => {
           }}
         </Formik>
       </View>
-    </StandardContainer>
+    </KeyboardAvoidingContainer>
   );
 };
 export default ActivateAccount;

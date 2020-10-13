@@ -4,6 +4,7 @@ import { AlertHelper } from '../../../utils/alert';
 import Bugsnag from '@bugsnag/expo';
 import { IUser } from '../../../interfaces';
 import { companyStructure } from '../company/companies';
+import ERRORS from '../../../constants/errors';
 
 export const responseStructure = `{  
     id
@@ -168,6 +169,18 @@ export const GET_PUBLIC_AND_ACTVE_NON_FRIENDS_BY_NAME = gql`
   }
 `;
 
+export const RESET_PASSWORD = gql`
+  mutation ResetPassword($email: String!) {
+    resetPassword(email: $email) {
+      ok
+      message
+      error {
+        message
+      }
+    }
+  }
+`;
+
 export const userSignupError = (e: ApolloError) => {
   AlertHelper.show('error', 'Error', 'An error occurred. Please try again.');
 };
@@ -292,7 +305,7 @@ export const activateUserAccountError = (setLoading: Function) => (
   e: ApolloError
 ) => {
   setLoading(false);
-  AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
+  AlertHelper.show('error', 'Error', ERRORS.DEFAULT_ERROR_MESSAGE);
   Bugsnag.notify(e);
 };
 
@@ -414,6 +427,37 @@ export const getPublicAndActiveNonFriendsByNameCompleted = (
   if (ok) {
     if (searchText) setCache({ ...cache, [searchText]: users });
     setUsers(users);
+  } else {
+    AlertHelper.show('error', 'Error', error.message);
+  }
+};
+
+export const resetPasswordError = (setLoading: Function) => (
+  e: ApolloError
+) => {
+  setLoading(false);
+  AlertHelper.show('error', 'Error', ERRORS.DEFAULT_ERROR_MESSAGE);
+  Bugsnag.notify(e);
+};
+
+export const resetPasswordCompleted = (
+  resetPasswordReset: (message: string, navigation: any) => void,
+  setLoading: Function,
+  navigation: any
+) => async ({ resetPassword }) => {
+  const { ok, message, error } = resetPassword;
+
+  setLoading(false);
+  if (ok) {
+    if (!message) {
+      AlertHelper.show(
+        'error',
+        'Error',
+        'No customer found with the given token.'
+      );
+    } else {
+      await resetPasswordReset(message, navigation);
+    }
   } else {
     AlertHelper.show('error', 'Error', error.message);
   }

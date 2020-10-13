@@ -15,7 +15,7 @@ const NavigationHeader: FC<INavigationHeaderProps> = ({ goBack, showMenu }) => {
     <View style={{ flexDirection: 'row' }}>
       {goBack && (
         <TouchableOpacity
-          style={styles.closeContainer}
+          style={styles.backContainer}
           onPress={() => {
             navigation.goBack();
           }}

@@ -37,9 +37,7 @@ const NavListItem: FC<INavListItemProps> = ({
       key={item.id}
       bottomDivider
       containerStyle={{
-        backgroundColor: item.isActive
-          ? theme.dark.rgba(0.9)
-          : theme.disabled.hex,
+        backgroundColor: item.isActive ? theme.white.hex : theme.opaqueLight,
       }}
       style={{
         marginBottom: 5,
@@ -48,22 +46,15 @@ const NavListItem: FC<INavListItemProps> = ({
     >
       {showLogo ? <NavItemLogo logoUri={logoUrl} rounded={rounded} /> : null}
       <ListItem.Content>
-        <ListItem.Title>
-          <Text
-            style={{
-              fontFamily: 'MontserratMedium',
-              fontSize: 18,
-              color: theme.white.hex,
-            }}
-          >
-            {`${title}${!item.isActive ? ' (coming soon)' : ''}`}
-          </Text>
+        <ListItem.Title
+          style={{
+            fontFamily: 'Montserrat',
+            color: item.isActive ? theme.black : theme.charcoal,
+          }}
+        >
+          {`${title}${!item.isActive ? ' (coming soon)' : ''}`}
         </ListItem.Title>
-        {subTitle && (
-          <ListItem.Subtitle style={{ color: theme.white.hex }}>
-            {subTitle}
-          </ListItem.Subtitle>
-        )}
+        {subTitle && <ListItem.Subtitle>{subTitle}</ListItem.Subtitle>}
       </ListItem.Content>
     </ListItem>
   );

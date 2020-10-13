@@ -30,6 +30,7 @@ import { Categories } from '../screens/Categories';
 import { ProductTypes } from '../screens/ProductTypes';
 import { MyLikes } from '../screens/MyLikes';
 import { Home } from '../screens/Home';
+import { ResetPassword } from '../screens/ResetPassword';
 
 const Drawer = createDrawerNavigator();
 const AuthStack = createStackNavigator();
@@ -100,6 +101,11 @@ const AuthStackScreen = () => (
     <AuthStack.Screen
       name="ActivateAccount"
       component={ActivateAccount}
+      options={{ headerShown: false }}
+    />
+    <AuthStack.Screen
+      name="ResetPassword"
+      component={ResetPassword}
       options={{ headerShown: false }}
     />
   </AuthStack.Navigator>
@@ -192,6 +198,12 @@ export default () => {
           navigation.navigate('SignIn');
         });
         AlertHelper.show('success', 'Activation', message);
+      },
+      resetPasswordReset: (message: string, navigation: any) => {
+        AlertHelper.setOnClose(() => {
+          navigation.navigate('SignIn');
+        });
+        AlertHelper.show('success', 'Reset Password', message);
       },
       signOut: async (navigation: any) => {
         try {

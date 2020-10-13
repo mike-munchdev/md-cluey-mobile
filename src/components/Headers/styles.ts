@@ -11,14 +11,17 @@ export default StyleSheet.create({
     // marginTop: 50,
   },
   barsContainer: { marginLeft: 20, marginTop: 20 },
-  closeContainer: {},
+  backContainer: {
+    height: 60,
+    backgroundColor: 'red',
+  },
   container: {
     flex: 1,
     backgroundColor: 'white',
   },
   header: {
     flexDirection: 'row',
-    height: 60,
+    height: 65,
     marginBottom: 5,
     justifyContent: 'center',
     alignItems: 'center',

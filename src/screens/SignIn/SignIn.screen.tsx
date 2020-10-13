@@ -172,16 +172,16 @@ const SignIn: FC = () => {
                       buttonStyles={{ marginTop: 20 }}
                       isLoading={signInLoading}
                     />
-                    {/* <TextButton
-                    handlePress={() => navigation.navigate('ForgotPassword')}
-                    title="Forgot your Password?"
-                    textStyles={{
-                      fontSize: 18,
-                      color: theme.text,
-                      fontWeight: 'bold',
-                    }}
-                    buttonStyles={{ marginTop: 15 }}
-                  /> */}
+                    <TextButton
+                      handlePress={() => navigation.navigate('ResetPassword')}
+                      title="Forgot your Password?"
+                      textStyles={{
+                        fontSize: 18,
+                        color: theme.text,
+                        fontWeight: 'bold',
+                      }}
+                      buttonStyles={{ marginTop: 15 }}
+                    />
                     <TextButton
                       handlePress={() => navigation.navigate('ActivateAccount')}
                       title="Activate Your Account"
