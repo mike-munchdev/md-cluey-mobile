@@ -15,6 +15,7 @@ export interface IUser {
   city?: string;
   state?: string;
   gender?: string;
+  mustResetPassword: Boolean;
 }
 export interface ICompanyReponse {
   id: string;

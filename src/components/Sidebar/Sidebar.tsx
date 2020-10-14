@@ -1,4 +1,4 @@
-import React, { useState, useContext, Fragment } from 'react';
+import React, { useState, useContext, Fragment, useEffect } from 'react';
 import { Text, View, SafeAreaView } from 'react-native';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -9,7 +9,7 @@ import { AppContext } from '../../config/context';
 
 import SidebarMenuItem from './SidebarMenuItem';
 import { HorizontalRule } from '../HorizontalRule/';
-import { useNavigation } from '@react-navigation/native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import theme from '../../constants/theme';
 import { AlertHelper } from '../../utils/alert';
 import { useMutation } from '@apollo/react-hooks';
@@ -47,6 +47,12 @@ const Sidebar = () => {
       setOverlayVisible(true);
     }
   };
+
+  useEffect(() => {
+    if (user?.mustResetPassword) {
+      navigation.dispatch(StackActions.replace('ResetPassword'));
+    }
+  }, [user]);
 
   return (
     <SafeAreaView style={styles.container}>

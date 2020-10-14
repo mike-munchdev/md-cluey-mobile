@@ -9,7 +9,7 @@ import { useLazyQuery } from '@apollo/react-hooks';
 import styles from './styles';
 import theme from '../../constants/theme';
 
-import { searchSchema } from '../../validation/searchSchema';
+import searchSchema from '../../validation/searchSchema';
 import {
   PoliticalScoreCard,
   PeopleScoreCard,

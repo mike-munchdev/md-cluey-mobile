@@ -23,7 +23,7 @@ import {
   fadeIn,
   fadeOut,
 } from './animations';
-import { searchSchema } from '../../validation/searchSchema';
+import searchSchema from '../../validation/searchSchema';
 import { useLazyQuery } from '@apollo/react-hooks';
 import {
   GET_COMPANIES_BY_NAME,

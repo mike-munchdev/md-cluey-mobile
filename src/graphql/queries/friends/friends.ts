@@ -37,7 +37,7 @@ export const getUserFriendsCompleted = (
 ) => async ({ getUserFriends }) => {
   const { ok, friendships, error } = getUserFriends;
   setLoading(false);
-  // console.log('friendships', friendships);
+
   if (ok) {
     setFriends(friendships);
     setFilteredList(friendships);

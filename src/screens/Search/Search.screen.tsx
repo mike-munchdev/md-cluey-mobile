@@ -12,7 +12,7 @@ import AutoCompleteTextInput, {
   IAutoCompleteItemProps,
 } from '../../components/TextInput/AutoCompleteTextInput';
 import { Formik } from 'formik';
-import { searchSchema } from '../../validation/searchSchema';
+import searchSchema from '../../validation/searchSchema';
 import {
   getCompaniesByNameCompleted,
   getCompaniesByNameError,

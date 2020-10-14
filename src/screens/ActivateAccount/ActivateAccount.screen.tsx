@@ -13,7 +13,7 @@ import { AuthContext } from '../../config/context';
 import theme from '../../constants/theme';
 import { ActionButton } from '../../components/Buttons';
 
-import { activateAccountSchema } from '../../validation/activateAccount';
+import activateAccountSchema from '../../validation/activateAccount';
 import {
   ACTIVATE_USER_ACCOUNT,
   activateUserAccountError,

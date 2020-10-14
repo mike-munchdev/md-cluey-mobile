@@ -9,7 +9,7 @@ import { Formik } from 'formik';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useMutation } from '@apollo/react-hooks';
 
-import { signupSchema } from '../../validation/signup';
+import signupSchema from '../../validation/signup';
 import AnimatableTextInput from '../../components/TextInput/AnimatableTextInput';
 import {
   userSignupError,
@@ -24,10 +24,7 @@ import {
   facebookAuthentication,
   googleAuthentication,
 } from '../../utils/socialAuth';
-import {
-  KeyboardAvoidingContainer,
-  StandardContainer,
-} from '../../components/Containers';
+import { KeyboardAvoidingContainer } from '../../components/Containers';
 import { passwordRequirments } from '../../validation/passwordSchema';
 import { Overlay, Button } from 'react-native-elements';
 import { TextInput } from 'react-native-paper';

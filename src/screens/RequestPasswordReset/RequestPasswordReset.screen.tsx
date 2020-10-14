@@ -13,30 +13,26 @@ import { AuthContext } from '../../config/context';
 import theme from '../../constants/theme';
 import { ActionButton } from '../../components/Buttons';
 
-import { activateAccountSchema } from '../../validation/activateAccount';
 import {
   resetPasswordError,
   resetPasswordCompleted,
   RESET_PASSWORD,
 } from '../../graphql/queries/user/user';
 import { LogoText } from '../../components/Text';
-import {
-  KeyboardAvoidingContainer,
-  StandardContainer,
-} from '../../components/Containers';
+import { KeyboardAvoidingContainer } from '../../components/Containers';
 import { NavHeader } from '../../components/Headers';
-import { resetPasswordSchema } from '../../validation/resetPassword';
+import requestPasswordResetSchema from '../../validation/requestPasswordResetSchema';
 
-const ActivateAccount: FC = () => {
+const RequestPasswordReset: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { resetPasswordReset } = useContext(AuthContext);
+  const { requestPasswordReset } = useContext(AuthContext);
   const navigation = useNavigation();
 
   const [resetPassword] = useMutation(RESET_PASSWORD, {
     fetchPolicy: 'no-cache',
     onError: resetPasswordError(setIsLoading),
     onCompleted: resetPasswordCompleted(
-      resetPasswordReset,
+      requestPasswordReset,
       setIsLoading,
       navigation
     ),
@@ -58,7 +54,7 @@ const ActivateAccount: FC = () => {
           initialValues={{
             email: '',
           }}
-          validationSchema={resetPasswordSchema}
+          validationSchema={requestPasswordResetSchema}
           onSubmit={(values, { setSubmitting }) => {
             setIsLoading(true);
             const { email } = values;
@@ -101,4 +97,4 @@ const ActivateAccount: FC = () => {
     </KeyboardAvoidingContainer>
   );
 };
-export default ActivateAccount;
+export default RequestPasswordReset;

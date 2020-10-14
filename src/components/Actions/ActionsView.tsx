@@ -53,17 +53,6 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
     }
   }, [companyResponse]);
 
-  // useEffect(() => {
-  //   // console.log('ActionsView: user changed', user);
-  //   // const getUserCompanyResponse = user?.companyResponses.find(
-  //   //   (r) => r.id === companyResponse?.id
-  //   // );
-  //   // if (getUserCompanyResponse) {
-  //   //   console.log('getUserCompanyResponse', getUserCompanyResponse);
-  //   //   setCompanyResponse(getUserCompanyResponse);
-  //   // }
-  // }, [user]);
-
   const [updateCompanyResponseForUser] = useMutation(
     UPDATE_COMPANY_RESPONSE_FOR_USER,
     {

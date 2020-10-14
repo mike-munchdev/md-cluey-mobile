@@ -30,6 +30,8 @@ import { Categories } from '../screens/Categories';
 import { ProductTypes } from '../screens/ProductTypes';
 import { MyLikes } from '../screens/MyLikes';
 import { Home } from '../screens/Home';
+import { RequestPasswordReset } from '../screens/RequestPasswordReset';
+import { IUser } from '../interfaces';
 import { ResetPassword } from '../screens/ResetPassword';
 
 const Drawer = createDrawerNavigator();
@@ -39,6 +41,7 @@ const ClueyStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
 const FriendsStack = createStackNavigator();
 const MyLikesStack = createStackNavigator();
+const AppStack = createStackNavigator();
 
 const ProfileStackScreen = () => (
   <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
@@ -57,6 +60,7 @@ const FriendsStackScreen = () => (
     <FriendsStack.Screen name="Friend" component={Friend} />
   </FriendsStack.Navigator>
 );
+
 const DrawerScreen = () => (
   <Drawer.Navigator initialRouteName="Home" drawerContent={() => <Sidebar />}>
     <Drawer.Screen name="Home" component={ClueyStackScreen} />
@@ -64,6 +68,16 @@ const DrawerScreen = () => (
     <Drawer.Screen name="Friends" component={FriendsStackScreen} />
     <Drawer.Screen name="MyLikes" component={MyLikesStackScreen} />
   </Drawer.Navigator>
+);
+
+const AppStackScreen = () => (
+  <AppStack.Navigator
+    screenOptions={{ headerShown: false }}
+    initialRouteName="Drawer"
+  >
+    <AppStack.Screen name="Drawer" component={DrawerScreen} />
+    <AppStack.Screen name="ResetPassword" component={ResetPassword} />
+  </AppStack.Navigator>
 );
 
 const ClueyStackScreen = () => (
@@ -105,7 +119,7 @@ const AuthStackScreen = () => (
     />
     <AuthStack.Screen
       name="ResetPassword"
-      component={ResetPassword}
+      component={RequestPasswordReset}
       options={{ headerShown: false }}
     />
   </AuthStack.Navigator>
@@ -121,7 +135,7 @@ const RootStackScreen = (props: any) => {
       {userToken ? (
         <RootStack.Screen
           name="App"
-          component={DrawerScreen}
+          component={AppStackScreen}
           options={{
             animationEnabled: false,
           }}
@@ -143,14 +157,8 @@ export default () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isRequesting, setIsRequesting] = useState(true);
   const [userToken, setUserToken] = useState<string | null>(null);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<IUser | null | undefined>(null);
   const [location] = useState(null);
-
-  const [] = useMutation(ADD_PUSH_TOKEN, {
-    fetchPolicy: 'no-cache',
-    onError: addPushTokenError(setIsLoading, setIsRequesting),
-    onCompleted: addPushTokenCompleted(setIsLoading, setUser, setIsRequesting),
-  });
 
   const updateUser = async (user: any) => {
     setUser(user);
@@ -171,18 +179,23 @@ export default () => {
       },
       signIn: async (
         token: string,
-        user: any,
+        user: IUser,
         navigation: any,
         location?: string
       ) => {
         try {
-          setIsLoading(false);
-          setUserToken(token);
-          setUser(user);
-
           await AsyncStorage.setItem('token', token);
           await AsyncStorage.setItem('user', JSON.stringify(user));
-          navigation.navigate(location ? location : 'Home');
+
+          setUserToken(token);
+          setUser(user);
+          setIsLoading(false);
+
+          if (user.mustResetPassword) {
+            navigation.navigate('ResetPassword');
+          } else {
+            navigation.navigate(location ? location : 'App');
+          }
         } catch (error) {
           AlertHelper.show('error', 'Sign In', error.message);
         }
@@ -199,7 +212,7 @@ export default () => {
         });
         AlertHelper.show('success', 'Activation', message);
       },
-      resetPasswordReset: (message: string, navigation: any) => {
+      requestPasswordReset: (message: string, navigation: any) => {
         AlertHelper.setOnClose(() => {
           navigation.navigate('SignIn');
         });
@@ -230,28 +243,20 @@ export default () => {
     (async () => {
       const token = await AsyncStorage.getItem('token');
       const userJson = await AsyncStorage.getItem('user');
+
       if (token) {
         setUserToken(token);
       }
       if (userJson) {
-        setUser(JSON.parse(userJson || ''));
+        const user = JSON.parse(userJson || '');
+
+        setUser(user);
       }
     })();
   }, []);
 
   useEffect(() => {
     (async () => {
-      if (user) {
-        // const pushToken = await registerForPushNotificationsAsync();
-        // await addPushToken({
-        //   variables: {
-        //     input: {
-        //       userId: user.id,
-        //       pushToken,
-        //     },
-        //   },
-        // });
-      }
       setIsRequesting(false);
     })();
   }, [user]);

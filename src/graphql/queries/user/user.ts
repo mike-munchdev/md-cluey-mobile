@@ -27,6 +27,7 @@ export const userStructure = `{
     facebookId    
     createdAt
     isProfilePublic
+    mustResetPassword
     isActive
     companyResponses ${responseStructure}
 }`;
@@ -77,7 +78,7 @@ export const UPDATE_USER_PASSWORD = gql`
   mutation UpdateUserPassword($input: UpdateUserPasswordInput!) {
     updateUserPassword(input: $input) {
       ok
-      message
+      user ${userStructure}
       error {
         message
       }
@@ -368,12 +369,21 @@ export const updateUserPasswordError = (setLoading: Function) => (
 
 export const updateUserPasswordCompleted = (
   setLoading: Function,
-  setUser: ((user: IUser) => void) | undefined
+  setUser: ((user: IUser) => void) | undefined,
+  navigation: any,
+  location: string | undefined
 ) => async ({ updateUserPassword }) => {
-  const { ok, message, error } = updateUserPassword;
+  const { ok, user, error } = updateUserPassword;
 
   if (ok) {
     setLoading(false);
+    AlertHelper.show('success', 'Reset Password', 'Password Reset');
+    if (setUser) {
+      setUser(user);
+    }
+    if (navigation && location) {
+      navigation.navigate(location);
+    }
   } else {
     setLoading(false);
     AlertHelper.show('error', 'Error', error.message);
@@ -441,7 +451,7 @@ export const resetPasswordError = (setLoading: Function) => (
 };
 
 export const resetPasswordCompleted = (
-  resetPasswordReset: (message: string, navigation: any) => void,
+  requestPasswordReset: (message: string, navigation: any) => void,
   setLoading: Function,
   navigation: any
 ) => async ({ resetPassword }) => {
@@ -456,7 +466,7 @@ export const resetPasswordCompleted = (
         'No customer found with the given token.'
       );
     } else {
-      await resetPasswordReset(message, navigation);
+      await requestPasswordReset(message, navigation);
     }
   } else {
     AlertHelper.show('error', 'Error', error.message);

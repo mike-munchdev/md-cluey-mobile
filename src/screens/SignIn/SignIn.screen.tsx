@@ -16,7 +16,7 @@ import {
 } from '../../graphql/queries/token/tokens';
 import styles from './styles';
 
-import { signinSchema } from '../../validation/signin';
+import signinSchema from '../../validation/signin';
 
 import AnimatableTextInput from '../../components/TextInput/AnimatableTextInput';
 import { AuthContext } from '../../config/context';
@@ -41,7 +41,6 @@ import { DismissKeyboard } from '../../components/TextInput';
 const SignIn: FC = () => {
   const [signInLoading, setSignInLoading] = useState(false);
   const { signIn } = useContext(AuthContext);
-  const [httpLink] = useServerInfo();
   const navigation = useNavigation();
 
   const [getUserToken] = useLazyQuery(GET_USER_TOKEN, {
@@ -50,7 +49,7 @@ const SignIn: FC = () => {
     onCompleted: getUserTokenCompleted(
       signIn,
       navigation,
-      'Home',
+      'App',
       setSignInLoading
     ),
   });
@@ -127,13 +126,13 @@ const SignIn: FC = () => {
             password: '',
           }}
           validationSchema={signinSchema}
-          onSubmit={(values, { setSubmitting }) => {
+          onSubmit={async (values, { setSubmitting }) => {
             setSignInLoading(true);
             const { email, password } = values;
-            getUserToken({
+            await getUserToken({
               variables: { email, password },
             });
-            setSubmitting(false);
+            // setSubmitting(false);
           }}
         >
           {({ handleSubmit, errors, touched, values, handleChange }) => {

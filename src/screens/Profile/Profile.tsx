@@ -89,7 +89,12 @@ const Profile: FC = () => {
 
   const [updateUserPassword] = useMutation(UPDATE_USER_PASSWORD, {
     onError: updateUserPasswordError(setIsStringDialogVisible),
-    onCompleted: updateUserPasswordCompleted(setIsStringDialogVisible, setUser),
+    onCompleted: updateUserPasswordCompleted(
+      null,
+      setIsStringDialogVisible,
+      setUser,
+      navigation
+    ),
   });
 
   const updateValue = (updatedValue: string) => {

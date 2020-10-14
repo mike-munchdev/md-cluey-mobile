@@ -54,8 +54,6 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
       setPacDemocratPercent(Math.round((pacsDems / pacs) * 100));
       setPacRepublicanPercent(Math.round((pacsRepubs / pacs) * 100));
     }
-
-    // console.log('company', company);
   }, [company]);
 
   const handlePress = () => setExpanded(!expanded);
