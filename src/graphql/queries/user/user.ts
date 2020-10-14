@@ -370,8 +370,8 @@ export const updateUserPasswordError = (setLoading: Function) => (
 export const updateUserPasswordCompleted = (
   setLoading: Function,
   setUser: ((user: IUser) => void) | undefined,
-  navigation: any,
-  location: string | undefined
+  navigation?: any,
+  location?: string | undefined
 ) => async ({ updateUserPassword }) => {
   const { ok, user, error } = updateUserPassword;
 
@@ -467,6 +467,33 @@ export const resetPasswordCompleted = (
       );
     } else {
       await requestPasswordReset(message, navigation);
+    }
+  } else {
+    AlertHelper.show('error', 'Error', error.message);
+  }
+};
+
+export const updateUserPasswordInternalError = (resetDialog: Function) => (
+  e: ApolloError
+) => {
+  resetDialog();
+  AlertHelper.show(
+    'error',
+    'Error',
+    'An error occurred and has been logged. Please try again.'
+  );
+};
+
+export const updateUserPasswordInternalCompleted = (
+  resetDialog: Function,
+  setUser: ((user: IUser) => void) | undefined
+) => async ({ updateUserPassword }) => {
+  const { ok, user, error } = updateUserPassword;
+  resetDialog();
+  if (ok) {
+    AlertHelper.show('success', 'Reset Password', 'Password Reset');
+    if (setUser) {
+      setUser(user);
     }
   } else {
     AlertHelper.show('error', 'Error', error.message);

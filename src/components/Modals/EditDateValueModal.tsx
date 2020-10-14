@@ -6,7 +6,7 @@ import {
   Paragraph,
   Portal,
 } from 'react-native-paper';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
 import theme from '../../constants/theme';
 import { isDate } from 'lodash';
 
@@ -14,11 +14,11 @@ export interface IEditDateValueModalProps {
   isVisible: boolean;
   isSaving: boolean;
   cancel: () => void;
-  success: (updatedValue: string) => void;
-  value: string | Date | undefined;
+  success: (updatedValue: Date | undefined) => void;
+  value: Date | undefined | null;
   title: string;
   secure: boolean;
-  isValid: (value: Date) => boolean;
+  isValid: (value: Date | undefined | null) => boolean;
   captionText?: string[];
   placeholder: string;
 }
@@ -41,7 +41,7 @@ const EditDateValueModal: FC<IEditDateValueModalProps> = ({
     }
   }, [value]);
 
-  const onChange = (event, selectedDate) => {
+  const onChange = (event: Event, selectedDate?: Date | undefined) => {
     const currentDate = selectedDate || modalValue;
     setModalValue(currentDate);
   };

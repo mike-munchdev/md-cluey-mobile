@@ -24,6 +24,8 @@ import {
   updateUserError,
   updateUserPasswordCompleted,
   updateUserPasswordError,
+  updateUserPasswordInternalCompleted,
+  updateUserPasswordInternalError,
   UPDATE_USER,
   UPDATE_USER_PASSWORD,
 } from '../../graphql/queries/user/user';
@@ -41,10 +43,10 @@ export interface IOptionsProps {
   name: string;
   value: string;
 }
-export interface IFieldProps {
+export interface IStringFieldProps {
   fieldLabel: string;
   fieldName: string;
-  fieldValue: string | Date | undefined;
+  fieldValue: string | undefined;
   secureTextEntry: boolean;
   isValid: (value: string) => boolean;
   captionText?: string[];
@@ -52,10 +54,37 @@ export interface IFieldProps {
   placeholder: string;
   emptyText?: string;
 }
-const initialFieldProps = {
+
+export interface IDateFieldProps {
+  fieldLabel: string;
+  fieldName: string;
+  fieldValue: Date | undefined | null;
+  secureTextEntry: boolean;
+  isValid: (value: Date | undefined | null) => boolean;
+  captionText?: string[];
+  options: IOptionsProps[] | undefined;
+  placeholder: string;
+  emptyText?: string;
+}
+
+const initialStringFieldProps = {
   fieldLabel: '',
   fieldName: '',
   fieldValue: '',
+  secureTextEntry: false,
+  isValid: () => {
+    return false;
+  },
+  captionText: [],
+  placeholder: '',
+  emptyText: '',
+  options: [],
+};
+
+const initialDateFieldProps = {
+  fieldLabel: '',
+  fieldName: '',
+  fieldValue: null,
   secureTextEntry: false,
   isValid: () => {
     return false;
@@ -73,7 +102,12 @@ const Profile: FC = () => {
   const [isStringDialogVisible, setIsStringDialogVisible] = useState(false);
   const [isOptionsDialogVisible, setIsOptionsDialogVisible] = useState(false);
   const [isDateDialogVisible, setIsDateDialogVisible] = useState(false);
-  const [fieldProps, setFieldProps] = useState<IFieldProps>(initialFieldProps);
+  const [stringFieldProps, setStringFieldProps] = useState<IStringFieldProps>(
+    initialStringFieldProps
+  );
+  const [dateFieldProps, setDateFieldProps] = useState<IDateFieldProps>(
+    initialDateFieldProps
+  );
 
   const resetDialog = () => {
     setIsStringDialogVisible(false);
@@ -88,19 +122,21 @@ const Profile: FC = () => {
   });
 
   const [updateUserPassword] = useMutation(UPDATE_USER_PASSWORD, {
-    onError: updateUserPasswordError(setIsStringDialogVisible),
-    onCompleted: updateUserPasswordCompleted(
-      null,
-      setIsStringDialogVisible,
-      setUser,
-      navigation
-    ),
+    onError: updateUserPasswordInternalError(resetDialog),
+    onCompleted: updateUserPasswordInternalCompleted(resetDialog, setUser),
   });
 
-  const updateValue = (updatedValue: string) => {
+  const updateDateValue = (updatedValue: Date | undefined) => {
+    updateValue(updatedValue);
+  };
+  const updateStringValue = (updatedValue: String) => {
+    updateValue(updatedValue);
+  };
+
+  const updateValue = (updatedValue: String | Date | null | undefined) => {
     (async () => {
       setIsSaving(true);
-      if (fieldProps.fieldName === 'password') {
+      if (stringFieldProps.fieldName === 'password') {
         await updateUserPassword({
           variables: {
             input: {
@@ -111,9 +147,11 @@ const Profile: FC = () => {
         });
       } else {
         let updateObject = {
-          [fieldProps.fieldName]: updatedValue,
+          [stringFieldProps.fieldName ||
+          dateFieldProps.fieldName]: updatedValue,
         };
-        if (fieldProps.fieldName === 'state') {
+
+        if (stringFieldProps.fieldName === 'state') {
           if (updatedValue !== user?.state)
             updateObject = { ...updateObject, city: null };
         }
@@ -126,7 +164,7 @@ const Profile: FC = () => {
           },
         });
       }
-      setFieldProps(initialFieldProps);
+      setStringFieldProps(initialStringFieldProps);
     })();
   };
 
@@ -158,7 +196,7 @@ const Profile: FC = () => {
               }}
               bottomDivider
               onPress={() => {
-                setFieldProps({
+                setStringFieldProps({
                   fieldName: 'firstName',
                   fieldLabel: 'First Name',
                   fieldValue: user?.firstName || '',
@@ -186,7 +224,7 @@ const Profile: FC = () => {
               }}
               bottomDivider
               onPress={() => {
-                setFieldProps({
+                setStringFieldProps({
                   fieldName: 'lastName',
                   fieldLabel: 'Last Name',
                   fieldValue: user ? user.lastName : '',
@@ -218,7 +256,7 @@ const Profile: FC = () => {
                   }}
                   bottomDivider
                   onPress={() => {
-                    setFieldProps({
+                    setStringFieldProps({
                       fieldName: 'email',
                       fieldLabel: 'E-mail',
                       fieldValue: user ? user.email : '',
@@ -249,7 +287,7 @@ const Profile: FC = () => {
                   }}
                   bottomDivider
                   onPress={() => {
-                    setFieldProps({
+                    setStringFieldProps({
                       fieldName: 'username',
                       fieldLabel: 'Username',
                       fieldValue: user ? user.username : '',
@@ -277,7 +315,7 @@ const Profile: FC = () => {
                   }}
                   bottomDivider
                   onPress={() => {
-                    setFieldProps({
+                    setStringFieldProps({
                       fieldName: 'password',
                       fieldLabel: 'Password',
                       fieldValue: '************',
@@ -316,7 +354,7 @@ const Profile: FC = () => {
               }}
               bottomDivider
               onPress={() => {
-                setFieldProps({
+                setDateFieldProps({
                   fieldName: 'dob',
                   fieldLabel: 'Age',
                   fieldValue: user?.dob,
@@ -347,7 +385,7 @@ const Profile: FC = () => {
               }}
               bottomDivider
               onPress={() => {
-                setFieldProps({
+                setStringFieldProps({
                   fieldName: 'gender',
                   fieldLabel: 'Gender',
                   fieldValue: user ? user.gender : '',
@@ -377,7 +415,7 @@ const Profile: FC = () => {
               }}
               bottomDivider
               onPress={() => {
-                setFieldProps({
+                setStringFieldProps({
                   fieldName: 'city',
                   fieldLabel: 'City',
                   fieldValue: user ? user.city : '',
@@ -406,7 +444,7 @@ const Profile: FC = () => {
               }}
               bottomDivider
               onPress={() => {
-                setFieldProps({
+                setStringFieldProps({
                   fieldName: 'state',
                   fieldLabel: 'State',
                   fieldValue: user ? user.state : '',
@@ -487,53 +525,57 @@ const Profile: FC = () => {
       <EditDateValueModal
         isVisible={isDateDialogVisible}
         isSaving={isSaving}
-        isValid={fieldProps.isValid}
-        success={updateValue}
+        isValid={dateFieldProps.isValid}
+        success={updateDateValue}
         cancel={() => {
-          setFieldProps(initialFieldProps);
+          setStringFieldProps(initialDateFieldProps);
           setIsDateDialogVisible(false);
         }}
-        value={fieldProps.fieldValue}
-        title={fieldProps.fieldLabel}
-        secure={fieldProps.secureTextEntry}
-        captionText={fieldProps.captionText}
-        placeholder={fieldProps.placeholder}
+        value={dateFieldProps.fieldValue}
+        title={dateFieldProps.fieldLabel}
+        secure={dateFieldProps.secureTextEntry}
+        captionText={dateFieldProps.captionText}
+        placeholder={dateFieldProps.placeholder}
       />
       <EditStringValueModal
         isVisible={isStringDialogVisible}
         isSaving={isSaving}
-        isValid={fieldProps.isValid}
-        success={updateValue}
+        isValid={stringFieldProps.isValid}
+        success={updateStringValue}
         cancel={() => {
-          setFieldProps(initialFieldProps);
+          setStringFieldProps(initialStringFieldProps);
           setIsStringDialogVisible(false);
         }}
         value={
-          fieldProps.fieldValue ? String(fieldProps.fieldValue) : undefined
+          stringFieldProps.fieldValue
+            ? String(stringFieldProps.fieldValue)
+            : undefined
         }
-        title={fieldProps.fieldLabel}
-        secure={fieldProps.secureTextEntry}
-        captionText={fieldProps.captionText}
-        placeholder={fieldProps.placeholder}
+        title={stringFieldProps.fieldLabel}
+        secure={stringFieldProps.secureTextEntry}
+        captionText={stringFieldProps.captionText}
+        placeholder={stringFieldProps.placeholder}
       />
       <EditOptionsValueModal
         isVisible={isOptionsDialogVisible}
         isSaving={isSaving}
-        isValid={fieldProps.isValid}
-        success={updateValue}
+        isValid={stringFieldProps.isValid}
+        success={updateStringValue}
         cancel={() => {
-          setFieldProps(initialFieldProps);
+          setStringFieldProps(initialStringFieldProps);
           setIsOptionsDialogVisible(false);
         }}
         value={
-          fieldProps.fieldValue ? String(fieldProps.fieldValue) : undefined
+          stringFieldProps.fieldValue
+            ? String(stringFieldProps.fieldValue)
+            : undefined
         }
-        title={fieldProps.fieldLabel}
-        secure={fieldProps.secureTextEntry}
-        captionText={fieldProps.captionText}
-        options={fieldProps.options}
-        placeholder={fieldProps.placeholder}
-        emptyText={fieldProps.emptyText}
+        title={stringFieldProps.fieldLabel}
+        secure={stringFieldProps.secureTextEntry}
+        captionText={stringFieldProps.captionText}
+        options={stringFieldProps.options}
+        placeholder={stringFieldProps.placeholder}
+        emptyText={stringFieldProps.emptyText}
       />
     </StandardContainer>
   );
