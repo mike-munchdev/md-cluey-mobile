@@ -6,7 +6,10 @@ import { throttle, debounce } from 'throttle-debounce';
 
 import styles from './styles';
 
-import { StandardContainer } from '../../components/Containers';
+import {
+  KeyboardAvoidingContainer,
+  StandardContainer,
+} from '../../components/Containers';
 import NavigationHeader from '../../components/Headers/NavigationHeader';
 import AutoCompleteTextInput, {
   IAutoCompleteItemProps,
@@ -90,7 +93,7 @@ const Search: FC = () => {
   const autocompleteSearchThrottled = throttle(500, autocompleteSearch);
 
   return (
-    <StandardContainer isLoading={false}>
+    <KeyboardAvoidingContainer isLoading={false}>
       <View style={styles.overlayContainer}>
         <NavHeader goBack title="Search By Name" />
         <Formik
@@ -144,7 +147,7 @@ const Search: FC = () => {
           }}
         </Formik>
       </View>
-    </StandardContainer>
+    </KeyboardAvoidingContainer>
   );
 };
 export default Search;
