@@ -10,7 +10,12 @@ export default StyleSheet.create({
     marginHorizontal: 10,
     // marginTop: 50,
   },
-  barsContainer: { marginLeft: 20, marginTop: 20 },
+  barsContainer: {
+    marginLeft: 20,
+
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   backContainer: {
     height: 60,
 

@@ -17,12 +17,13 @@ import { AppContext } from '../../config/context';
 import MyLikesList from '../../components/Lists/MyLikesList';
 import { PageHeaderText } from '../../components/Text';
 import { NavHeader } from '../../components/Headers';
+import { ICompanyReponse } from '../../interfaces';
 
 const MyLikes: FC = () => {
   const { user } = useContext(AppContext);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredList, setFilteredList] = useState([]);
-  const [, setResponses] = useState([]);
+  const [responses, setResponses] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const reset = () => {
@@ -49,22 +50,27 @@ const MyLikes: FC = () => {
   }, []);
 
   useEffect(() => {
-    // const searchLowercase = searchQuery.toLowerCase();
-    // const newList = friends.filter(
-    //   (f) =>
-    //     f.name.toLowerCase().includes(searchLowercase) ||
-    //     f.userName.toLowerCase().includes(searchLowercase)
-    // );
-    // setFilteredList(newList);
+    const searchLowercase = searchQuery.toLowerCase();
+    const newList = responses.filter((f: ICompanyReponse) =>
+      f.company.name.toLowerCase().includes(searchLowercase)
+    );
+
+    setFilteredList(newList);
   }, [searchQuery]);
+
+  useEffect(() => {
+    if (user) {
+      setResponses(user?.companyResponses);
+      setFilteredList(user?.companyResponses);
+    }
+  }, [user]);
 
   const onChangeSearch = (query: string) => setSearchQuery(query);
 
   return (
     <StandardContainer isLoading={isLoading}>
       <View style={styles.overlayContainer}>
-        <NavHeader title="My Likes" />
-
+        <NavHeader title="My Likes" showMenu />
         <MyLikesList
           list={filteredList}
           searchQuery={searchQuery}
