@@ -18,8 +18,10 @@ const ParentCompaniesText: FC<IParentCompaniesTextProps> = ({ company }) => {
   }, [company]);
   return (
     <View style={styles.parentCompaniesTextContainer}>
-      <Text style={styles.parentCompaniesText}>
-        <Text style={styles.parentCompaniesCaptionText}>Parent Companies:</Text>{' '}
+      <Text style={styles.parentCompaniesText} numberOfLines={2}>
+        <Text style={styles.parentCompaniesCaptionText}>
+          Parent Companies:{' '}
+        </Text>
         {parentCompaniesText}
       </Text>
     </View>

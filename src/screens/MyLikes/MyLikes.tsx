@@ -63,7 +63,7 @@ const MyLikes: FC = () => {
   return (
     <StandardContainer isLoading={isLoading}>
       <View style={styles.overlayContainer}>
-        <NavHeader goBack title="My Likes" />
+        <NavHeader title="My Likes" />
 
         <MyLikesList
           list={filteredList}

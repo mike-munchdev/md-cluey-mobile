@@ -51,7 +51,7 @@ export default StyleSheet.create({
   },
   parentCompaniesTextContainer: {
     flexDirection: 'column',
-    width: '90%',
+    width: '100%',
 
     justifyContent: 'center',
     alignItems: 'center',
