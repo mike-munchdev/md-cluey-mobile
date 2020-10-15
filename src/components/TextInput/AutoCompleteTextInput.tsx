@@ -38,6 +38,7 @@ export interface IAutoCompleteTextInputProps {
   data: IAutoCompleteItemProps[];
   handleItemPress: (item: IAutoCompleteItemProps) => void;
   isLoading: boolean;
+  autoFocus?: boolean;
 }
 
 const AutoCompleteTextInput: FC<IAutoCompleteTextInputProps> = ({
@@ -56,6 +57,7 @@ const AutoCompleteTextInput: FC<IAutoCompleteTextInputProps> = ({
   data,
   handleItemPress,
   isLoading,
+  autoFocus,
 }) => {
   const showErrorState = (touched: any, errors: any, name: string) => {
     return touched[name] !== undefined && errors[name] !== undefined;
@@ -64,6 +66,7 @@ const AutoCompleteTextInput: FC<IAutoCompleteTextInputProps> = ({
   return (
     <View style={[containerStyles]}>
       <TextInput
+        autoFocus={autoFocus}
         mode="outlined"
         autoCompleteType="off"
         left={

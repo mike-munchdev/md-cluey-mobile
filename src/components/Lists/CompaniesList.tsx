@@ -43,8 +43,11 @@ const CompaniesList: FC<ICompaniesListProps> = ({
       ) : (
         <Fragment>
           <Searchbar
+            autoCorrect={false}
+            autoCapitalize="none"
+            autoCompleteType="off"
             style={{ marginBottom: 10 }}
-            placeholder="Name"
+            placeholder="Company Name"
             onChangeText={onChangeSearch}
             value={searchQuery}
           />

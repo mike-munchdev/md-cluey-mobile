@@ -38,6 +38,9 @@ const MyLikesList: FC<IMyLikesListProps> = ({
       ) : (
         <Fragment>
           <Searchbar
+            autoCorrect={false}
+            autoCapitalize="none"
+            autoCompleteType="off"
             style={{ marginBottom: 10 }}
             placeholder="Company"
             onChangeText={onChangeSearch}

@@ -111,6 +111,7 @@ const Search: FC = () => {
           {({ errors, touched, values, handleChange, resetForm }) => {
             return (
               <AutoCompleteTextInput
+                autoFocus
                 containerStyles={{
                   marginBottom: 20,
                   // marginTop: 10,
