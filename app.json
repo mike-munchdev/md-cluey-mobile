@@ -28,7 +28,7 @@
 
       "config": {
         "googleSignIn": {
-          "reservedClientId": "576013538553-pdsto80kets3kd92o2jguikmkvtvnas5.apps.googleusercontent.com"
+          "reservedClientId": "com.googleusercontent.apps.576013538553-pdsto80kets3kd92o2jguikmkvtvnas5"
         }
       }
     },
@@ -65,11 +65,11 @@
           "googleClientIdAndroid": "576013538553-d8gffmivuiibqtcilddvcd8ajs91e2vj.apps.googleusercontent.com"
         },
         "development": {
-          "apiServerUrl": "192.168.0.14:4004",
+          "apiServerUrl": "localhost:4004",
           "httpProtocol": "http",
           "wsProtocol": "ws",
-          "categoryImageUrlPrefix": "http://192.168.0.14:4004/categories/",
-          "brandLogoUrlPrefix": "http://192.168.0.14:4004/logos/",
+          "categoryImageUrlPrefix": "http://localhost:4004/categories/",
+          "brandLogoUrlPrefix": "http://localhost:4004/logos/",
           "googleClientIdIos": "854065862128-d6n6v1m2gjf1bgml4am349bf1s43fvkc.apps.googleusercontent.com",
           "googleClientIdAndroid": "854065862128-c9qbpsi1m8frp0a39n6bqq8dhkp2555f.apps.googleusercontent.com"
         }
@@ -78,7 +78,7 @@
         "apiKey": "b3ccb6d9ca316379213dff10bfd8227e"
       },
       "bugsnag": {
-        "apiKey": "bb37cfd6867c09cb329bbbc56ee6f6a5"
+        "apiKey": "779672cc411ca6b7390288aa4ce06988"
       }
     },
     "hooks": {

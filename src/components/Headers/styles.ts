@@ -13,6 +13,9 @@ export default StyleSheet.create({
   barsContainer: { marginLeft: 20, marginTop: 20 },
   backContainer: {
     height: 60,
+
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   container: {
     flex: 1,
