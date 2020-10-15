@@ -210,7 +210,7 @@ const SignIn: FC = () => {
                       <FontAwesome5 name="facebook" size={24} color="white" />
                     }
                   />
-                  <ActionButton
+                  {/* <ActionButton
                     handlePress={async () => {
                       await googleSignin();
                     }}
@@ -221,7 +221,7 @@ const SignIn: FC = () => {
                     leftIcon={
                       <FontAwesome5 name="google" size={24} color="white" />
                     }
-                  />
+                  /> */}
                   <ActionButton
                     handlePress={() => navigation.navigate('SignUp')}
                     textColor={theme.buttonText}

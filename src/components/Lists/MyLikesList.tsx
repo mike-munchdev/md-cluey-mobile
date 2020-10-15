@@ -1,7 +1,8 @@
-import React, { FC, Fragment } from 'react';
+import React, { FC, Fragment, useEffect, useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { ActivityIndicator, Searchbar } from 'react-native-paper';
 import theme from '../../constants/theme';
+import { ICompanyReponse } from '../../interfaces';
 import { MyLikesListItem } from '../ListItem';
 
 import styles from './styles';
@@ -21,10 +22,19 @@ const MyLikesList: FC<IMyLikesListProps> = ({
   onChangeSearch,
   searchQuery,
 }) => {
+  const [orderedList, setOrderedList] = useState(list);
+
+  useEffect(() => {
+    const orderedList = list.sort((a: ICompanyReponse, b: ICompanyReponse) => {
+      return a.company.name > b.company.name;
+    });
+
+    setOrderedList(orderedList);
+  }, [list]);
   return (
     <View style={styles.companiesContainer}>
       {loading ? (
-        <ActivityIndicator animating={true} />
+        <ActivityIndicator color={theme.dark.hex} size="large" />
       ) : (
         <Fragment>
           <Searchbar
@@ -36,7 +46,7 @@ const MyLikesList: FC<IMyLikesListProps> = ({
 
           <FlatList
             style={{ width: '100%' }}
-            data={list}
+            data={orderedList}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => {
               return <MyLikesListItem item={item} title={item.company.name} />;

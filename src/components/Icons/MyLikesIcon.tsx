@@ -34,9 +34,10 @@ const MyLikesIcon: FC<IMyLikesIconProps> = ({ response, size, color }) => {
     }
   }, [response]);
 
+  if (!iconName) return null;
   return response?.response === 'will-buy' ? (
     <FontAwesome5
-      name={iconName}
+      name={'laugh'}
       size={size || 36}
       color={color || theme.dark.hex}
     />

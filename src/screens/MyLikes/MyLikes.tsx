@@ -41,6 +41,7 @@ const MyLikes: FC = () => {
 
   useEffect(() => {
     (async () => {
+      setIsLoading(true);
       await getUserCompanyResponses({
         variables: {
           userId: user?.id,
@@ -68,10 +69,11 @@ const MyLikes: FC = () => {
   const onChangeSearch = (query: string) => setSearchQuery(query);
 
   return (
-    <StandardContainer isLoading={isLoading}>
+    <StandardContainer>
       <View style={styles.overlayContainer}>
         <NavHeader title="My Likes" showMenu />
         <MyLikesList
+          loading={isLoading}
           list={filteredList}
           searchQuery={searchQuery}
           onChangeSearch={onChangeSearch}
