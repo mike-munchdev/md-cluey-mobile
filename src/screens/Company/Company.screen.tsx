@@ -9,7 +9,7 @@ import { useLazyQuery } from '@apollo/react-hooks';
 import styles from './styles';
 import theme from '../../constants/theme';
 
-import { searchSchema } from '../../validation/searchSchema';
+import searchSchema from '../../validation/searchSchema';
 import {
   PoliticalScoreCard,
   PeopleScoreCard,
@@ -28,6 +28,8 @@ import {
 import { StandardContainer } from '../../components/Containers';
 import { AppContext } from '../../config/context';
 import { CompanyLogo } from '../../components/Images';
+import { NavHeader } from '../../components/Headers';
+import { ParentCompaniesText } from '../../components/Text';
 
 const Company: FC = () => {
   const { user } = useContext(AppContext);
@@ -36,7 +38,7 @@ const Company: FC = () => {
   const [company, setCompany] = useState<ICompany | undefined>();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [] = useState(false);
+  const [imageErrored, setImageErrored] = useState(false);
   const [getCompanyById] = useLazyQuery(GET_COMPANY_BY_ID, {
     fetchPolicy: 'network-only',
     onError: getCompanyByIdError(setCompany, setIsLoading),
@@ -68,45 +70,40 @@ const Company: FC = () => {
         return (
           <StandardContainer isLoading={isLoading}>
             <View style={styles.overlayContainer}>
-              <NavigationHeader goBack />
+              <NavHeader goBack />
               <View style={styles.brandContainer}>
                 <CompanyLogo
                   logoUri={company?.brandLogoUrl}
                   text={company?.name}
+                  imageErrored={imageErrored}
+                  setImageErrored={setImageErrored}
                 />
               </View>
-
-              <ScrollView style={styles.infoContainer}>
-                <View>
-                  <PoliticalScoreCard company={company} />
-                  <HorizontalRule
-                    styles={{
-                      marginTop: 20,
-                      marginBottom: 20,
-                      backgroundColor: theme.dark.hex,
-                    }}
-                  />
-                  <PeopleScoreCard company={company} />
-                  <HorizontalRule
-                    styles={{
-                      marginTop: 20,
-                      marginBottom: 20,
-                      backgroundColor: theme.dark.hex,
-                    }}
-                  />
-                  <PlanetScoreCard company={company} />
-                </View>
-              </ScrollView>
-              <View style={styles.contributionContainer}>
-                <View style={{ flex: 1 }}></View>
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.contributionText}>
-                    all contribution data comes from the Center of Responsive
-                    Politics
-                  </Text>
-                </View>
+              <View style={styles.parentCompanyContainer}>
+                <ParentCompaniesText company={company} />
               </View>
-              <ActionsView company={company} />
+              <ScrollView style={styles.infoContainer}>
+                <PoliticalScoreCard company={company} />
+                <HorizontalRule
+                  styles={{
+                    marginTop: 5,
+
+                    backgroundColor: theme.dark.hex,
+                  }}
+                />
+                <PeopleScoreCard company={company} />
+                <HorizontalRule
+                  styles={{
+                    marginTop: 5,
+
+                    backgroundColor: theme.dark.hex,
+                  }}
+                />
+                <PlanetScoreCard company={company} />
+              </ScrollView>
+              <View style={styles.actionButtonContainer}>
+                <ActionsView company={company} />
+              </View>
             </View>
           </StandardContainer>
         );

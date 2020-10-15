@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
-import { Avatar, ListItem } from 'react-native-elements';
+import { Text } from 'react-native';
+import { ListItem } from 'react-native-elements';
 
 import { useNavigation } from '@react-navigation/native';
 import theme from '../../constants/theme';
@@ -37,9 +37,7 @@ const NavListItem: FC<INavListItemProps> = ({
       key={item.id}
       bottomDivider
       containerStyle={{
-        backgroundColor: item.isActive
-          ? theme.dark.rgba(0.9)
-          : theme.disabled.hex,
+        backgroundColor: item.isActive ? theme.white.hex : theme.opaqueLight,
       }}
       style={{
         marginBottom: 5,
@@ -48,22 +46,15 @@ const NavListItem: FC<INavListItemProps> = ({
     >
       {showLogo ? <NavItemLogo logoUri={logoUrl} rounded={rounded} /> : null}
       <ListItem.Content>
-        <ListItem.Title>
-          <Text
-            style={{
-              fontFamily: 'MontserratMedium',
-              fontSize: 18,
-              color: theme.white.hex,
-            }}
-          >
-            {title || ''}
-          </Text>
+        <ListItem.Title
+          style={{
+            fontFamily: 'Montserrat',
+            color: item.isActive ? theme.black : theme.charcoal,
+          }}
+        >
+          {`${title}${!item.isActive ? ' (coming soon)' : ''}`}
         </ListItem.Title>
-        {subTitle && (
-          <ListItem.Subtitle style={{ color: theme.white.hex }}>
-            {subTitle}
-          </ListItem.Subtitle>
-        )}
+        {subTitle && <ListItem.Subtitle>{subTitle}</ListItem.Subtitle>}
       </ListItem.Content>
     </ListItem>
   );

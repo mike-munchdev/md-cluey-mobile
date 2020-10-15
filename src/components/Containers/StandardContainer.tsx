@@ -1,41 +1,62 @@
-import React, { FC } from 'react';
-import {
-  StyleSheet,
-  SafeAreaView,
-  StatusBar,
-  View,
-  ImageBackground,
-} from 'react-native';
+import React, { FC, Fragment, useState } from 'react';
+import { StyleSheet, SafeAreaView, StatusBar, View } from 'react-native';
+import { Button, Overlay } from 'react-native-elements';
 import { ActivityIndicator } from 'react-native-paper';
 
 import theme from '../../constants/theme';
 
 export interface IStandardContainerProps {
   isLoading?: boolean;
+  showOverlay?: boolean;
+  overlay?: React.ReactNode;
 }
 const StandardContainer: FC<IStandardContainerProps> = ({
   isLoading,
   children,
+  showOverlay,
+  overlay,
 }) => {
+  const [overlayVisible, setOverlayVisible] = useState(showOverlay);
   return (
-    <ImageBackground
-      source={require('../../../assets/images/background.jpg')}
-      style={styles.container}
-    >
-      <SafeAreaView style={styles.safeAreaContainer}>
-        <StatusBar translucent backgroundColor="transparent" />
+    <SafeAreaView style={styles.safeAreaContainer}>
+      <StatusBar translucent backgroundColor="transparent" />
 
-        {isLoading ? (
+      {isLoading ? (
+        <View
+          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+        >
+          <ActivityIndicator size="large" color={theme.dark.hex} />
+        </View>
+      ) : (
+        children
+      )}
+      <Overlay
+        isVisible={showOverlay || false}
+        onBackdropPress={() => setOverlayVisible(false)}
+        overlayStyle={{ width: '90%' }}
+      >
+        <Fragment>
+          {overlay}
           <View
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 10,
+            }}
           >
-            <ActivityIndicator size="large" color={theme.dark.hex} />
+            <Button
+              onPress={() => setOverlayVisible(false)}
+              title="Close"
+              buttonStyle={{
+                backgroundColor: theme.dark.hex,
+                width: 100,
+              }}
+              titleStyle={{ color: theme.white.hex }}
+            />
           </View>
-        ) : (
-          children
-        )}
-      </SafeAreaView>
-    </ImageBackground>
+        </Fragment>
+      </Overlay>
+    </SafeAreaView>
   );
 };
 export default StandardContainer;

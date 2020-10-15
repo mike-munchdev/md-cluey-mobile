@@ -1,8 +1,7 @@
 import React, { useContext, FC, useState } from 'react';
-import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, ScrollView } from 'react-native';
 
 import styles from './styles';
-import * as Animatable from 'react-native-animatable';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../config/context';
 
@@ -10,14 +9,13 @@ import { Formik } from 'formik';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useMutation } from '@apollo/react-hooks';
 
-import { signupSchema } from '../../validation/signup';
+import signupSchema from '../../validation/signup';
 import AnimatableTextInput from '../../components/TextInput/AnimatableTextInput';
 import {
   userSignupError,
   userSignupCompleted,
   USER_SIGNUP,
 } from '../../graphql/queries/user/user';
-import SignUpContainer from './SignUpContainer';
 import theme from '../../constants/theme';
 import { ActionButton } from '../../components/Buttons';
 import { HrText, LogoText } from '../../components/Text';
@@ -26,14 +24,15 @@ import {
   facebookAuthentication,
   googleAuthentication,
 } from '../../utils/socialAuth';
-import { StandardContainer } from '../../components/Containers';
-import { Paragraph } from 'react-native-paper';
+import { KeyboardAvoidingContainer } from '../../components/Containers';
 import { passwordRequirments } from '../../validation/passwordSchema';
-import NavigationHeader from '../../components/Headers/NavigationHeader';
+import { Overlay, Button } from 'react-native-elements';
+import { TextInput } from 'react-native-paper';
 
 const SignUp: FC = () => {
   const { signUp } = useContext(AuthContext);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
+  const [passwordSnackVisible, setPasswordSnackVisible] = useState(false);
   const [passwordSecureTextEntry, setPasswordSecureTextEntry] = useState(true);
   const navigation = useNavigation();
 
@@ -45,13 +44,15 @@ const SignUp: FC = () => {
   const googleSignup = async () => {
     try {
       const { data, token } = await googleAuthentication();
-      const { id, email, familyName, givenName } = data;
+
+      const { id, email, family_name, given_name } = data;
+
       await userSignup({
         variables: {
           input: {
             email,
-            firstName: givenName,
-            lastName: familyName,
+            firstName: given_name,
+            lastName: family_name,
             googleId: id,
             googleAuthToken: token,
           },
@@ -83,7 +84,7 @@ const SignUp: FC = () => {
   };
 
   return (
-    <StandardContainer isLoading={isLoading}>
+    <KeyboardAvoidingContainer isLoading={isLoading}>
       <View style={styles.overlayContainer}>
         <View style={styles.top}>
           <LogoText
@@ -118,39 +119,52 @@ const SignUp: FC = () => {
                     <AnimatableTextInput
                       label="FIRST NAME"
                       placeholder="Enter First Name"
-                      iconName="account-circle"
+                      leftIconName="account-circle"
                       name="firstName"
                       value={values.firstName}
                       errors={errors}
                       touched={touched}
                       handleChange={handleChange('firstName')}
+                      autoCompleteType="name"
                     />
                     <AnimatableTextInput
                       label="LAST NAME"
                       placeholder="Enter Last Name"
-                      iconName="account-circle"
+                      leftIconName="account-circle"
                       name="lastName"
                       value={values.lastName}
                       errors={errors}
                       touched={touched}
                       handleChange={handleChange('lastName')}
                       containerStyles={{ marginTop: 10 }}
+                      autoCompleteType="name"
                     />
                     <AnimatableTextInput
                       label="E-MAIL"
                       placeholder="Enter email"
-                      iconName="email"
+                      leftIconName="email"
                       name="email"
                       value={values.email}
                       errors={errors}
                       touched={touched}
                       handleChange={handleChange('email')}
                       containerStyles={{ marginTop: 10 }}
+                      autoCompleteType="email"
                     />
                     <AnimatableTextInput
                       label="PASSWORD"
                       placeholder="Enter password"
-                      iconName={passwordSecureTextEntry ? 'eye' : 'lock'}
+                      leftIconName={passwordSecureTextEntry ? 'eye' : 'lock'}
+                      rightIcon={
+                        <TextInput.Icon
+                          onPress={() => {
+                            setPasswordSnackVisible(!passwordSnackVisible);
+                          }}
+                          name="help-circle-outline"
+                          color={theme.dark.hex}
+                          size={20}
+                        />
+                      }
                       name="password"
                       value={values.password}
                       errors={errors}
@@ -158,9 +172,10 @@ const SignUp: FC = () => {
                       handleChange={handleChange('password')}
                       secureTextEntry={passwordSecureTextEntry}
                       containerStyles={{ marginTop: 10 }}
-                      handleIconPress={() =>
+                      handleLeftIconPress={() =>
                         setPasswordSecureTextEntry(!passwordSecureTextEntry)
                       }
+                      autoCompleteType="password"
                     />
 
                     <ActionButton
@@ -176,8 +191,8 @@ const SignUp: FC = () => {
                   </View>
                   <View style={styles.buttonsView}>
                     <ActionButton
-                      handlePress={() => {
-                        facebookSignup();
+                      handlePress={async () => {
+                        await facebookSignup();
                       }}
                       textColor={theme.buttonText}
                       color={theme.facebookBlue}
@@ -186,9 +201,9 @@ const SignUp: FC = () => {
                         <FontAwesome5 name="facebook" size={24} color="white" />
                       }
                     />
-                    <ActionButton
-                      handlePress={() => {
-                        googleSignup();
+                    {/* <ActionButton
+                      handlePress={async () => {
+                        await googleSignup();
                       }}
                       buttonStyles={{ marginTop: 10 }}
                       textColor={theme.buttonText}
@@ -197,32 +212,59 @@ const SignUp: FC = () => {
                       leftIcon={
                         <FontAwesome5 name="google" size={24} color="white" />
                       }
-                    />
+                    /> */}
                   </View>
                 </View>
               );
             }}
           </Formik>
-          <View style={{ marginHorizontal: 10 }}>
-            <Text
-              style={{
-                color: theme.dark.hex,
-                fontWeight: 'bold',
-                fontSize: 20,
-              }}
-            >
-              Password Must be
-            </Text>
-            {passwordRequirments.map((r, index) => (
+          <Overlay
+            isVisible={passwordSnackVisible}
+            onBackdropPress={() => setPasswordSnackVisible(false)}
+            overlayStyle={{ width: '90%' }}
+          >
+            <View>
               <Text
-                key={index.toString()}
-                style={{ color: theme.dark.hex }}
-              >{`${index + 1}. ${r}`}</Text>
-            ))}
-          </View>
+                style={{
+                  color: theme.dark.hex,
+                  fontSize: 16,
+                  fontWeight: 'bold',
+                  marginBottom: 10,
+                }}
+              >
+                Password Requirements
+              </Text>
+              {passwordRequirments.map((r, index) => (
+                <Text
+                  key={index.toString()}
+                  style={{
+                    color: theme.dark.hex,
+                    fontSize: 16,
+                  }}
+                >{`${index + 1}. ${r}`}</Text>
+              ))}
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginTop: 10,
+                }}
+              >
+                <Button
+                  onPress={() => setPasswordSnackVisible(false)}
+                  title="Close"
+                  buttonStyle={{
+                    backgroundColor: theme.dark.hex,
+                    width: 100,
+                  }}
+                  titleStyle={{ color: theme.white.hex }}
+                />
+              </View>
+            </View>
+          </Overlay>
         </ScrollView>
       </View>
-    </StandardContainer>
+    </KeyboardAvoidingContainer>
   );
 };
 export default SignUp;

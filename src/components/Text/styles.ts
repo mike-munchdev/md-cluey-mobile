@@ -1,5 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import theme from '../../constants/theme';
+const { height } = Dimensions.get('screen');
 
 export default StyleSheet.create({
   container: {
@@ -16,15 +17,20 @@ export default StyleSheet.create({
   },
   pageHeaderText: {
     fontFamily: 'MontserratBold',
-    fontSize: 50,
+    fontSize: 20,
     color: theme.dark.hex,
     marginBottom: 10,
   },
   pageSubtitleText: {
     fontFamily: 'MontserratMedium',
-    fontSize: 20,
+    fontSize: 12,
     color: theme.dark.hex,
     // marginTop: -25,
     marginBottom: 10,
+  },
+  logoText: {
+    color: theme.dark.hex,
+    fontFamily: 'CoinyRegular',
+    fontSize: height * 0.08,
   },
 });

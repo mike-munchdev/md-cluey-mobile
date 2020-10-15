@@ -1,22 +1,9 @@
-import React, { useState, useEffect, FC } from 'react';
-import { ScrollView, Text, View } from 'react-native';
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Dialog,
-  Paragraph,
-  Portal,
-  RadioButton,
-  TextInput,
-  Title,
-} from 'react-native-paper';
+import React, { useState, useEffect, FC, useCallback } from 'react';
+import { FlatList, Text } from 'react-native';
+import { ActivityIndicator, Button, Dialog, Portal } from 'react-native-paper';
 
-import { isDate } from 'lodash';
-import moment from 'moment';
 import theme from '../../constants/theme';
 import { IOptionsProps } from '../../screens/Profile/Profile';
-import { ListItem } from 'react-native-elements';
 import { OptionListItem } from '../ListItem';
 
 export interface IEditOptionsValueModalProps {
@@ -28,7 +15,7 @@ export interface IEditOptionsValueModalProps {
   title: string;
   secure: boolean;
   isValid: (value: string) => boolean;
-
+  emptyText?: string;
   options: IOptionsProps[];
 }
 const EditOptionsValueModal: FC<IEditOptionsValueModalProps> = ({
@@ -38,12 +25,36 @@ const EditOptionsValueModal: FC<IEditOptionsValueModalProps> = ({
   success,
   value,
   title,
-  secure,
   isValid,
-
   options,
+  emptyText,
 }) => {
   const [modalValue, setModalValue] = useState('');
+
+  const flatListRef = useCallback(
+    (node) => {
+      if (node !== null) {
+        if (isVisible) {
+          const selectedIndex = options.findIndex((o) => o.value === value);
+
+          if (selectedIndex >= 0) {
+            node.scrollToIndex({
+              animated: false,
+              index: selectedIndex,
+            });
+          }
+        }
+      }
+    },
+    [value]
+  );
+  const getItemLayout = (data, index: number) => {
+    return {
+      length: 51,
+      offset: 51 * index,
+      index,
+    };
+  };
 
   useEffect(() => {
     setModalValue(value ? value.toString() : '');
@@ -61,20 +72,23 @@ const EditOptionsValueModal: FC<IEditOptionsValueModalProps> = ({
               color={theme.dark.hex}
             />
           ) : (
-            <ScrollView
-              contentContainerStyle={{
-                paddingHorizontal: 24,
+            <FlatList
+              ref={flatListRef}
+              style={{}}
+              getItemLayout={getItemLayout}
+              data={options}
+              renderItem={({ item, index }) => {
+                return (
+                  <OptionListItem
+                    selected={modalValue === item.value}
+                    title={item.name}
+                    onPress={() => setModalValue(item.value)}
+                  />
+                );
               }}
-            >
-              {options.map((o, index) => (
-                <OptionListItem
-                  key={index.toString()}
-                  selected={modalValue === o.value}
-                  title={o.name}
-                  onPress={() => setModalValue(o.value)}
-                />
-              ))}
-            </ScrollView>
+              keyExtractor={(item, index) => index.toString()}
+              ListEmptyComponent={<Text>{emptyText}</Text>}
+            />
           )}
         </Dialog.ScrollArea>
 

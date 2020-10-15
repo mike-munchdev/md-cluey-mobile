@@ -1,25 +1,25 @@
 import React, { FC, useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 
 import styles from './styles';
-import theme from '../../constants/theme';
 import {
   getCategoriesCompleted,
   getCategoriesError,
   GET_CATEGORIES,
 } from '../../graphql/queries/categories/categories';
 import { useLazyQuery } from '@apollo/react-hooks';
-import NavigationHeader from '../../components/Headers/NavigationHeader';
+
 import { CategoriesList } from '../../components/Lists';
 import { StandardContainer } from '../../components/Containers';
 import { PageHeaderText } from '../../components/Text';
+import { NavHeader } from '../../components/Headers';
 
 const Categories: FC = () => {
   const [] = useState('');
 
   const [categories, setCategories] = useState([]);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [getCategories] = useLazyQuery(GET_CATEGORIES, {
     fetchPolicy: 'network-only',
@@ -37,11 +37,7 @@ const Categories: FC = () => {
   return (
     <StandardContainer>
       <View style={styles.overlayContainer}>
-        <NavigationHeader goBack />
-        <PageHeaderText
-          title="Categories"
-          containerStyle={{ marginBottom: 10 }}
-        />
+        <NavHeader goBack title="Categories" />
         <CategoriesList list={categories} loading={isLoading} />
       </View>
     </StandardContainer>

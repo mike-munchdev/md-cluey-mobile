@@ -9,7 +9,6 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-
     backgroundColor: theme.white.hex,
   },
   header: {
@@ -49,5 +48,19 @@ export default StyleSheet.create({
   textSign: {
     color: colors.white.normal,
     fontWeight: 'bold',
+  },
+  parentCompaniesTextContainer: {
+    flexDirection: 'column',
+    width: '100%',
+
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  parentCompaniesCaptionText: {
+    fontFamily: 'MontserratBold',
+  },
+  parentCompaniesText: {
+    color: theme.dark.hex,
+    fontFamily: 'MontserratMedium',
   },
 });

@@ -1,12 +1,7 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
-import {
-  MaterialIcons,
-  FontAwesome5,
-  Entypo,
-  FontAwesome,
-} from '@expo/vector-icons';
-import { useLazyQuery, useMutation } from '@apollo/react-hooks';
+import { FontAwesome5, Entypo, FontAwesome } from '@expo/vector-icons';
+import { useMutation } from '@apollo/react-hooks';
 import theme from '../../constants/theme';
 import { RoundedIconButton } from '../Buttons';
 
@@ -19,8 +14,9 @@ import {
   UPDATE_COMPANY_RESPONSE_FOR_USER,
 } from '../../graphql/queries/user/user';
 import { AppContext } from '../../config/context';
-import { ICompany, ICompanyReponse, IUser } from '../../interfaces';
+import { ICompany, ICompanyReponse } from '../../interfaces';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import { MyLikesIcon } from '../Icons';
 
 export interface IActionsViewProps {
   company?: ICompany;
@@ -56,17 +52,6 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
       setUser(updatedUser);
     }
   }, [companyResponse]);
-
-  // useEffect(() => {
-  //   // console.log('ActionsView: user changed', user);
-  //   // const getUserCompanyResponse = user?.companyResponses.find(
-  //   //   (r) => r.id === companyResponse?.id
-  //   // );
-  //   // if (getUserCompanyResponse) {
-  //   //   console.log('getUserCompanyResponse', getUserCompanyResponse);
-  //   //   setCompanyResponse(getUserCompanyResponse);
-  //   // }
-  // }, [user]);
 
   const [updateCompanyResponseForUser] = useMutation(
     UPDATE_COMPANY_RESPONSE_FOR_USER,
@@ -108,7 +93,6 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
               style={{
                 height: '100%',
                 width: '100%',
-
                 alignItems: 'flex-start',
                 justifyContent: 'space-evenly',
                 flexDirection: 'column',
@@ -211,7 +195,11 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
         >
           <View style={styles.buttonView}>
             <View style={styles.iconView}>
-              <FontAwesome5 name="smile" size={36} color={theme.dark.hex} />
+              <MyLikesIcon
+                response={companyResponse}
+                size={36}
+                color={theme.dark.hex}
+              />
             </View>
             <Text style={styles.buttonText}>Likes/Dislikes</Text>
           </View>
@@ -225,7 +213,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
         borderWidth={2}
         icon={<FontAwesome name="search" size={32} color={theme.dark.hex} />}
         textStyle={styles.buttonText}
-        text="Search"
+        text="Search/Home"
       />
       <RoundedIconButton
         onPress={() =>

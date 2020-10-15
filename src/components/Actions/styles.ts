@@ -6,7 +6,6 @@ export default StyleSheet.create({
     // position: 'absolute',
     // bottom: 60,
     flexDirection: 'row',
-
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -17,7 +16,7 @@ export default StyleSheet.create({
     fontSize: 14,
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: 12,
     marginTop: 5,
     fontWeight: 'bold',
     color: theme.dark.hex,

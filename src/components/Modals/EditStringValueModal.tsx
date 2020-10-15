@@ -1,18 +1,12 @@
 import React, { useState, useEffect, FC } from 'react';
-import { Text, View } from 'react-native';
 import {
   ActivityIndicator,
   Button,
-  Card,
   Dialog,
   Paragraph,
   Portal,
   TextInput,
-  Title,
 } from 'react-native-paper';
-import { MaskService } from 'react-native-masked-text';
-import { isDate } from 'lodash';
-import moment from 'moment';
 import theme from '../../constants/theme';
 
 export interface IEditStringValueModalProps {

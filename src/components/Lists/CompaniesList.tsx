@@ -1,5 +1,5 @@
-import React, { useState, useEffect, FC, Fragment } from 'react';
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import React, { FC, Fragment, useEffect, useState } from 'react';
+import { FlatList, Text, View } from 'react-native';
 import { ActivityIndicator, Searchbar } from 'react-native-paper';
 import Constants from 'expo-constants';
 import theme from '../../constants/theme';
@@ -7,6 +7,7 @@ import { NavListItem } from '../ListItem';
 
 import styles from './styles';
 import { NODE_ENV } from '../../hooks/serverInfo';
+import { ICompany } from '../../interfaces';
 
 export interface ICompaniesListProps {
   list: [];
@@ -22,23 +23,39 @@ const CompaniesList: FC<ICompaniesListProps> = ({
   onChangeSearch,
   loading,
 }) => {
+  const [orderedList, setOrderedList] = useState(list);
+
+  useEffect(() => {
+    const orderedList = list.sort((a: ICompany, b: ICompany) => {
+      return a.name > b.name;
+    });
+    // .sort((a: ICompany, b: ICompany) => {
+    //   return !a.isActive;
+    // });
+
+    setOrderedList(orderedList);
+  }, [list]);
+
   return (
     <View style={styles.companiesContainer}>
       {loading ? (
-        <ActivityIndicator />
+        <ActivityIndicator color={theme.dark.hex} size="large" />
       ) : (
         <Fragment>
           <Searchbar
+            autoCorrect={false}
+            autoCapitalize="none"
+            autoCompleteType="off"
             style={{ marginBottom: 10 }}
-            placeholder="Name"
+            placeholder="Company Name"
             onChangeText={onChangeSearch}
             value={searchQuery}
           />
 
           <FlatList
             style={{ width: '100%' }}
-            data={list}
-            keyExtractor={(item, index) => item.id.toString()}
+            data={orderedList}
+            keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => {
               return (
                 <NavListItem
@@ -47,7 +64,6 @@ const CompaniesList: FC<ICompaniesListProps> = ({
                   routeName="Company"
                   params={{ company: item }}
                   title={item.name}
-                  subTitle={item.brandUrl}
                   showLogo={true}
                   logoUrl={
                     item.brandLogoUrl
@@ -71,7 +87,7 @@ const CompaniesList: FC<ICompaniesListProps> = ({
                       color: theme.dark.hex,
                     }}
                   >
-                    No companies
+                    No Brands
                   </Text>
                 </View>
               );

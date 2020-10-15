@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import theme from '../../constants/theme';
-
+const { height } = Dimensions.get('screen');
 export default StyleSheet.create({
   container: {
     width: '100%',
@@ -8,19 +8,25 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  titleContainer: { width: '90%' },
+  titleContainer: {
+    width: '90%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 5,
+  },
   titleText: {
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     fontFamily: 'MontserratMedium',
-    fontSize: 18,
+    fontSize: height * 0.02,
+    color: theme.dark.hex,
   },
   percentContainer: {
     width: '90%',
     flexDirection: 'row',
   },
   percentText: {
-    fontSize: 18,
+    fontSize: height * 0.02,
     fontWeight: '900',
     color: theme.text,
   },
@@ -28,16 +34,17 @@ export default StyleSheet.create({
     backgroundColor: 'red',
     height: 40,
     paddingRight: 5,
-    justifyContent: 'center',
-    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   democratView: {
     backgroundColor: 'blue',
     height: 40,
-
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexDirection: 'row',
     paddingLeft: 5,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
   },
   politicalSubTextContainer: {
     alignItems: 'center',
@@ -52,7 +59,7 @@ export default StyleSheet.create({
   },
   politicalInfoText: {
     fontFamily: 'Montserrat',
-    fontSize: 16,
+    fontSize: 12,
     color: theme.dark.hex,
   },
   politicalInfoHelpView: { justifyContent: 'center', marginRight: 5 },

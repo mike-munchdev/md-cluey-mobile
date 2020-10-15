@@ -1,8 +1,6 @@
 import React, { useContext, FC, useState } from 'react';
 import { View } from 'react-native';
 
-import * as Animatable from 'react-native-animatable';
-
 import { useNavigation } from '@react-navigation/native';
 import { useMutation } from '@apollo/react-hooks';
 
@@ -13,16 +11,16 @@ import styles from './styles';
 import { AnimatableTextInput } from '../../components/TextInput/';
 import { AuthContext } from '../../config/context';
 import theme from '../../constants/theme';
-import ActivateAccountContainer from './ActivateAccountContainer';
 import { ActionButton } from '../../components/Buttons';
 
-import { activateAccountSchema } from '../../validation/activateAccount';
+import activateAccountSchema from '../../validation/activateAccount';
 import {
   ACTIVATE_USER_ACCOUNT,
   activateUserAccountError,
   activateUserAccountCompleted,
 } from '../../graphql/queries/user/user';
 import { LogoText } from '../../components/Text';
+import { StandardContainer } from '../../components/Containers';
 
 const ActivateAccount: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -40,7 +38,7 @@ const ActivateAccount: FC = () => {
   });
 
   return (
-    <ActivateAccountContainer>
+    <StandardContainer>
       <View style={styles.overlayContainer}>
         <View style={styles.top}>
           <LogoText
@@ -73,7 +71,7 @@ const ActivateAccount: FC = () => {
                   <AnimatableTextInput
                     label="Token"
                     placeholder="Enter confirm token"
-                    iconName="ticket-confirmation"
+                    leftIconName="ticket-confirmation"
                     name="confirmToken"
                     value={values.confirmToken}
                     errors={errors}
@@ -94,7 +92,7 @@ const ActivateAccount: FC = () => {
           }}
         </Formik>
       </View>
-    </ActivateAccountContainer>
+    </StandardContainer>
   );
 };
 export default ActivateAccount;

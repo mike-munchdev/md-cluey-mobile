@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, Fragment, useEffect } from 'react';
 import { Text, View, SafeAreaView } from 'react-native';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -9,7 +9,7 @@ import { AppContext } from '../../config/context';
 
 import SidebarMenuItem from './SidebarMenuItem';
 import { HorizontalRule } from '../HorizontalRule/';
-import { useNavigation } from '@react-navigation/native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import theme from '../../constants/theme';
 import { AlertHelper } from '../../utils/alert';
 import { useMutation } from '@apollo/react-hooks';
@@ -18,6 +18,8 @@ import {
   updateUserError,
   UPDATE_USER,
 } from '../../graphql/queries/user/user';
+import { Button, Overlay } from 'react-native-elements';
+import { ActionButton } from '../Buttons';
 
 const Sidebar = () => {
   const navigation = useNavigation();
@@ -25,14 +27,14 @@ const Sidebar = () => {
   const { user, setUser } = useContext(AppContext);
 
   const [, setIsLoading] = useState(false);
-
+  const [overlayVisible, setOverlayVisible] = useState(false);
   const [updateUser] = useMutation(UPDATE_USER, {
     onError: updateUserError(setIsLoading),
     onCompleted: updateUserCompleted(setIsLoading, setUser),
   });
   const onIsMakeLikesPublicToggleSwitch = async () => {
     // check for consumer profile settings
-    if (user?.username && user.dob && user.gender && user.city && user.state) {
+    if (user.dob && user.gender && user.city && user.state) {
       await updateUser({
         variables: {
           input: {
@@ -42,13 +44,15 @@ const Sidebar = () => {
         },
       });
     } else {
-      AlertHelper.show(
-        'error',
-        'Profile',
-        'Cluey Consuer Profile must be set in order to make likes/dislikes public'
-      );
+      setOverlayVisible(true);
     }
   };
+
+  useEffect(() => {
+    if (user?.mustResetPassword) {
+      navigation.dispatch(StackActions.replace('ResetPassword'));
+    }
+  }, [user]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -91,23 +95,13 @@ const Sidebar = () => {
       <View style={{ marginLeft: 10, marginBottom: 20 }}>
         <SidebarMenuItem
           onPress={async () => {
-            navigation.navigate('Friends');
-          }}
-          iconName="user-friends"
-          iconSize={20}
-          title="Manage Cluey Friends"
-          iconColor={theme.dark.hex}
-        />
-
-        <SidebarMenuItem
-          onPress={async () => {
             navigation.navigate('MyLikes');
           }}
           iconName="thumbs-up"
           iconSize={20}
           title="My likes and dislikes"
           iconColor={theme.dark.hex}
-          viewStyles={{ marginTop: 20 }}
+          // viewStyles={{ marginTop: 20 }}
         />
         <SidebarMenuItem
           onPress={onIsMakeLikesPublicToggleSwitch}
@@ -166,26 +160,23 @@ const Sidebar = () => {
           <Text style={{ fontSize: 14 }}>Coming Soon</Text>
         </View>
         <SidebarMenuItem
-          onPress={async () => {
-            AlertHelper.show(
-              'info',
-              'Under Development',
-              'Feature is currently under development!'
-            );
-          }}
+          onPress={() => {}}
+          iconName="user-friends"
+          iconSize={20}
+          title="Manage Cluey Friends"
+          iconColor={theme.disabledText}
+        />
+
+        <SidebarMenuItem
+          onPress={() => {}}
           iconName="globe-americas"
           iconColor={theme.disabledText}
           iconSize={20}
           title="Manage Planet Preferences"
+          viewStyles={{ marginTop: 20 }}
         />
         <SidebarMenuItem
-          onPress={async () => {
-            AlertHelper.show(
-              'info',
-              'Under Development',
-              'Feature is currently under development!'
-            );
-          }}
+          onPress={() => {}}
           iconName="users"
           iconSize={20}
           iconColor={theme.disabledText}
@@ -193,13 +184,7 @@ const Sidebar = () => {
           title="Manage People Preferences"
         />
         <SidebarMenuItem
-          onPress={async () => {
-            AlertHelper.show(
-              'info',
-              'Under Development',
-              'Feature is currently under development!'
-            );
-          }}
+          onPress={() => {}}
           iconName="clipboard-list"
           iconSize={20}
           title="Create Shopping List"
@@ -209,6 +194,45 @@ const Sidebar = () => {
       </View>
 
       <HorizontalRule styles={{ marginBottom: 20 }} />
+      <Overlay
+        isVisible={overlayVisible}
+        onBackdropPress={() => setOverlayVisible(false)}
+        overlayStyle={{ width: '90%' }}
+      >
+        <Fragment>
+          <Text style={{ fontSize: 18 }}>
+            Cluey Consumer Profile must be set in order to make likes/dislikes
+            public. Go to “View Profile”.
+          </Text>
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 10,
+            }}
+          >
+            <ActionButton
+              title="View Profile"
+              handlePress={() => {
+                setOverlayVisible(false);
+                navigation.navigate('Profile');
+              }}
+              buttonStyles={{ marginTop: 15 }}
+              textColor={theme.buttonText}
+              color={theme.dark.hex}
+            />
+            <ActionButton
+              title="Close"
+              handlePress={() => {
+                setOverlayVisible(false);
+              }}
+              buttonStyles={{ marginTop: 15 }}
+              textColor={theme.buttonText}
+              color={theme.dark.hex}
+            />
+          </View>
+        </Fragment>
+      </Overlay>
     </SafeAreaView>
   );
 };

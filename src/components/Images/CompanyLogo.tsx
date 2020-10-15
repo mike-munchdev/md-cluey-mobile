@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FC } from 'react';
-import { Text, View } from 'react-native';
+import { Dimensions, Text, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { SvgUri } from 'react-native-svg';
 import Constants from 'expo-constants';
@@ -13,35 +13,44 @@ import { NODE_ENV } from '../../hooks/serverInfo';
 export interface ICompanyLogoProps {
   logoUri: string | undefined;
   text?: string;
+  imageErrored?: boolean;
+  setImageErrored: (value: boolean) => void;
 }
+const { height } = Dimensions.get('screen');
 
-const CompanyLogo: FC<ICompanyLogoProps> = ({ logoUri, text }) => {
+const IMAGE_HEIGHT = height * 0.1;
+
+const IMAGE_WIDTH = 150;
+
+const CompanyLogo: FC<ICompanyLogoProps> = ({
+  logoUri,
+  text,
+  imageErrored,
+  setImageErrored,
+}) => {
   const [extension, setExtension] = useState<string | undefined>('');
-  const [imageError, setImageError] = useState<boolean>(false);
 
   useEffect(() => {
     const extension = logoUri?.slice(logoUri?.lastIndexOf('.') + 1);
-    console.log(
-      'logoUri',
-      `${
-        Constants.manifest.extra.appVariables[String(NODE_ENV)]
-          .brandLogoUrlPrefix
-      }${logoUri}`
-    );
     setExtension(extension);
   }, [logoUri]);
 
-  if (!logoUri || imageError)
+  if (!logoUri || imageErrored)
     return (
-      <View>
-        <Text adjustsFontSizeToFit={true} style={styles.companyNameText}>
-          {text}
-        </Text>
+      <View
+        style={{
+          width: '90%',
+          height: IMAGE_HEIGHT,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Text style={styles.companyNameText}>{text}</Text>
       </View>
     );
 
   if (extension === 'svg')
-    return <SvgUri width="100%" height="100%" uri={logoUri} />;
+    return <SvgUri width={IMAGE_WIDTH} height={IMAGE_HEIGHT} uri={logoUri} />;
 
   return (
     <Image
@@ -52,15 +61,15 @@ const CompanyLogo: FC<ICompanyLogoProps> = ({ logoUri, text }) => {
         }${logoUri}`,
       }}
       style={{
-        width: 150,
-        height: 150,
+        width: IMAGE_WIDTH,
+        height: IMAGE_HEIGHT,
         resizeMode: 'contain',
       }}
       PlaceholderContent={
         <ActivityIndicator color={theme.dark.hex} size="large" />
       }
       onError={(error) => {
-        setImageError(true);
+        setImageErrored(true);
       }}
     />
   );

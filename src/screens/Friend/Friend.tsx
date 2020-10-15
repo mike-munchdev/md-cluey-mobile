@@ -1,29 +1,28 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { FlatList, View, Text } from 'react-native';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { FontAwesome5 } from '@expo/vector-icons';
-import FriendContainer from './FriendContainer';
 import styles from './styles';
 import theme from '../../constants/theme';
 
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { Button, List, Searchbar, Switch } from 'react-native-paper';
-import { Avatar, ListItem } from 'react-native-elements';
-import { friends, IFriend } from '../Friends/Friends';
+import { Button, List } from 'react-native-paper';
+import { Avatar } from 'react-native-elements';
+
 import { HorizontalRule } from '../../components/HorizontalRule';
 import { StandardContainer } from '../../components/Containers';
+import { IFriend } from '../../interfaces';
 
 const Friend: FC = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [] = useState('');
   const [areWeFriends, setAreWeFriends] = useState(true);
   const [isSwitchOn, setIsSwitchOn] = React.useState(false);
-  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
 
   const navigation = useNavigation();
   const route = useRoute();
-  const [friend, setFriend] = useState<IFriend | undefined>(
+  const [friend] = useState<IFriend | undefined>(
     route.params.friendId
       ? friends.find((f) => f.id === route.params.friendId)
       : null
@@ -131,7 +130,7 @@ const Friend: FC = () => {
             >
               <FlatList
                 data={[]}
-                keyExtractor={(item, index) => item.id}
+                keyExtractor={(item) => item.id}
                 renderItem={({ item }) => {
                   return (
                     <List.Item

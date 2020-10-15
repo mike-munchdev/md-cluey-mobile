@@ -64,8 +64,28 @@ export const stateOptions = states.map((s) => ({
   name: s.state,
   value: s.code,
 }));
-
+const getStateCodeFromStateName = (stateName: string) => {
+  return states.find((s) => s.state.toLowerCase() === stateName.toLowerCase())
+    ?.code;
+};
+const getStateNameFromStateCode = (stateCode: string) => {
+  return states.find((s) => s.code.toLowerCase() === stateCode.toLowerCase())
+    ?.state;
+};
 export const cityOptions = usaCities.map((l) => ({
-  name: `${l.city}, ${l.state}`,
-  value: `${l.city}, ${l.state}`,
+  name: `${l.city}, ${getStateCodeFromStateName(l.state)}`,
+  value: `${l.city}, ${getStateCodeFromStateName(l.state)}`,
 }));
+
+export const getCityOptionsFromStateName = (stateName: string) => {
+  if (!stateName) {
+    return [];
+  } else {
+    return usaCities
+      .filter((c) => c.state === getStateNameFromStateCode(stateName))
+      .map((l) => ({
+        name: l.city,
+        value: l.city,
+      }));
+  }
+};

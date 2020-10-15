@@ -1,46 +1,52 @@
-import React, { Fragment, useState, FC, useCallback } from 'react';
-import { FieldProps } from 'formik';
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  ViewStyle,
-  StyleProp,
-} from 'react-native';
-import { FontAwesome, Feather } from '@expo/vector-icons';
-import * as Animatable from 'react-native-animatable';
-import colors from '../../constants/colors';
+import React, { Fragment, FC } from 'react';
+import { View, ViewStyle, StyleProp } from 'react-native';
 import theme from '../../constants/theme';
 import styles from './styles';
 
-import { Snackbar, TextInput } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 
 interface ITextInputProps {
   placeholder?: string;
   label?: string;
   secureTextEntry?: boolean;
-  iconName?: string;
-  iconSize?: number;
+  leftIconName?: string;
+  leftIconSize?: number;
+  rightIcon?: React.ReactNode;
   name: string;
   value: string;
   errors: any[];
   touched: any[];
   handleChange: (name: string) => void;
-  handleIconPress?: () => void;
+  handleLeftIconPress?: () => void;
   containerStyles?: StyleProp<ViewStyle>;
   textInputRef:
     | ((instance: TextInput | null) => void)
     | React.RefObject<TextInput>
     | null
     | undefined;
+  autoCompleteType?:
+    | 'name'
+    | 'username'
+    | 'password'
+    | 'cc-csc'
+    | 'cc-exp'
+    | 'cc-exp-month'
+    | 'cc-exp-year'
+    | 'cc-number'
+    | 'email'
+    | 'postal-code'
+    | 'street-address'
+    | 'tel'
+    | 'off'
+    | undefined;
 }
 
 const AnimatableTextInput: FC<ITextInputProps> = ({
   placeholder,
-  label,
   secureTextEntry,
-  iconName,
-  iconSize,
+  leftIconName,
+  leftIconSize,
+  rightIcon,
   name,
   value,
   errors,
@@ -48,7 +54,8 @@ const AnimatableTextInput: FC<ITextInputProps> = ({
   handleChange,
   containerStyles,
   textInputRef,
-  handleIconPress,
+  handleLeftIconPress,
+  autoCompleteType,
 }) => {
   const showErrorState = (touched: any, errors: any, name: string) => {
     return touched[name] !== undefined && errors[name] !== undefined;
@@ -60,17 +67,21 @@ const AnimatableTextInput: FC<ITextInputProps> = ({
         <TextInput
           mode="outlined"
           left={
-            <TextInput.Icon
-              onPress={() => {
-                if (handleIconPress) {
-                  handleIconPress();
-                }
-              }}
-              name={iconName || ''}
-              color={theme.dark.hex}
-              size={iconSize || 20}
-            />
+            leftIconName ? (
+              <TextInput.Icon
+                onPress={() => {
+                  if (handleLeftIconPress) {
+                    handleLeftIconPress();
+                  }
+                }}
+                name={leftIconName || ''}
+                color={theme.dark.hex}
+                size={leftIconSize || 20}
+              />
+            ) : null
           }
+          autoCompleteType={autoCompleteType}
+          right={rightIcon || null}
           ref={textInputRef}
           theme={{ colors: { primary: theme.dark.hex } }}
           placeholderTextColor={theme.opaque}

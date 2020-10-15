@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC } from 'react';
+import React, { FC } from 'react';
 import {
   StyleSheet,
   KeyboardAvoidingView,
@@ -22,28 +22,22 @@ const KeyboardAvoidingContainer: FC<IKeyboardAvoidingContainerProps> = ({
 }) => {
   return (
     <DismissKeyboard>
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-        enabled
-      >
-        <SafeAreaView style={styles.safeAreaContainer}>
-          <StatusBar translucent backgroundColor="transparent" />
-          {isLoading ? (
-            <View
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <ActivityIndicator size="large" color={theme.dark.hex} />
-            </View>
-          ) : (
-            children
-          )}
-        </SafeAreaView>
-      </KeyboardAvoidingView>
+      <SafeAreaView style={styles.safeAreaContainer}>
+        <StatusBar translucent backgroundColor="transparent" />
+        {isLoading ? (
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <ActivityIndicator size="large" color={theme.dark.hex} />
+          </View>
+        ) : (
+          children
+        )}
+      </SafeAreaView>
     </DismissKeyboard>
   );
 };

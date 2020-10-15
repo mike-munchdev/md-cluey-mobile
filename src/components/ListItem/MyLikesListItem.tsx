@@ -1,8 +1,6 @@
 import React, { FC, Fragment, useContext, useEffect, useState } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
-import { Avatar, ListItem } from 'react-native-elements';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { Text } from 'react-native';
+import { ListItem } from 'react-native-elements';
 import theme from '../../constants/theme';
 import { useMutation } from '@apollo/react-hooks';
 import {
@@ -20,7 +18,6 @@ export interface IMyLikesListItemProps {
 
 const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item, title }) => {
   const { user, setUser } = useContext(AppContext);
-  const navigation = useNavigation();
   const [companyResponse, setCompanyResponse] = useState(item);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -36,17 +33,6 @@ const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item, title }) => {
       setUser(updatedUser);
     }
   }, [companyResponse]);
-
-  useEffect(() => {
-    // console.log('MyLikesListItem: user changed', user);
-    // const getUserCompanyResponse = user?.companyResponses.find(
-    //   (r) => r.id === companyResponse?.id
-    // );
-    // if (getUserCompanyResponse) {
-    //   console.log('getUserCompanyResponse', getUserCompanyResponse);
-    //   setCompanyResponse(getUserCompanyResponse);
-    // }
-  }, [user]);
 
   const [updateCompanyResponseForUser] = useMutation(
     UPDATE_COMPANY_RESPONSE_FOR_USER,
@@ -108,22 +94,12 @@ const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item, title }) => {
         <Fragment>
           <ListItem.Chevron
             style={{ marginHorizontal: 7 }}
-            name="laugh"
-            type="font-awesome-5"
-            size={companyResponse.response === 'will-buy' ? 34 : 22}
-            color={theme.successText}
-            onPress={() =>
-              updateResponse('will-buy', companyResponse.company.id)
-            }
-          />
-          <ListItem.Chevron
-            style={{ marginHorizontal: 7 }}
-            name="emoji-happy"
+            name="emoji-sad"
             type="entypo"
-            size={companyResponse.response === 'will-buy-later' ? 30 : 22}
-            color={theme.successText}
+            size={companyResponse.response === 'will-not-buy' ? 30 : 22}
+            color={theme.dark.hex}
             onPress={() =>
-              updateResponse('will-buy-later', companyResponse.company.id)
+              updateResponse('will-not-buy', companyResponse.company.id)
             }
           />
           <ListItem.Chevron
@@ -131,19 +107,30 @@ const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item, title }) => {
             name="emoji-neutral"
             type="entypo"
             size={companyResponse.response === 'will-not-buy-later' ? 30 : 22}
-            color={theme.successText}
+            color={theme.dark.hex}
             onPress={() =>
               updateResponse('will-not-buy-later', companyResponse.company.id)
             }
           />
+
           <ListItem.Chevron
             style={{ marginHorizontal: 7 }}
-            name="emoji-sad"
+            name="emoji-happy"
             type="entypo"
-            size={companyResponse.response === 'will-not-buy' ? 30 : 22}
-            color={theme.successText}
+            size={companyResponse.response === 'will-buy-later' ? 30 : 22}
+            color={theme.dark.hex}
             onPress={() =>
-              updateResponse('will-not-buy', companyResponse.company.id)
+              updateResponse('will-buy-later', companyResponse.company.id)
+            }
+          />
+          <ListItem.Chevron
+            style={{ marginHorizontal: 7 }}
+            name="laugh"
+            type="font-awesome-5"
+            size={companyResponse.response === 'will-buy' ? 34 : 22}
+            color={theme.dark.hex}
+            onPress={() =>
+              updateResponse('will-buy', companyResponse.company.id)
             }
           />
         </Fragment>

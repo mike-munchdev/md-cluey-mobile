@@ -12,10 +12,6 @@ schema
   .has()
   .uppercase() // Must have uppercase letters
   .has()
-  .lowercase() // Must have lowercase letters
-  .has()
-  .digits(2) // Must have at least 2 digits
-  .has()
   .not()
   .spaces() // Should not have spaces
   .is()
@@ -26,8 +22,6 @@ export const passwordRequirments = [
   'At least 8 characters',
   'No more than 20 characters',
   'At least 1 uppercase letter',
-  'At least 1 lowercase letter',
-  'At least 2 lowercase letter',
   'Contain no spaces',
 ];
 export default schema;

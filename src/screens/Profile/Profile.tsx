@@ -1,6 +1,6 @@
 import React, { FC, useState, useContext, Fragment } from 'react';
 import { View, TouchableOpacity, ScrollView, Text } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { FontAwesome5 } from '@expo/vector-icons';
 
 import * as EmailValidator from 'email-validator';
@@ -18,36 +18,56 @@ import {
   EditStringValueModal,
 } from '../../components/Modals';
 import { useMutation } from '@apollo/react-hooks';
+
 import {
   updateUserCompleted,
   updateUserError,
   updateUserPasswordCompleted,
   updateUserPasswordError,
+  updateUserPasswordInternalCompleted,
+  updateUserPasswordInternalError,
   UPDATE_USER,
   UPDATE_USER_PASSWORD,
 } from '../../graphql/queries/user/user';
 import { AppContext, AuthContext } from '../../config/context';
 import { passwordRequirments } from '../../validation/passwordSchema';
 import moment from 'moment';
-import { genderOptions, stateOptions } from '../../utils/optionLists';
-import colors from '../../constants/colors';
+import {
+  genderOptions,
+  getCityOptionsFromStateName,
+  stateOptions,
+} from '../../utils/optionLists';
 import { StandardContainer } from '../../components/Containers';
 
 export interface IOptionsProps {
   name: string;
   value: string;
 }
-export interface IFieldProps {
+export interface IStringFieldProps {
   fieldLabel: string;
   fieldName: string;
-  fieldValue: string | Date | undefined;
+  fieldValue: string | undefined;
   secureTextEntry: boolean;
   isValid: (value: string) => boolean;
   captionText?: string[];
   options: IOptionsProps[] | undefined;
   placeholder: string;
+  emptyText?: string;
 }
-const initialFieldProps = {
+
+export interface IDateFieldProps {
+  fieldLabel: string;
+  fieldName: string;
+  fieldValue: Date | undefined | null;
+  secureTextEntry: boolean;
+  isValid: (value: Date | undefined | null) => boolean;
+  captionText?: string[];
+  options: IOptionsProps[] | undefined;
+  placeholder: string;
+  emptyText?: string;
+}
+
+const initialStringFieldProps = {
   fieldLabel: '',
   fieldName: '',
   fieldValue: '',
@@ -57,7 +77,21 @@ const initialFieldProps = {
   },
   captionText: [],
   placeholder: '',
+  emptyText: '',
+  options: [],
+};
 
+const initialDateFieldProps = {
+  fieldLabel: '',
+  fieldName: '',
+  fieldValue: null,
+  secureTextEntry: false,
+  isValid: () => {
+    return false;
+  },
+  captionText: [],
+  placeholder: '',
+  emptyText: '',
   options: [],
 };
 
@@ -68,7 +102,12 @@ const Profile: FC = () => {
   const [isStringDialogVisible, setIsStringDialogVisible] = useState(false);
   const [isOptionsDialogVisible, setIsOptionsDialogVisible] = useState(false);
   const [isDateDialogVisible, setIsDateDialogVisible] = useState(false);
-  const [fieldProps, setFieldProps] = useState<IFieldProps>(initialFieldProps);
+  const [stringFieldProps, setStringFieldProps] = useState<IStringFieldProps>(
+    initialStringFieldProps
+  );
+  const [dateFieldProps, setDateFieldProps] = useState<IDateFieldProps>(
+    initialDateFieldProps
+  );
 
   const resetDialog = () => {
     setIsStringDialogVisible(false);
@@ -83,14 +122,21 @@ const Profile: FC = () => {
   });
 
   const [updateUserPassword] = useMutation(UPDATE_USER_PASSWORD, {
-    onError: updateUserPasswordError(setIsStringDialogVisible),
-    onCompleted: updateUserPasswordCompleted(setIsStringDialogVisible, setUser),
+    onError: updateUserPasswordInternalError(resetDialog),
+    onCompleted: updateUserPasswordInternalCompleted(resetDialog, setUser),
   });
 
-  const updateValue = (updatedValue: string) => {
+  const updateDateValue = (updatedValue: Date | undefined) => {
+    updateValue(updatedValue);
+  };
+  const updateStringValue = (updatedValue: String) => {
+    updateValue(updatedValue);
+  };
+
+  const updateValue = (updatedValue: String | Date | null | undefined) => {
     (async () => {
       setIsSaving(true);
-      if (fieldProps.fieldName === 'password') {
+      if (stringFieldProps.fieldName === 'password') {
         await updateUserPassword({
           variables: {
             input: {
@@ -100,16 +146,25 @@ const Profile: FC = () => {
           },
         });
       } else {
+        let updateObject = {
+          [stringFieldProps.fieldName ||
+          dateFieldProps.fieldName]: updatedValue,
+        };
+
+        if (stringFieldProps.fieldName === 'state') {
+          if (updatedValue !== user?.state)
+            updateObject = { ...updateObject, city: null };
+        }
         await updateUser({
           variables: {
             input: {
               userId: user?.id,
-              [fieldProps.fieldName]: updatedValue,
+              ...updateObject,
             },
           },
         });
       }
-      setFieldProps(initialFieldProps);
+      setStringFieldProps(initialStringFieldProps);
     })();
   };
 
@@ -141,7 +196,7 @@ const Profile: FC = () => {
               }}
               bottomDivider
               onPress={() => {
-                setFieldProps({
+                setStringFieldProps({
                   fieldName: 'firstName',
                   fieldLabel: 'First Name',
                   fieldValue: user?.firstName || '',
@@ -169,7 +224,7 @@ const Profile: FC = () => {
               }}
               bottomDivider
               onPress={() => {
-                setFieldProps({
+                setStringFieldProps({
                   fieldName: 'lastName',
                   fieldLabel: 'Last Name',
                   fieldValue: user ? user.lastName : '',
@@ -201,7 +256,7 @@ const Profile: FC = () => {
                   }}
                   bottomDivider
                   onPress={() => {
-                    setFieldProps({
+                    setStringFieldProps({
                       fieldName: 'email',
                       fieldLabel: 'E-mail',
                       fieldValue: user ? user.email : '',
@@ -226,14 +281,41 @@ const Profile: FC = () => {
                   </ListItem.Content>
                   <ListItem.Chevron />
                 </ListItem>
-
                 <ListItem
                   style={{
                     marginHorizontal: 10,
                   }}
                   bottomDivider
                   onPress={() => {
-                    setFieldProps({
+                    setStringFieldProps({
+                      fieldName: 'username',
+                      fieldLabel: 'Username',
+                      fieldValue: user ? user.username : '',
+                      secureTextEntry: false,
+                      isValid: (value: string) => {
+                        return value ? value.length > 0 : false;
+                      },
+                      captionText: [],
+                      placeholder: 'Username',
+                      options: [],
+                    });
+
+                    setIsStringDialogVisible(true);
+                  }}
+                >
+                  <ListItem.Content>
+                    <ListItem.Title>{user?.username}</ListItem.Title>
+                    <ListItem.Subtitle>Username</ListItem.Subtitle>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+                <ListItem
+                  style={{
+                    marginHorizontal: 10,
+                  }}
+                  bottomDivider
+                  onPress={() => {
+                    setStringFieldProps({
                       fieldName: 'password',
                       fieldLabel: 'Password',
                       fieldValue: '************',
@@ -265,41 +347,14 @@ const Profile: FC = () => {
             >
               Cluey Consumer profile
             </List.Subheader>
-            <ListItem
-              style={{
-                marginHorizontal: 10,
-              }}
-              bottomDivider
-              onPress={() => {
-                setFieldProps({
-                  fieldName: 'username',
-                  fieldLabel: 'Username',
-                  fieldValue: user ? user.username : '',
-                  secureTextEntry: false,
-                  isValid: (value: string) => {
-                    return value ? value.length > 0 : false;
-                  },
-                  captionText: [],
-                  placeholder: 'Username',
-                  options: [],
-                });
 
-                setIsStringDialogVisible(true);
-              }}
-            >
-              <ListItem.Content>
-                <ListItem.Title>{user?.username}</ListItem.Title>
-                <ListItem.Subtitle>Username</ListItem.Subtitle>
-              </ListItem.Content>
-              <ListItem.Chevron />
-            </ListItem>
             <ListItem
               style={{
                 marginHorizontal: 10,
               }}
               bottomDivider
               onPress={() => {
-                setFieldProps({
+                setDateFieldProps({
                   fieldName: 'dob',
                   fieldLabel: 'Age',
                   fieldValue: user?.dob,
@@ -330,7 +385,7 @@ const Profile: FC = () => {
               }}
               bottomDivider
               onPress={() => {
-                setFieldProps({
+                setStringFieldProps({
                   fieldName: 'gender',
                   fieldLabel: 'Gender',
                   fieldValue: user ? user.gender : '',
@@ -360,7 +415,7 @@ const Profile: FC = () => {
               }}
               bottomDivider
               onPress={() => {
-                setFieldProps({
+                setStringFieldProps({
                   fieldName: 'city',
                   fieldLabel: 'City',
                   fieldValue: user ? user.city : '',
@@ -370,11 +425,11 @@ const Profile: FC = () => {
                   },
                   captionText: [],
                   placeholder: 'City',
-
-                  options: [],
+                  emptyText: 'Must Select State First',
+                  options: getCityOptionsFromStateName(user?.state),
                 });
 
-                setIsStringDialogVisible(true);
+                setIsOptionsDialogVisible(true);
               }}
             >
               <ListItem.Content>
@@ -389,7 +444,7 @@ const Profile: FC = () => {
               }}
               bottomDivider
               onPress={() => {
-                setFieldProps({
+                setStringFieldProps({
                   fieldName: 'state',
                   fieldLabel: 'State',
                   fieldValue: user ? user.state : '',
@@ -413,8 +468,6 @@ const Profile: FC = () => {
               </ListItem.Content>
               <ListItem.Chevron />
             </ListItem>
-          </List.Section>
-          <List.Section>
             <ListItem
               containerStyle={{
                 backgroundColor: theme.buttonTransparentBackground,
@@ -427,15 +480,14 @@ const Profile: FC = () => {
                   flex: 1,
                   alignItems: 'flex-start',
                   justifyContent: 'flex-start',
-                  fontWeight: 'bold',
-                  marginBottom: 10,
+                  lineHeight: 14,
                   color: theme.dark.hex,
-                  fontSize: 16,
+                  fontSize: 12,
                 }}
               >
-                Why am I being asked for this information?
-              </Paragraph>
-              <Paragraph style={{ color: theme.dark.hex }}>
+                <Text style={{ fontWeight: 'bold' }}>
+                  Why am I being asked for this information?{' '}
+                </Text>
                 When Cluey users choose to make their likes and dislikes public
                 to companies, Cluey uses the information provided in this
                 section (age, gender, and region) to send on your behalf to
@@ -443,7 +495,7 @@ const Profile: FC = () => {
                 the likes and dislikes data. This allows your message to
                 companies and the data they receive to be more meaningful. We
                 will never share any account information such as usernames or
-                emails to companies or any third parties.”
+                emails to companies or any third parties.
               </Paragraph>
             </ListItem>
           </List.Section>
@@ -473,52 +525,57 @@ const Profile: FC = () => {
       <EditDateValueModal
         isVisible={isDateDialogVisible}
         isSaving={isSaving}
-        isValid={fieldProps.isValid}
-        success={updateValue}
+        isValid={dateFieldProps.isValid}
+        success={updateDateValue}
         cancel={() => {
-          setFieldProps(initialFieldProps);
+          setStringFieldProps(initialDateFieldProps);
           setIsDateDialogVisible(false);
         }}
-        value={fieldProps.fieldValue}
-        title={fieldProps.fieldLabel}
-        secure={fieldProps.secureTextEntry}
-        captionText={fieldProps.captionText}
-        placeholder={fieldProps.placeholder}
+        value={dateFieldProps.fieldValue}
+        title={dateFieldProps.fieldLabel}
+        secure={dateFieldProps.secureTextEntry}
+        captionText={dateFieldProps.captionText}
+        placeholder={dateFieldProps.placeholder}
       />
       <EditStringValueModal
         isVisible={isStringDialogVisible}
         isSaving={isSaving}
-        isValid={fieldProps.isValid}
-        success={updateValue}
+        isValid={stringFieldProps.isValid}
+        success={updateStringValue}
         cancel={() => {
-          setFieldProps(initialFieldProps);
+          setStringFieldProps(initialStringFieldProps);
           setIsStringDialogVisible(false);
         }}
         value={
-          fieldProps.fieldValue ? String(fieldProps.fieldValue) : undefined
+          stringFieldProps.fieldValue
+            ? String(stringFieldProps.fieldValue)
+            : undefined
         }
-        title={fieldProps.fieldLabel}
-        secure={fieldProps.secureTextEntry}
-        captionText={fieldProps.captionText}
-        placeholder={fieldProps.placeholder}
+        title={stringFieldProps.fieldLabel}
+        secure={stringFieldProps.secureTextEntry}
+        captionText={stringFieldProps.captionText}
+        placeholder={stringFieldProps.placeholder}
       />
       <EditOptionsValueModal
         isVisible={isOptionsDialogVisible}
         isSaving={isSaving}
-        isValid={fieldProps.isValid}
-        success={updateValue}
+        isValid={stringFieldProps.isValid}
+        success={updateStringValue}
         cancel={() => {
-          setFieldProps(initialFieldProps);
+          setStringFieldProps(initialStringFieldProps);
           setIsOptionsDialogVisible(false);
         }}
         value={
-          fieldProps.fieldValue ? String(fieldProps.fieldValue) : undefined
+          stringFieldProps.fieldValue
+            ? String(stringFieldProps.fieldValue)
+            : undefined
         }
-        title={fieldProps.fieldLabel}
-        secure={fieldProps.secureTextEntry}
-        captionText={fieldProps.captionText}
-        options={fieldProps.options}
-        placeholder={fieldProps.placeholder}
+        title={stringFieldProps.fieldLabel}
+        secure={stringFieldProps.secureTextEntry}
+        captionText={stringFieldProps.captionText}
+        options={stringFieldProps.options}
+        placeholder={stringFieldProps.placeholder}
+        emptyText={stringFieldProps.emptyText}
       />
     </StandardContainer>
   );

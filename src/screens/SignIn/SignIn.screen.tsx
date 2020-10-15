@@ -1,4 +1,4 @@
-import React, { useContext, FC, useState, useEffect } from 'react';
+import React, { useContext, FC, useState, useEffect, Fragment } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 import * as Animatable from 'react-native-animatable';
@@ -16,7 +16,7 @@ import {
 } from '../../graphql/queries/token/tokens';
 import styles from './styles';
 
-import { signinSchema } from '../../validation/signin';
+import signinSchema from '../../validation/signin';
 
 import AnimatableTextInput from '../../components/TextInput/AnimatableTextInput';
 import { AuthContext } from '../../config/context';
@@ -31,13 +31,16 @@ import {
   facebookAuthentication,
   googleAuthentication,
 } from '../../utils/socialAuth';
-import { StandardContainer } from '../../components/Containers';
+import {
+  KeyboardAvoidingContainer,
+  StandardContainer,
+} from '../../components/Containers';
 import Bugsnag from '@bugsnag/expo';
+import { DismissKeyboard } from '../../components/TextInput';
 
 const SignIn: FC = () => {
   const [signInLoading, setSignInLoading] = useState(false);
   const { signIn } = useContext(AuthContext);
-  const [httpLink] = useServerInfo();
   const navigation = useNavigation();
 
   const [getUserToken] = useLazyQuery(GET_USER_TOKEN, {
@@ -46,7 +49,7 @@ const SignIn: FC = () => {
     onCompleted: getUserTokenCompleted(
       signIn,
       navigation,
-      'Home',
+      'App',
       setSignInLoading
     ),
   });
@@ -54,7 +57,7 @@ const SignIn: FC = () => {
   const googleSignin = async () => {
     try {
       const { data, token } = await googleAuthentication();
-      const { id, email, familyName, givenName } = data;
+      const { id, email, family_name, give_name } = data;
       setSignInLoading(true);
       await getUserToken({
         variables: {
@@ -96,7 +99,7 @@ const SignIn: FC = () => {
   };
 
   return (
-    <StandardContainer isLoading={signInLoading}>
+    <KeyboardAvoidingContainer isLoading={signInLoading}>
       <View style={styles.overlayContainer}>
         <View style={styles.top}>
           <View
@@ -123,78 +126,81 @@ const SignIn: FC = () => {
             password: '',
           }}
           validationSchema={signinSchema}
-          onSubmit={(values, { setSubmitting }) => {
+          onSubmit={async (values, { setSubmitting }) => {
             setSignInLoading(true);
             const { email, password } = values;
-            getUserToken({
+            await getUserToken({
               variables: { email, password },
             });
-            setSubmitting(false);
+            // setSubmitting(false);
           }}
         >
           {({ handleSubmit, errors, touched, values, handleChange }) => {
             return (
               <View style={styles.formContainer}>
-                <View style={styles.inputView}>
-                  <AnimatableTextInput
-                    label="E-MAIL"
-                    placeholder="Enter email"
-                    iconName="email"
-                    name="email"
-                    value={values.email}
-                    errors={errors}
-                    touched={touched}
-                    handleChange={handleChange('email')}
-                  />
-                  <AnimatableTextInput
-                    placeholder="Enter password"
-                    iconName="lock"
-                    name="password"
-                    value={values.password}
-                    errors={errors}
-                    touched={touched}
-                    handleChange={handleChange('password')}
-                    secureTextEntry
-                    containerStyles={{ marginTop: 10 }}
-                  />
-                  <ActionButton
-                    handlePress={() => handleSubmit()}
-                    textColor={theme.buttonText}
-                    color={theme.dark.hex}
-                    title="Sign In"
-                    buttonStyles={{ marginTop: 20 }}
-                    isLoading={signInLoading}
-                  />
-                  {/* <TextButton
-                    handlePress={() => navigation.navigate('ForgotPassword')}
-                    title="Forgot your Password?"
-                    textStyles={{
-                      fontSize: 18,
-                      color: theme.text,
-                      fontWeight: 'bold',
-                    }}
-                    buttonStyles={{ marginTop: 15 }}
-                  /> */}
-                  <TextButton
-                    handlePress={() => navigation.navigate('ActivateAccount')}
-                    title="Activate Your Account"
-                    textStyles={{
-                      fontSize: 18,
-                      color: theme.dark.hex,
-                      fontWeight: 'bold',
-                    }}
-                    buttonStyles={{ marginTop: 15 }}
-                  />
-                </View>
-                <View style={{ height: 20 }}>
-                  <HrText text="Or" />
-                </View>
+                <Fragment>
+                  <View style={styles.inputView}>
+                    <AnimatableTextInput
+                      label="E-MAIL"
+                      placeholder="Enter email"
+                      leftIconName="email"
+                      name="email"
+                      value={values.email}
+                      errors={errors}
+                      touched={touched}
+                      handleChange={handleChange('email')}
+                      autoCompleteType="email"
+                    />
+                    <AnimatableTextInput
+                      placeholder="Enter password"
+                      leftIconName="lock"
+                      name="password"
+                      value={values.password}
+                      errors={errors}
+                      touched={touched}
+                      handleChange={handleChange('password')}
+                      secureTextEntry
+                      containerStyles={{ marginTop: 10 }}
+                      autoCompleteType="password"
+                    />
+                    <ActionButton
+                      handlePress={() => handleSubmit()}
+                      textColor={theme.buttonText}
+                      color={theme.dark.hex}
+                      title="Sign In"
+                      buttonStyles={{ marginTop: 20 }}
+                      isLoading={signInLoading}
+                    />
+                    <TextButton
+                      handlePress={() => navigation.navigate('ResetPassword')}
+                      title="Forgot your Password?"
+                      textStyles={{
+                        fontSize: 18,
+                        color: theme.text,
+                        fontWeight: 'bold',
+                      }}
+                      buttonStyles={{ marginTop: 15 }}
+                    />
+                    <TextButton
+                      handlePress={() => navigation.navigate('ActivateAccount')}
+                      title="Activate Your Account"
+                      textStyles={{
+                        fontSize: 18,
+                        color: theme.dark.hex,
+                        fontWeight: 'bold',
+                      }}
+                      buttonStyles={{ marginTop: 15 }}
+                    />
+                  </View>
+                  <View style={{ height: 20 }}>
+                    <HrText text="Or" />
+                  </View>
+                </Fragment>
+
                 <View style={styles.buttonsView}>
                   <ActionButton
-                    handlePress={() => {
-                      (async () => {
-                        await facebookSignin();
-                      })();
+                    handlePress={async () => {
+                      await facebookSignin();
                     }}
                     buttonStyles={{ marginTop: 10 }}
                     textColor={theme.buttonText}
@@ -204,11 +210,9 @@ const SignIn: FC = () => {
                       <FontAwesome5 name="facebook" size={24} color="white" />
                     }
                   />
-                  <ActionButton
-                    handlePress={() => {
-                      (async () => {
-                        await googleSignin();
-                      })();
+                  {/* <ActionButton
+                    handlePress={async () => {
+                      await googleSignin();
                     }}
                     buttonStyles={{ marginTop: 10 }}
                     textColor={theme.buttonText}
@@ -217,7 +221,7 @@ const SignIn: FC = () => {
                     leftIcon={
                       <FontAwesome5 name="google" size={24} color="white" />
                     }
-                  />
+                  /> */}
                   <ActionButton
                     handlePress={() => navigation.navigate('SignUp')}
                     textColor={theme.buttonText}
@@ -232,7 +236,7 @@ const SignIn: FC = () => {
           }}
         </Formik>
       </View>
-    </StandardContainer>
+    </KeyboardAvoidingContainer>
   );
 };
 export default SignIn;

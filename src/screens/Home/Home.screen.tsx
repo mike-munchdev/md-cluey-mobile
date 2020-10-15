@@ -1,9 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Text, View } from 'react-native';
-import * as Animatable from 'react-native-animatable';
 import { Avatar } from 'react-native-elements';
 import { StandardContainer } from '../../components/Containers';
+import { NavHeader } from '../../components/Headers';
 import NavigationHeader from '../../components/Headers/NavigationHeader';
 import { LogoText } from '../../components/Text';
 import theme from '../../constants/theme';
@@ -15,15 +15,9 @@ const Home = () => {
   return (
     <StandardContainer isLoading={false}>
       <View style={styles.overlayContainer}>
-        <NavigationHeader showMenu />
+        <NavHeader showMenu />
         <View style={styles.linksContainer}>
-          <View
-            style={{
-              height: '50%',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
+          <View style={styles.topViewContainer}>
             <Avatar
               size="xlarge"
               rounded
@@ -36,31 +30,11 @@ const Home = () => {
               overlayContainerStyle={{ backgroundColor: 'white' }}
               activeOpacity={0.7}
             />
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginTop: 5,
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: 'MontserratBold',
-                  fontSize: 24,
-                  color: theme.dark.hex,
-                }}
-              >
-                Search by Name
-              </Text>
+            <View style={styles.buttonTextContainer}>
+              <Text style={styles.buttonText}>Search by Name</Text>
             </View>
           </View>
-          <View
-            style={{
-              height: '50%',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-            }}
-          >
+          <View style={styles.bottomViewContainer}>
             <Avatar
               size="xlarge"
               rounded
@@ -73,29 +47,12 @@ const Home = () => {
               overlayContainerStyle={{ backgroundColor: 'white' }}
               activeOpacity={0.7}
             />
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginTop: 5,
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: 'MontserratBold',
-                  fontSize: 24,
-                  color: theme.dark.hex,
-                }}
-              >
-                Search by Category
-              </Text>
+            <View style={styles.buttonTextContainer}>
+              <Text style={styles.buttonText}>Search by Category</Text>
             </View>
           </View>
-          <View style={styles.top}>
-            <LogoText
-              animation="fadeIn"
-              textStyle={{ color: theme.dark.hex }}
-            />
+          <View style={styles.bottom}>
+            <LogoText animation="fadeIn" textStyle={styles.logoText} />
           </View>
         </View>
       </View>

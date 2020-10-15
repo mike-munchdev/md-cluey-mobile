@@ -4,10 +4,12 @@ import { AlertHelper } from '../../../utils/alert';
 import Bugsnag from '@bugsnag/expo';
 import { IUser } from '../../../interfaces';
 import { companyStructure } from '../company/companies';
+import ERRORS from '../../../constants/errors';
 
 export const responseStructure = `{  
     id
     companyId
+    company ${companyStructure}
     response  
 }`;
 export const userStructure = `{
@@ -22,12 +24,18 @@ export const userStructure = `{
     state
     gender     
     googleId
-    facebookId
-    pushTokens
+    facebookId    
     createdAt
     isProfilePublic
+    mustResetPassword
     isActive
     companyResponses ${responseStructure}
+}`;
+export const publicUserStructure = `{
+  id
+  firstName
+  lastName
+  username
 }`;
 
 export const GET_USER_COMPANY_RESPONSES = gql`
@@ -70,7 +78,7 @@ export const UPDATE_USER_PASSWORD = gql`
   mutation UpdateUserPassword($input: UpdateUserPasswordInput!) {
     updateUserPassword(input: $input) {
       ok
-      message
+      user ${userStructure}
       error {
         message
       }
@@ -143,6 +151,30 @@ export const UPDATE_COMPANY_RESPONSE_FOR_USER = gql`
     updateCompanyResponseForUser(input: $input) {
       ok
       companyResponse ${responseStructure}
+      error {
+        message
+      }
+    }
+  }
+`;
+
+export const GET_PUBLIC_AND_ACTVE_NON_FRIENDS_BY_NAME = gql`
+  query GetPublicAndActiveNonFriendsByName($name: String!, $exact: Boolean) {
+    getPublicAndActiveNonFriendsByName(name: $name, exact: $exact) {
+      ok
+      users ${publicUserStructure}
+      error {        
+        message
+      }
+    }
+  }
+`;
+
+export const RESET_PASSWORD = gql`
+  mutation ResetPassword($email: String!) {
+    resetPassword(email: $email) {
+      ok
+      message
       error {
         message
       }
@@ -274,7 +306,7 @@ export const activateUserAccountError = (setLoading: Function) => (
   e: ApolloError
 ) => {
   setLoading(false);
-  AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
+  AlertHelper.show('error', 'Error', ERRORS.DEFAULT_ERROR_MESSAGE);
   Bugsnag.notify(e);
 };
 
@@ -337,12 +369,21 @@ export const updateUserPasswordError = (setLoading: Function) => (
 
 export const updateUserPasswordCompleted = (
   setLoading: Function,
-  setUser: ((user: IUser) => void) | undefined
+  setUser: ((user: IUser) => void) | undefined,
+  navigation?: any,
+  location?: string | undefined
 ) => async ({ updateUserPassword }) => {
-  const { ok, message, error } = updateUserPassword;
+  const { ok, user, error } = updateUserPassword;
 
   if (ok) {
     setLoading(false);
+    AlertHelper.show('success', 'Reset Password', 'Password Reset');
+    if (setUser) {
+      setUser(user);
+    }
+    if (navigation && location) {
+      navigation.navigate(location);
+    }
   } else {
     setLoading(false);
     AlertHelper.show('error', 'Error', error.message);
@@ -372,6 +413,89 @@ export const getUserCompanyResponsesCompleted = (
     reset();
   } else {
     reset();
+    AlertHelper.show('error', 'Error', error.message);
+  }
+};
+
+export const getPublicAndActiveNonFriendsByNameError = (
+  setUsers: Function,
+  setLoading: Function
+) => (e: ApolloError) => {
+  setLoading(false);
+  setUsers([]);
+  AlertHelper.show('error', 'Error', 'An error occurred. Please try again.');
+};
+
+export const getPublicAndActiveNonFriendsByNameCompleted = (
+  setUsers: Function,
+  setLoading: Function,
+  setCache: Function,
+  cache: any
+) => async ({ getPublicAndActiveNonFriendsByName }) => {
+  const { ok, users, error, searchText } = getPublicAndActiveNonFriendsByName;
+  setLoading(false);
+  if (ok) {
+    if (searchText) setCache({ ...cache, [searchText]: users });
+    setUsers(users);
+  } else {
+    AlertHelper.show('error', 'Error', error.message);
+  }
+};
+
+export const resetPasswordError = (setLoading: Function) => (
+  e: ApolloError
+) => {
+  setLoading(false);
+  AlertHelper.show('error', 'Error', ERRORS.DEFAULT_ERROR_MESSAGE);
+  Bugsnag.notify(e);
+};
+
+export const resetPasswordCompleted = (
+  requestPasswordReset: (message: string, navigation: any) => void,
+  setLoading: Function,
+  navigation: any
+) => async ({ resetPassword }) => {
+  const { ok, message, error } = resetPassword;
+
+  setLoading(false);
+  if (ok) {
+    if (!message) {
+      AlertHelper.show(
+        'error',
+        'Error',
+        'No customer found with the given token.'
+      );
+    } else {
+      await requestPasswordReset(message, navigation);
+    }
+  } else {
+    AlertHelper.show('error', 'Error', error.message);
+  }
+};
+
+export const updateUserPasswordInternalError = (resetDialog: Function) => (
+  e: ApolloError
+) => {
+  resetDialog();
+  AlertHelper.show(
+    'error',
+    'Error',
+    'An error occurred and has been logged. Please try again.'
+  );
+};
+
+export const updateUserPasswordInternalCompleted = (
+  resetDialog: Function,
+  setUser: ((user: IUser) => void) | undefined
+) => async ({ updateUserPassword }) => {
+  const { ok, user, error } = updateUserPassword;
+  resetDialog();
+  if (ok) {
+    AlertHelper.show('success', 'Reset Password', 'Password Reset');
+    if (setUser) {
+      setUser(user);
+    }
+  } else {
     AlertHelper.show('error', 'Error', error.message);
   }
 };

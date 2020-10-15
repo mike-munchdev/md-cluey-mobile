@@ -1,16 +1,15 @@
-import React, { useState, useEffect, Fragment, FC } from 'react';
+import React, { FC } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import {
   Text,
   View,
-  SafeAreaView,
   TouchableOpacity,
   GestureResponderEvent,
   ViewStyle,
 } from 'react-native';
 
 export interface ISidebarMenuItemProps {
-  onPress: (event: GestureResponderEvent) => void;
+  onPress?: (event: GestureResponderEvent) => void;
   iconName?: string;
   iconColor?: string;
   iconSize?: number;

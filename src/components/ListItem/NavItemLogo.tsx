@@ -1,5 +1,4 @@
 import React, { useState, useEffect, FC } from 'react';
-import { Text, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { SvgUri } from 'react-native-svg';
 

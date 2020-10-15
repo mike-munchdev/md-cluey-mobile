@@ -1,20 +1,21 @@
 import React, { FC, useEffect, useState } from 'react';
-import { FlatList, View, Text } from 'react-native';
+import { View } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
-import { FontAwesome5 } from '@expo/vector-icons';
 import { throttle, debounce } from 'throttle-debounce';
 
 import styles from './styles';
 
-import { StandardContainer } from '../../components/Containers';
+import {
+  KeyboardAvoidingContainer,
+  StandardContainer,
+} from '../../components/Containers';
 import NavigationHeader from '../../components/Headers/NavigationHeader';
 import AutoCompleteTextInput, {
   IAutoCompleteItemProps,
 } from '../../components/TextInput/AutoCompleteTextInput';
-import { PageHeaderText } from '../../components/Text';
 import { Formik } from 'formik';
-import { searchSchema } from '../../validation/searchSchema';
+import searchSchema from '../../validation/searchSchema';
 import {
   getCompaniesByNameCompleted,
   getCompaniesByNameError,
@@ -22,6 +23,7 @@ import {
 } from '../../graphql/queries/company/companies';
 import { useLazyQuery } from '@apollo/react-hooks';
 import { sortByFieldName } from '../../utils/sort';
+import { NavHeader } from '../../components/Headers';
 
 const Search: FC = () => {
   const [searchText, setSearchText] = useState('');
@@ -62,6 +64,8 @@ const Search: FC = () => {
         setIsLoading(true);
         autocompleteSearchDebounced(searchText);
       }
+    } else {
+      setCompanies([]);
     }
   }, [searchText]);
 
@@ -76,7 +80,7 @@ const Search: FC = () => {
     ),
   });
 
-  const autocompleteSearch = (query: string) => {
+  const autocompleteSearch = () => {
     getCompanysByName({
       variables: {
         name: searchText,
@@ -89,34 +93,28 @@ const Search: FC = () => {
   const autocompleteSearchThrottled = throttle(500, autocompleteSearch);
 
   return (
-    <StandardContainer isLoading={false}>
+    <KeyboardAvoidingContainer isLoading={false}>
       <View style={styles.overlayContainer}>
-        <NavigationHeader goBack />
+        <NavHeader goBack title="Search By Name" />
         <Formik
           initialValues={{
             searchText: '',
           }}
           validationSchema={searchSchema}
-          onSubmit={async (values) => {
+          onSubmit={async () => {
             // const { search } = values;
             // await userSignup({
             //   variables: { input: { email, password, firstName, lastName } },
             // });
           }}
         >
-          {({
-            errors,
-            touched,
-            values,
-            handleChange,
-            handleSubmit,
-            resetForm,
-          }) => {
+          {({ errors, touched, values, handleChange, resetForm }) => {
             return (
               <AutoCompleteTextInput
+                autoFocus
                 containerStyles={{
                   marginBottom: 20,
-                  marginTop: 10,
+                  // marginTop: 10,
                   marginHorizontal: 40,
                 }}
                 isLoading={isLoading}
@@ -150,7 +148,7 @@ const Search: FC = () => {
           }}
         </Formik>
       </View>
-    </StandardContainer>
+    </KeyboardAvoidingContainer>
   );
 };
 export default Search;
