@@ -11,17 +11,28 @@ export default StyleSheet.create({
     // marginTop: 50,
   },
   barsContainer: {
-    marginLeft: 20,
-
+    height: 60,
+    width: 40,
+    // backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',
   },
   backContainer: {
     height: 60,
-
+    width: 40,
+    // backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  rightIconContainer: {
+    height: 60,
+    width: 40,
+    // backgroundColor: 'red',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+
   container: {
     flex: 1,
     backgroundColor: 'white',
@@ -40,15 +51,15 @@ export default StyleSheet.create({
   leftIcon: {},
   headerLeft: {
     flex: 1,
-
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
   headerRight: {
     flex: 1,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row',
   },
   headerCenter: {
     flex: 4,

@@ -15,10 +15,11 @@ import theme from '../../constants/theme';
 import { PageHeaderText } from '../Text';
 
 export interface INavHeaderProps {
-  title?: string;
+  title?: string | JSX.Element;
   subTitle?: string;
   goBack?: boolean;
   showMenu?: boolean;
+  rightIcon?: Function;
 }
 
 const NavHeader: FC<INavHeaderProps> = ({
@@ -26,22 +27,13 @@ const NavHeader: FC<INavHeaderProps> = ({
   goBack,
   showMenu,
   subTitle,
+  rightIcon,
 }) => {
   const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.header}>
       <View style={styles.headerLeft}>
-        {goBack && (
-          <TouchableOpacity
-            style={styles.backContainer}
-            onPress={() => {
-              navigation.goBack();
-            }}
-          >
-            <FontAwesome5 name="angle-left" size={30} color={theme.dark.hex} />
-          </TouchableOpacity>
-        )}
         {showMenu && (
           <TouchableOpacity
             style={styles.barsContainer}
@@ -52,11 +44,25 @@ const NavHeader: FC<INavHeaderProps> = ({
             <FontAwesome name="bars" size={24} color={theme.dark.hex} />
           </TouchableOpacity>
         )}
+        {goBack && (
+          <TouchableOpacity
+            style={styles.backContainer}
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <FontAwesome5 name="angle-left" size={30} color={theme.dark.hex} />
+          </TouchableOpacity>
+        )}
       </View>
       <View style={styles.headerCenter}>
         {title && <PageHeaderText title={title} subTitle={subTitle} />}
       </View>
-      <View style={styles.headerRight}></View>
+      <View style={[styles.headerRight]}>
+        <View style={styles.rightIconContainer}>
+          {rightIcon && rightIcon()}
+        </View>
+      </View>
     </SafeAreaView>
   );
 };

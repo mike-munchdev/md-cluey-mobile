@@ -28,7 +28,7 @@ const ContributionsProgressBar: FC<IContributionProgrsessBarProps> = ({
         <Tooltip
           width={300}
           height={tooltipHeight || 150}
-          containerStyle={{ backgroundColor: theme.opaqueLight }}
+          containerStyle={{ backgroundColor: theme.white.hex }}
           popover={toolTipPopover}
         >
           <FontAwesome5

@@ -18,7 +18,6 @@ import {
 import { ICompany } from '../../interfaces';
 import { HorizontalRule } from '../../components/HorizontalRule';
 
-import NavigationHeader from '../../components/Headers/NavigationHeader';
 import { ActionsView } from '../../components/Actions';
 import {
   getCompanyByIdCompleted,
