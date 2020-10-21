@@ -158,6 +158,7 @@ const Home = () => {
             <List.Item
               titleStyle={{ color: theme.dark.hex, fontWeight: 'bold' }}
               title="How to use this ap in three simple steps:"
+              titleNumberOfLines={2}
             />
             <List.Item
               titleNumberOfLines={10}
