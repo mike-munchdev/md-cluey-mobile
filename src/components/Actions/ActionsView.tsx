@@ -117,7 +117,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
                       : { fontFamily: 'MontserratMedium' },
                   ]}
                 >
-                  Pleased with purchasing
+                  Happy customer
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -141,7 +141,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
                       : { fontFamily: 'MontserratMedium' },
                   ]}
                 >
-                  Transition to purchasing
+                  Going to start buying
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -165,7 +165,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
                       : { fontFamily: 'MontserratMedium' },
                   ]}
                 >
-                  Transition out of purchasing
+                  Should stop buying
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -187,7 +187,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
                       : { fontFamily: 'MontserratMedium' },
                   ]}
                 >
-                  Stopped purchasing
+                  Lost my business
                 </Text>
               </TouchableOpacity>
             </View>

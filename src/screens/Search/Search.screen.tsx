@@ -1,29 +1,28 @@
 import React, { FC, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 import { throttle, debounce } from 'throttle-debounce';
 
+import { useLazyQuery } from '@apollo/react-hooks';
+import { Formik } from 'formik';
+
 import styles from './styles';
 
-import {
-  KeyboardAvoidingContainer,
-  StandardContainer,
-} from '../../components/Containers';
-import NavigationHeader from '../../components/Headers/NavigationHeader';
+import { KeyboardAvoidingContainer } from '../../components/Containers';
+
 import AutoCompleteTextInput, {
   IAutoCompleteItemProps,
 } from '../../components/TextInput/AutoCompleteTextInput';
-import { Formik } from 'formik';
 import searchSchema from '../../validation/searchSchema';
 import {
   getCompaniesByNameCompleted,
   getCompaniesByNameError,
   GET_COMPANIES_BY_NAME,
 } from '../../graphql/queries/company/companies';
-import { useLazyQuery } from '@apollo/react-hooks';
 import { sortByFieldName } from '../../utils/sort';
 import { NavHeader } from '../../components/Headers';
+import theme from '../../constants/theme';
 
 const Search: FC = () => {
   const [searchText, setSearchText] = useState('');

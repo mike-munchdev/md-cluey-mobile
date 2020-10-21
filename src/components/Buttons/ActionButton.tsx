@@ -6,6 +6,7 @@ import {
   GestureResponderEvent,
   StyleProp,
   ViewStyle,
+  TextStyle,
 } from 'react-native';
 
 import styles from './styles';
@@ -24,6 +25,7 @@ export interface IActionButtonProps {
   isLoading?: boolean;
   disabled?: boolean;
   visible?: boolean;
+  textStyle?: StyleProp<TextStyle>;
 }
 
 const ActionButton: FC<IActionButtonProps> = ({
@@ -38,6 +40,7 @@ const ActionButton: FC<IActionButtonProps> = ({
   isLoading,
   disabled,
   visible,
+  textStyle,
 }) => {
   if (isLoading)
     return (
@@ -76,6 +79,7 @@ const ActionButton: FC<IActionButtonProps> = ({
             {
               color: textColor,
             },
+            textStyle,
           ]}
         >
           {title}
