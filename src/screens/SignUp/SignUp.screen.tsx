@@ -105,9 +105,9 @@ const SignUp: FC = () => {
       await userSignup({
         variables: {
           input: {
-            email,
-            firstName: fullName?.givenName,
-            lastName: fullName?.familyName,
+            email: email || '',
+            firstName: fullName?.givenName || 'Apple',
+            lastName: fullName?.familyName || 'User',
             appleId: user,
             appleAuthToken: authorizationCode,
             appleIdentityToken: identityToken,
