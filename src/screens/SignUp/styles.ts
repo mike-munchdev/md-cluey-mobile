@@ -12,6 +12,7 @@ export default StyleSheet.create({
     height: 80,
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row',
   },
   formContainer: {
     marginHorizontal: 10,

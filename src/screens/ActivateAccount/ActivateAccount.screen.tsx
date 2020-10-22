@@ -11,7 +11,7 @@ import styles from './styles';
 import { AnimatableTextInput } from '../../components/TextInput/';
 import { AuthContext } from '../../config/context';
 import theme from '../../constants/theme';
-import { ActionButton } from '../../components/Buttons';
+import { ActionButton, NavBackButton } from '../../components/Buttons';
 
 import activateAccountSchema from '../../validation/activateAccount';
 import {
@@ -40,6 +40,7 @@ const ActivateAccount: FC = () => {
   return (
     <StandardContainer>
       <View style={styles.overlayContainer}>
+        <NavBackButton />
         <View style={styles.top}>
           <LogoText
             animation="fadeIn"

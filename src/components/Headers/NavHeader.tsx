@@ -13,6 +13,7 @@ import styles from './styles';
 import colors from '../../constants/colors';
 import theme from '../../constants/theme';
 import { PageHeaderText } from '../Text';
+import { NavBackButton } from '../Buttons';
 
 export interface INavHeaderProps {
   title?: string | JSX.Element;
@@ -44,16 +45,7 @@ const NavHeader: FC<INavHeaderProps> = ({
             <FontAwesome name="bars" size={24} color={theme.dark.hex} />
           </TouchableOpacity>
         )}
-        {goBack && (
-          <TouchableOpacity
-            style={styles.backContainer}
-            onPress={() => {
-              navigation.goBack();
-            }}
-          >
-            <FontAwesome5 name="angle-left" size={30} color={theme.dark.hex} />
-          </TouchableOpacity>
-        )}
+        {goBack && <NavBackButton />}
       </View>
       <View style={styles.headerCenter}>
         {title && <PageHeaderText title={title} subTitle={subTitle} />}

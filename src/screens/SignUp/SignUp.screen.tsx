@@ -19,7 +19,7 @@ import {
   USER_SIGNUP,
 } from '../../graphql/queries/user/user';
 import theme from '../../constants/theme';
-import { ActionButton } from '../../components/Buttons';
+import { ActionButton, NavBackButton } from '../../components/Buttons';
 import { HrText, LogoText } from '../../components/Text';
 import { AlertHelper } from '../../utils/alert';
 import {
@@ -138,14 +138,25 @@ const SignUp: FC = () => {
     <KeyboardAvoidingContainer isLoading={isLoading}>
       <View style={styles.overlayContainer}>
         <View style={styles.top}>
-          <LogoText
-            animation="fadeIn"
-            textStyle={{
-              color: theme.dark.hex,
-              marginTop: 5,
+          <NavBackButton />
+          <View
+            style={{
+              flex: 1,
+              marginLeft: -40,
+              alignItems: 'center',
               justifyContent: 'center',
+              // flexDirection: 'row',
             }}
-          />
+          >
+            <LogoText
+              animation="fadeIn"
+              textStyle={{
+                color: theme.dark.hex,
+                marginTop: 5,
+                justifyContent: 'center',
+              }}
+            />
+          </View>
         </View>
         <ScrollView>
           <Formik

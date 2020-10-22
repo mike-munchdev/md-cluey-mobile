@@ -23,4 +23,12 @@ export default StyleSheet.create({
     flex: 4,
   },
   textButtonView: { justifyContent: 'center', alignItems: 'center' },
+  backContainer: {
+    height: 60,
+    width: 40,
+    zIndex: 10,
+    // backgroundColor: 'red',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
