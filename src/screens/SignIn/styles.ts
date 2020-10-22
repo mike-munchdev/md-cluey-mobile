@@ -10,7 +10,7 @@ export default StyleSheet.create({
   },
   top: {
     height: 80,
-
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },

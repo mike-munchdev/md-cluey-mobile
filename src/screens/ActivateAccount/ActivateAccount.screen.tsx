@@ -11,7 +11,7 @@ import styles from './styles';
 import { AnimatableTextInput } from '../../components/TextInput/';
 import { AuthContext } from '../../config/context';
 import theme from '../../constants/theme';
-import { ActionButton } from '../../components/Buttons';
+import { ActionButton, NavBackButton } from '../../components/Buttons';
 
 import activateAccountSchema from '../../validation/activateAccount';
 import {
@@ -24,22 +24,24 @@ import { StandardContainer } from '../../components/Containers';
 
 const ActivateAccount: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { activateAccount } = useContext(AuthContext);
+  const { signIn } = useContext(AuthContext);
   const navigation = useNavigation();
 
   const [activateUserAccount] = useMutation(ACTIVATE_USER_ACCOUNT, {
     fetchPolicy: 'no-cache',
     onError: activateUserAccountError(setIsLoading),
     onCompleted: activateUserAccountCompleted(
-      activateAccount,
-      setIsLoading,
-      navigation
+      signIn,
+      navigation,
+      'App',
+      setIsLoading
     ),
   });
 
   return (
     <StandardContainer>
       <View style={styles.overlayContainer}>
+        <NavBackButton />
         <View style={styles.top}>
           <LogoText
             animation="fadeIn"
@@ -52,14 +54,15 @@ const ActivateAccount: FC = () => {
         <Formik
           initialValues={{
             confirmToken: '',
+            email: '',
           }}
           validationSchema={activateAccountSchema}
           onSubmit={(values, { setSubmitting }) => {
             setIsLoading(true);
-            const { confirmToken } = values;
+            const { email, confirmToken } = values;
 
             activateUserAccount({
-              variables: { confirmToken },
+              variables: { input: { confirmToken, email } },
             });
             setSubmitting(false);
           }}
@@ -68,6 +71,18 @@ const ActivateAccount: FC = () => {
             return (
               <View style={styles.formContainer}>
                 <View style={styles.inputView}>
+                  <AnimatableTextInput
+                    label="E-MAIL"
+                    placeholder="Enter email"
+                    leftIconName="email"
+                    name="email"
+                    value={values.email}
+                    errors={errors}
+                    touched={touched}
+                    handleChange={handleChange('email')}
+                    containerStyles={{ marginTop: 10 }}
+                    autoCompleteType="email"
+                  />
                   <AnimatableTextInput
                     label="Token"
                     placeholder="Enter confirm token"

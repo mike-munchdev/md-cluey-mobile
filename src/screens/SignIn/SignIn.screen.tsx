@@ -1,8 +1,8 @@
-import React, { useContext, FC, useState, Fragment } from 'react';
-import { View } from 'react-native';
+import React, { useContext, FC, useState, Fragment, useEffect } from 'react';
+import { View, Text } from 'react-native';
 
 import * as AppleAuthentication from 'expo-apple-authentication';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useNavigationState } from '@react-navigation/native';
 import { useLazyQuery } from '@apollo/react-hooks';
 
 import { Formik } from 'formik';
@@ -21,7 +21,7 @@ import signinSchema from '../../validation/signin';
 import AnimatableTextInput from '../../components/TextInput/AnimatableTextInput';
 import { AuthContext } from '../../config/context';
 import theme from '../../constants/theme';
-import { ActionButton } from '../../components/Buttons';
+import { ActionButton, NavBackButton } from '../../components/Buttons';
 import TextButton from '../../components/Buttons/TextButton';
 import { HrText, LogoText } from '../../components/Text';
 import { AlertHelper } from '../../utils/alert';
@@ -31,9 +31,12 @@ import {
 } from '../../utils/socialAuth';
 import { KeyboardAvoidingContainer } from '../../components/Containers';
 import { AppleAuthenticationScope } from 'expo-apple-authentication';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const SignIn: FC = () => {
   const [signInLoading, setSignInLoading] = useState(false);
+  const index = useNavigationState((state) => state.index);
+  const [myIndex, setMyIndex] = useState(index);
   const { signIn } = useContext(AuthContext);
   const navigation = useNavigation();
 
@@ -50,7 +53,6 @@ const SignIn: FC = () => {
 
   const appleSignin = async () => {
     try {
-      console.log('appleSignin');
       const response = await AppleAuthentication.signInAsync({
         requestedScopes: [
           AppleAuthenticationScope.FULL_NAME,
@@ -114,12 +116,14 @@ const SignIn: FC = () => {
     <KeyboardAvoidingContainer isLoading={signInLoading}>
       <View style={styles.overlayContainer}>
         <View style={styles.top}>
+          {myIndex > 0 ? <NavBackButton /> : null}
           <View
             style={{
-              width: '100%',
+              flex: 1,
+              marginLeft: myIndex > 0 ? -40 : 0,
               alignItems: 'center',
               justifyContent: 'center',
-              flexDirection: 'row',
+              // flexDirection: 'row',
             }}
           >
             <LogoText

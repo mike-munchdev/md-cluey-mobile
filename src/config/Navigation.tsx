@@ -2,7 +2,6 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
-import { useMutation } from '@apollo/react-hooks';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { AuthContext, AppContext } from './context';
@@ -15,11 +14,6 @@ import { Company } from '../screens/Company';
 
 import { AlertHelper } from '../utils/alert';
 
-import {
-  ADD_PUSH_TOKEN,
-  addPushTokenError,
-  addPushTokenCompleted,
-} from '../graphql/queries/user/user';
 import { ActivateAccount } from '../screens/ActivateAccount';
 import { Sidebar } from '../components/Sidebar';
 import { Profile } from '../screens/Profile';
@@ -186,7 +180,7 @@ export default () => {
         try {
           await AsyncStorage.setItem('token', token);
           await AsyncStorage.setItem('user', JSON.stringify(user));
-
+          await AsyncStorage.setItem('isStarted', '1');
           setUserToken(token);
           setUser(user);
           setIsLoading(false);
@@ -206,11 +200,24 @@ export default () => {
         });
         AlertHelper.show('success', 'Sign Up', message);
       },
-      activateAccount: (message: string, navigation: any) => {
-        AlertHelper.setOnClose(() => {
-          navigation.navigate('SignIn');
-        });
-        AlertHelper.show('success', 'Activation', message);
+      activateAccount: async (
+        token: string,
+        user: IUser,
+        navigation: any,
+        location?: string
+      ) => {
+        await AsyncStorage.setItem('token', token);
+        await AsyncStorage.setItem('user', JSON.stringify(user));
+        await AsyncStorage.setItem('isStarted', '1');
+        setUserToken(token);
+        setUser(user);
+        setIsLoading(false);
+
+        if (user.mustResetPassword) {
+          navigation.navigate('ResetPassword');
+        } else {
+          navigation.navigate(location ? location : 'App');
+        }
       },
       requestPasswordReset: (message: string, navigation: any) => {
         AlertHelper.setOnClose(() => {
@@ -271,8 +278,6 @@ export default () => {
         value={{
           user: user,
           setUser: updateUser,
-          location: location,
-          // setLocationContext: updateLocation,
         }}
       >
         <NavigationContainer>

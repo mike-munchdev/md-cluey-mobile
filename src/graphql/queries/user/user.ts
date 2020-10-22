@@ -135,10 +135,11 @@ export const ADD_PUSH_TOKEN = gql`
 `;
 
 export const ACTIVATE_USER_ACCOUNT = gql`
-  mutation ActivateUserAccount($confirmToken: String!) {
-    activateUserAccount(confirmToken: $confirmToken) {
+  mutation ActivateUserAccount($input: ActivateUserAccountInput!) {
+    activateUserAccount(input: $input) {
       ok
-      message
+      token
+      user ${userStructure}      
       error {
         message
       }
@@ -182,16 +183,18 @@ export const RESET_PASSWORD = gql`
   }
 `;
 
-export const userSignupError = (e: ApolloError) => {
+export const userSignupError = (setLoading: Function) => (e: ApolloError) => {
+  setLoading(false);
   AlertHelper.show('error', 'Error', 'An error occurred. Please try again.');
 };
 
 export const userSignupCompleted = (
   signUp: Function,
-  navigation: any
+  navigation: any,
+  setLoading: Function
 ) => async ({ userSignup }) => {
   const { ok, message, error } = userSignup;
-
+  setLoading(false);
   if (ok) {
     if (!message) {
       AlertHelper.show(
@@ -311,22 +314,28 @@ export const activateUserAccountError = (setLoading: Function) => (
 };
 
 export const activateUserAccountCompleted = (
-  activateAccount: (message: string, navigation: any) => void,
-  setLoading: Function,
-  navigation: any
+  signIn: (
+    token: string,
+    user: any,
+    navigation: any,
+    location?: string
+  ) => void,
+  navigation: any,
+  location: string,
+  setLoading: Function
 ) => async ({ activateUserAccount }) => {
-  const { ok, message, error } = activateUserAccount;
+  const { ok, token, user, error } = activateUserAccount;
 
   setLoading(false);
   if (ok) {
-    if (!message) {
+    if (!token) {
       AlertHelper.show(
         'error',
         'Error',
-        'No customer found with the given token.'
+        'No user found with the given information.'
       );
     } else {
-      await activateAccount(message, navigation);
+      await signIn(token, user, navigation, location);
     }
   } else {
     AlertHelper.show('error', 'Error', error.message);

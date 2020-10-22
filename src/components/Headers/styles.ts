@@ -17,13 +17,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  backContainer: {
-    height: 60,
-    width: 40,
-    // backgroundColor: 'red',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+
   rightIconContainer: {
     height: 60,
     width: 40,

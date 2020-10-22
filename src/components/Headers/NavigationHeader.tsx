@@ -4,6 +4,7 @@ import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
 import theme from '../../constants/theme';
+import { NavBackButton } from '../Buttons';
 
 export interface INavigationHeaderProps {
   goBack?: boolean;
@@ -13,16 +14,7 @@ const NavigationHeader: FC<INavigationHeaderProps> = ({ goBack, showMenu }) => {
   const navigation = useNavigation();
   return (
     <View style={{ flexDirection: 'row' }}>
-      {goBack && (
-        <TouchableOpacity
-          style={styles.backContainer}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <FontAwesome5 name="angle-left" size={30} color={theme.dark.hex} />
-        </TouchableOpacity>
-      )}
+      {goBack && <NavBackButton />}
       {showMenu && (
         <TouchableOpacity
           style={styles.barsContainer}

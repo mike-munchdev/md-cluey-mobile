@@ -7,6 +7,7 @@ import { List } from 'react-native-paper';
 import { ICompany, IPoliticalContribution } from '../../interfaces';
 import theme from '../../constants/theme';
 import { ContributionsProgressBar } from '../ProgresBar';
+import ContributionTitle from './ContributionTitle';
 export interface IPoliticalScoreCardProps {
   company?: ICompany;
 }
@@ -18,8 +19,11 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
     individualRepublicanPercent,
     setIndividualRepublicanPercent,
   ] = useState(0);
+  const [individualTotal, setIndividualTotal] = useState(0);
+
   const [pacDemocratPercent, setPacDemocratPercent] = useState(0);
   const [pacRepublicanPercent, setPacRepublicanPercent] = useState(0);
+  const [pacTotal, setPacTotal] = useState(0);
 
   const getPoliticalContributionsValue = (
     company: ICompany | undefined,
@@ -48,9 +52,11 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
       const pacsRepubs = getPoliticalContributionsValue(company, 'pacs_repubs');
       const pacsThird = getPoliticalContributionsValue(company, 'pacs_third');
 
+      setIndividualTotal(indivs);
       setIndividualDemocratPercent(Math.round((indivsDems / indivs) * 100));
       setIndividualRepublicanPercent(Math.round((indivsRepubs / indivs) * 100));
 
+      setPacTotal(pacs);
       setPacDemocratPercent(Math.round((pacsDems / pacs) * 100));
       setPacRepublicanPercent(Math.round((pacsRepubs / pacs) * 100));
     }
@@ -72,7 +78,12 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
       >
         <View style={styles.politicalScoreContainer}>
           <ContributionsProgressBar
-            title="Individual Contributions"
+            title={
+              <ContributionTitle
+                title="Individual Contributions"
+                total={individualTotal}
+              />
+            }
             democrat={individualDemocratPercent}
             republican={individualRepublicanPercent}
             toolTipPopover={
@@ -95,7 +106,9 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
         </View>
         <View style={styles.politicalScoreContainer}>
           <ContributionsProgressBar
-            title="PAC Contributions"
+            title={
+              <ContributionTitle title="PAC Contributions" total={pacTotal} />
+            }
             democrat={pacDemocratPercent}
             republican={pacRepublicanPercent}
             toolTipPopover={
