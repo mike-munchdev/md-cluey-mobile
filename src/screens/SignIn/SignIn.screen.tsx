@@ -1,13 +1,13 @@
-import React, { useContext, FC, useState, useEffect, Fragment } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useContext, FC, useState, Fragment } from 'react';
+import { View } from 'react-native';
 
-import * as Animatable from 'react-native-animatable';
-
-import { StackActions, useNavigation } from '@react-navigation/native';
+import * as AppleAuthentication from 'expo-apple-authentication';
+import { useNavigation } from '@react-navigation/native';
 import { useLazyQuery } from '@apollo/react-hooks';
 
 import { Formik } from 'formik';
 import { FontAwesome5 } from '@expo/vector-icons';
+import Bugsnag from '@bugsnag/expo';
 
 import {
   getUserTokenCompleted,
@@ -20,9 +20,7 @@ import signinSchema from '../../validation/signin';
 
 import AnimatableTextInput from '../../components/TextInput/AnimatableTextInput';
 import { AuthContext } from '../../config/context';
-import { useServerInfo } from '../../hooks/serverInfo';
 import theme from '../../constants/theme';
-import SignInContainer from './SignInContainer';
 import { ActionButton } from '../../components/Buttons';
 import TextButton from '../../components/Buttons/TextButton';
 import { HrText, LogoText } from '../../components/Text';
@@ -31,12 +29,8 @@ import {
   facebookAuthentication,
   googleAuthentication,
 } from '../../utils/socialAuth';
-import {
-  KeyboardAvoidingContainer,
-  StandardContainer,
-} from '../../components/Containers';
-import Bugsnag from '@bugsnag/expo';
-import { DismissKeyboard } from '../../components/TextInput';
+import { KeyboardAvoidingContainer } from '../../components/Containers';
+import { AppleAuthenticationScope } from 'expo-apple-authentication';
 
 const SignIn: FC = () => {
   const [signInLoading, setSignInLoading] = useState(false);
@@ -54,32 +48,50 @@ const SignIn: FC = () => {
     ),
   });
 
-  const googleSignin = async () => {
+  const appleSignin = async () => {
     try {
-      const { data, token } = await googleAuthentication();
-      const { id, email, family_name, give_name } = data;
-      setSignInLoading(true);
+      console.log('appleSignin');
+      const response = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthenticationScope.FULL_NAME,
+          AppleAuthenticationScope.EMAIL,
+        ],
+      });
+
+      const { email, authorizationCode, identityToken, user } = response;
+      // signed in
       await getUserToken({
         variables: {
           email,
-          googleId: id,
-          googleAuthToken: token,
+          appleId: user,
+          appleAuthToken: authorizationCode,
+          appleIdentityToken: identityToken,
         },
       });
-    } catch (error) {
-      Bugsnag.notify(error);
-      AlertHelper.show(
-        'error',
-        'Google Login Error',
-        'Error logging into Google'
-      );
+    } catch (e) {
+      if (e.code === 'ERR_CANCELED') {
+        // handle that the user canceled the sign-in flow
+        AlertHelper.show(
+          'info',
+          'Apple Login Cancelled',
+          'Apple login cancelled'
+        );
+      } else {
+        // handle other errors
+        Bugsnag.notify(e);
+        AlertHelper.show(
+          'error',
+          'Apple Login Error',
+          'Error logging into Apple'
+        );
+      }
     }
   };
   const facebookSignin = async () => {
     try {
       const { data, token } = await facebookAuthentication();
 
-      const { id, email, first_name, last_name } = data;
+      const { id, email } = data;
       setSignInLoading(true);
       await getUserToken({
         variables: {
@@ -126,7 +138,7 @@ const SignIn: FC = () => {
             password: '',
           }}
           validationSchema={signinSchema}
-          onSubmit={async (values, { setSubmitting }) => {
+          onSubmit={async (values, {}) => {
             setSignInLoading(true);
             const { email, password } = values;
             await getUserToken({
@@ -209,6 +221,19 @@ const SignIn: FC = () => {
                     leftIcon={
                       <FontAwesome5 name="facebook" size={24} color="white" />
                     }
+                  />
+                  <AppleAuthentication.AppleAuthenticationButton
+                    buttonType={
+                      AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
+                    }
+                    buttonStyle={
+                      AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
+                    }
+                    cornerRadius={5}
+                    style={{ width: '100%', height: 50, marginTop: 10 }}
+                    onPress={async () => {
+                      await appleSignin();
+                    }}
                   />
                   {/* <ActionButton
                     handlePress={async () => {

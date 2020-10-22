@@ -11,8 +11,11 @@ export const GET_USER_TOKEN = gql`
     $facebookAuthToken: String
     $googleId: String
     $googleAuthToken: String
+    $appleId: String
+    $appleAuthToken: String
+    $appleIdentityToken: String
   ) {
-    getUserToken(email: $email, password: $password, facebookId: $facebookId, facebookAuthToken: $facebookAuthToken, googleId: $googleId, googleAuthToken: $googleAuthToken) {
+    getUserToken(email: $email, password: $password, facebookId: $facebookId, facebookAuthToken: $facebookAuthToken, googleId: $googleId, googleAuthToken: $googleAuthToken, appleId: $appleId, appleAuthToken: $appleAuthToken, appleIdentityToken: $appleIdentityToken) {
       ok
       token
       user ${userStructure}      

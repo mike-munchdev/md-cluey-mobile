@@ -3009,6 +3009,11 @@ expo-app-auth@~9.2.0:
   dependencies:
     invariant "^2.2.4"
 
+expo-apple-authentication@~2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/expo-apple-authentication/-/expo-apple-authentication-2.2.1.tgz#4f515183a385bb2681d8f7bf1064251016d05b97"
+  integrity sha512-BD4tKhoUWm99RTbFjf8IZo/CIOKFhjUej54mci1djOao770TVXl4Eq8IYDgwHEqK5v8UAySVwxAzgJBmQl9XIw==
+
 expo-application@~2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/expo-application/-/expo-application-2.2.1.tgz#f14b83ae0b07e4922850f8856a56f141c168d6d0"
