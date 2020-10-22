@@ -2,7 +2,7 @@
   "expo": {
     "name": "Cluey",
     "slug": "cluey-mobile",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "orientation": "portrait",
     "icon": "./assets/Icon-1024.png",
     "facebookScheme": "fb1187672448283641",
@@ -25,7 +25,7 @@
       "bundleIdentifier": "com.clueyconsumer.clueymobile",
       "supportsTablet": true,
       "googleServicesFile": "./assets/GoogleService-Info.plist",
-
+      "usesAppleSignIn": true,
       "config": {
         "googleSignIn": {
           "reservedClientId": "com.googleusercontent.apps.576013538553-pdsto80kets3kd92o2jguikmkvtvnas5"

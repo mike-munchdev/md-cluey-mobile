@@ -1,13 +1,15 @@
 import React, { useContext, FC, useState } from 'react';
 import { Text, View, ScrollView } from 'react-native';
-
-import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
-import { AuthContext } from '../../config/context';
-
+import * as AppleAuthentication from 'expo-apple-authentication';
 import { Formik } from 'formik';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useMutation } from '@apollo/react-hooks';
+import { Overlay, Button } from 'react-native-elements';
+import { TextInput } from 'react-native-paper';
+
+import styles from './styles';
+import { AuthContext } from '../../config/context';
 
 import signupSchema from '../../validation/signup';
 import AnimatableTextInput from '../../components/TextInput/AnimatableTextInput';
@@ -26,8 +28,8 @@ import {
 } from '../../utils/socialAuth';
 import { KeyboardAvoidingContainer } from '../../components/Containers';
 import { passwordRequirments } from '../../validation/passwordSchema';
-import { Overlay, Button } from 'react-native-elements';
-import { TextInput } from 'react-native-paper';
+import { AppleAuthenticationScope } from 'expo-apple-authentication';
+import Bugsnag from '@bugsnag/expo';
 
 const SignUp: FC = () => {
   const { signUp } = useContext(AuthContext);
@@ -80,6 +82,55 @@ const SignUp: FC = () => {
       });
     } catch ({ message }) {
       AlertHelper.show('error', 'Facebook Login Error', message);
+    }
+  };
+
+  const appleSignup = async () => {
+    try {
+      const response = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthenticationScope.FULL_NAME,
+          AppleAuthenticationScope.EMAIL,
+        ],
+      });
+
+      const {
+        email,
+        authorizationCode,
+        identityToken,
+        user,
+        fullName,
+      } = response;
+
+      await userSignup({
+        variables: {
+          input: {
+            email,
+            firstName: fullName?.givenName,
+            lastName: fullName?.familyName,
+            appleId: user,
+            appleAuthToken: authorizationCode,
+            appleIdentityToken: identityToken,
+          },
+        },
+      });
+    } catch (e) {
+      if (e.code === 'ERR_CANCELED') {
+        // handle that the user canceled the sign-in flow
+        AlertHelper.show(
+          'info',
+          'Apple Login Cancelled',
+          'Apple login cancelled'
+        );
+      } else {
+        // handle other errors
+        Bugsnag.notify(e);
+        AlertHelper.show(
+          'error',
+          'Apple Login Error',
+          'Error logging into Apple'
+        );
+      }
     }
   };
 
@@ -200,6 +251,20 @@ const SignUp: FC = () => {
                       leftIcon={
                         <FontAwesome5 name="facebook" size={24} color="white" />
                       }
+                    />
+                    <AppleAuthentication.AppleAuthenticationButton
+                      buttonType={
+                        AppleAuthentication.AppleAuthenticationButtonType
+                          .SIGN_UP
+                      }
+                      buttonStyle={
+                        AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
+                      }
+                      cornerRadius={5}
+                      style={{ width: '100%', height: 50, marginTop: 10 }}
+                      onPress={async () => {
+                        await appleSignup();
+                      }}
                     />
                     {/* <ActionButton
                       handlePress={async () => {
