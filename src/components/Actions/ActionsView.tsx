@@ -86,7 +86,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
           width={300}
           height={150}
           containerStyle={styles.toolTipContainer}
-          backgroundColor={theme.opaque}
+          backgroundColor={theme.white.hex}
           closeOnlyOnBackdropPress={true}
           popover={
             <View

@@ -24,16 +24,17 @@ import { StandardContainer } from '../../components/Containers';
 
 const ActivateAccount: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { activateAccount } = useContext(AuthContext);
+  const { signIn } = useContext(AuthContext);
   const navigation = useNavigation();
 
   const [activateUserAccount] = useMutation(ACTIVATE_USER_ACCOUNT, {
     fetchPolicy: 'no-cache',
     onError: activateUserAccountError(setIsLoading),
     onCompleted: activateUserAccountCompleted(
-      activateAccount,
-      setIsLoading,
-      navigation
+      signIn,
+      navigation,
+      'App',
+      setIsLoading
     ),
   });
 
@@ -53,14 +54,15 @@ const ActivateAccount: FC = () => {
         <Formik
           initialValues={{
             confirmToken: '',
+            email: '',
           }}
           validationSchema={activateAccountSchema}
           onSubmit={(values, { setSubmitting }) => {
             setIsLoading(true);
-            const { confirmToken } = values;
+            const { email, confirmToken } = values;
 
             activateUserAccount({
-              variables: { confirmToken },
+              variables: { input: { confirmToken, email } },
             });
             setSubmitting(false);
           }}
@@ -69,6 +71,18 @@ const ActivateAccount: FC = () => {
             return (
               <View style={styles.formContainer}>
                 <View style={styles.inputView}>
+                  <AnimatableTextInput
+                    label="E-MAIL"
+                    placeholder="Enter email"
+                    leftIconName="email"
+                    name="email"
+                    value={values.email}
+                    errors={errors}
+                    touched={touched}
+                    handleChange={handleChange('email')}
+                    containerStyles={{ marginTop: 10 }}
+                    autoCompleteType="email"
+                  />
                   <AnimatableTextInput
                     label="Token"
                     placeholder="Enter confirm token"

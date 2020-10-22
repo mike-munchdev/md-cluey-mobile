@@ -125,17 +125,24 @@ const Home = () => {
       <Overlay
         isVisible={overlayVisible}
         onBackdropPress={() => setOverlayVisible(false)}
-        overlayStyle={{ width: '90%', height: '80%' }}
+        overlayStyle={{ width: '90%', height: '80%', borderRadius: 10 }}
       >
         <Fragment>
-          <ScrollView>
+          <ScrollView persistentScrollbar={true}>
             <List.Item
               titleNumberOfLines={10}
               titleStyle={{ color: theme.dark.hex }}
-              title="Welcome to Cluey, an app that brings more transparency to the
-            impacts of your consumer purchases. This is an early stage app
-            release. It focuses on political contributions given by the
-            companies that make the products and services you buy every day."
+              title={
+                <Fragment>
+                  <Text style={{ fontWeight: 'bold' }}>Welcome to Cluey</Text>
+                  <Text>
+                    , an app that brings more transparency to the impacts of
+                    your consumer purchases. This is an early stage app release.
+                    It focuses on political contributions given by the companies
+                    that make the products and services you buy every day.
+                  </Text>
+                </Fragment>
+              }
               left={(props) => (
                 <MaterialIcons
                   name="attach-money"
@@ -147,10 +154,7 @@ const Home = () => {
             <List.Item
               titleNumberOfLines={10}
               titleStyle={{ color: theme.dark.hex }}
-              title="Candidates running for office in 2020 have raised more funding
-            than ever before in U.S. history. Corporate donations make up a
-            big part of that. You may not realize it, but you vote with your
-            wallet every time you make a purchase."
+              title="Candidates running for office in 2020 have raised more funding than ever before in U.S. history. Corporate donations make up a big part of that. You may not realize it, but you vote with your wallet every time you make a purchase."
               left={(props) => (
                 <Entypo name="wallet" size={36} color={theme.dark.hex} />
               )}
@@ -163,7 +167,7 @@ const Home = () => {
             <List.Item
               titleNumberOfLines={10}
               titleStyle={{ color: theme.dark.hex }}
-              title="Determine your personal comfort level of funding given to Democrat or Republican candidates."
+              title="Search for brands you buy every day"
               left={(props) => (
                 <MaterialCommunityIcons
                   name="numeric-1-circle"
@@ -175,7 +179,7 @@ const Home = () => {
             <List.Item
               titleNumberOfLines={10}
               titleStyle={{ color: theme.dark.hex }}
-              title="Use this app to search for brands you buy every day."
+              title="Discover which party their corporate dollars are funding"
               left={(props) => (
                 <MaterialCommunityIcons
                   name="numeric-2-circle"
@@ -187,7 +191,7 @@ const Home = () => {
             <List.Item
               titleNumberOfLines={10}
               titleStyle={{ color: theme.dark.hex }}
-              title="Make a decision to continue buying those brands or transition to other brands based on the information you learn on the app."
+              title="Make a decision to continue buying those brands or learn about other brands that better align with your ideals."
               left={(props) => (
                 <MaterialCommunityIcons
                   name="numeric-3-circle"
@@ -197,6 +201,7 @@ const Home = () => {
               )}
             />
           </ScrollView>
+
           <View
             style={{
               alignItems: 'flex-end',
@@ -205,25 +210,25 @@ const Home = () => {
             }}
           >
             <ActionButton
-              title="I want to learn more, take me to Cluey’s website"
+              title="Makes sense, take me to the app"
               handlePress={() => {
                 setOverlayVisible(false);
-                Linking.openURL('https://clueyconsumer.com/about-us-1');
               }}
               buttonStyles={{ marginTop: 15 }}
-              textColor={theme.buttonText}
-              color={theme.dark.hex}
-              textStyle={{ fontFamily: 'Montserrat', fontSize: 16 }}
+              textColor={theme.dark.hex}
+              color={theme.dark.rgba(0.4)}
+              textStyle={{ fontFamily: 'MontserratBold', fontSize: 14 }}
             />
             <ActionButton
-              title="Makes sense, take me back to the app"
+              title="Take me to Cluey's website"
               handlePress={() => {
                 setOverlayVisible(false);
+                Linking.openURL('https://clueyconsumer.com/faqs');
               }}
               buttonStyles={{ marginTop: 15 }}
-              textColor={theme.buttonText}
-              color={theme.dark.hex}
-              textStyle={{ fontFamily: 'Montserrat', fontSize: 16 }}
+              textColor={theme.dark.hex}
+              color={theme.dark.rgba(0.4)}
+              textStyle={{ fontFamily: 'MontserratBold', fontSize: 14 }}
             />
           </View>
         </Fragment>

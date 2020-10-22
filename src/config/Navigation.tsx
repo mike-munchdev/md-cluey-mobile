@@ -200,11 +200,24 @@ export default () => {
         });
         AlertHelper.show('success', 'Sign Up', message);
       },
-      activateAccount: (message: string, navigation: any) => {
-        AlertHelper.setOnClose(() => {
-          navigation.navigate('SignIn');
-        });
-        AlertHelper.show('success', 'Activation', message);
+      activateAccount: async (
+        token: string,
+        user: IUser,
+        navigation: any,
+        location?: string
+      ) => {
+        await AsyncStorage.setItem('token', token);
+        await AsyncStorage.setItem('user', JSON.stringify(user));
+        await AsyncStorage.setItem('isStarted', '1');
+        setUserToken(token);
+        setUser(user);
+        setIsLoading(false);
+
+        if (user.mustResetPassword) {
+          navigation.navigate('ResetPassword');
+        } else {
+          navigation.navigate(location ? location : 'App');
+        }
       },
       requestPasswordReset: (message: string, navigation: any) => {
         AlertHelper.setOnClose(() => {

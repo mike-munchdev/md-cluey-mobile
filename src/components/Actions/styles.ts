@@ -32,5 +32,5 @@ export default StyleSheet.create({
     borderWidth: 2,
   },
   buttonView: { justifyContent: 'center', alignItems: 'center' },
-  toolTipContainer: { backgroundColor: theme.opaque },
+  toolTipContainer: { backgroundColor: theme.white.hex },
 });

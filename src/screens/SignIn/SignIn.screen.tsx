@@ -131,7 +131,6 @@ const SignIn: FC = () => {
               textStyle={{
                 color: theme.dark.hex,
                 marginTop: 5,
-
                 justifyContent: 'center',
               }}
             />

@@ -8,7 +8,7 @@ import { Tooltip } from 'react-native-elements';
 import { Paragraph } from 'react-native-paper';
 
 export interface IContributionProgrsessBarProps {
-  title: string;
+  title: React.ReactNode;
   toolTipPopover: React.ReactElement<{}>;
   democrat: number;
   republican: number;
@@ -24,12 +24,13 @@ const ContributionsProgressBar: FC<IContributionProgrsessBarProps> = ({
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>{title}</Text>
+        {title}
         <Tooltip
           width={300}
           height={tooltipHeight || 150}
           containerStyle={{ backgroundColor: theme.white.hex }}
           popover={toolTipPopover}
+          backgroundColor={theme.white.hex}
         >
           <FontAwesome5
             name="question-circle"

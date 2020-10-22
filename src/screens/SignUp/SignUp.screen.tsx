@@ -34,13 +34,14 @@ import Bugsnag from '@bugsnag/expo';
 const SignUp: FC = () => {
   const { signUp } = useContext(AuthContext);
   const [isLoading] = useState(false);
+  const [signInLoading, setSignInLoading] = useState(false);
   const [passwordSnackVisible, setPasswordSnackVisible] = useState(false);
   const [passwordSecureTextEntry, setPasswordSecureTextEntry] = useState(true);
   const navigation = useNavigation();
 
   const [userSignup] = useMutation(USER_SIGNUP, {
-    onError: userSignupError,
-    onCompleted: userSignupCompleted(signUp, navigation),
+    onError: userSignupError(setSignInLoading),
+    onCompleted: userSignupCompleted(signUp, navigation, setSignInLoading),
   });
 
   const googleSignup = async () => {
@@ -164,13 +165,13 @@ const SignUp: FC = () => {
               email: '',
               firstName: '',
               lastName: '',
-              password: '',
             }}
             validationSchema={signupSchema}
             onSubmit={async (values) => {
-              const { email, password, firstName, lastName } = values;
+              const { email, firstName, lastName } = values;
+              setSignInLoading(true);
               await userSignup({
-                variables: { input: { email, password, firstName, lastName } },
+                variables: { input: { email, firstName, lastName } },
               });
             }}
           >
@@ -213,39 +214,13 @@ const SignUp: FC = () => {
                       containerStyles={{ marginTop: 10 }}
                       autoCompleteType="email"
                     />
-                    <AnimatableTextInput
-                      label="PASSWORD"
-                      placeholder="Enter password"
-                      leftIconName={passwordSecureTextEntry ? 'eye' : 'lock'}
-                      rightIcon={
-                        <TextInput.Icon
-                          onPress={() => {
-                            setPasswordSnackVisible(!passwordSnackVisible);
-                          }}
-                          name="help-circle-outline"
-                          color={theme.dark.hex}
-                          size={20}
-                        />
-                      }
-                      name="password"
-                      value={values.password}
-                      errors={errors}
-                      touched={touched}
-                      handleChange={handleChange('password')}
-                      secureTextEntry={passwordSecureTextEntry}
-                      containerStyles={{ marginTop: 10 }}
-                      handleLeftIconPress={() =>
-                        setPasswordSecureTextEntry(!passwordSecureTextEntry)
-                      }
-                      autoCompleteType="password"
-                    />
-
                     <ActionButton
                       handlePress={() => handleSubmit()}
                       textColor={theme.buttonText}
                       color={theme.dark.hex}
                       title="Sign Up"
                       buttonStyles={{ marginTop: 30 }}
+                      isLoading={signInLoading}
                     />
                   </View>
                   <View style={{ height: 20 }}>
