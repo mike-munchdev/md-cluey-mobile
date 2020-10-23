@@ -116,6 +116,26 @@ const AuthStackScreen = () => (
       component={RequestPasswordReset}
       options={{ headerShown: false }}
     />
+    <AuthStack.Screen
+      name="Categories"
+      component={Categories}
+      options={{ headerShown: false }}
+    />
+    <AuthStack.Screen
+      name="ProductTypes"
+      component={ProductTypes}
+      options={{ headerShown: false }}
+    />
+    <AuthStack.Screen
+      name="Companies"
+      component={Companies}
+      options={{ headerShown: false }}
+    />
+    <AuthStack.Screen
+      name="Company"
+      component={Company}
+      options={{ headerShown: false }}
+    />
   </AuthStack.Navigator>
 );
 
