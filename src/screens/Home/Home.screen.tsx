@@ -27,6 +27,8 @@ import { ActionButton } from '../../components/Buttons';
 import { List, Paragraph } from 'react-native-paper';
 import { AuthContext } from '../../config/context';
 import AsyncStorage from '@react-native-community/async-storage';
+import { ClueyInfoModal } from '../../components/Modals';
+import { ClueyInfoIcon } from '../../components/Icons';
 
 const AnimatedAntDesign = Animatable.createAnimatableComponent(AntDesign);
 const Home = () => {
@@ -64,22 +66,14 @@ const Home = () => {
           }
           showMenu
           rightIcon={() => (
-            <Fragment>
-              <TouchableOpacity
-                onPress={async () => {
-                  setIsFirstLogin(false);
-                  await AsyncStorage.setItem('isFirstLogin', '0');
+            <ClueyInfoIcon
+              onPress={async () => {
+                setIsFirstLogin(false);
+                await AsyncStorage.setItem('isFirstLogin', '0');
 
-                  setOverlayVisible(true);
-                }}
-              >
-                <AntDesign
-                  name="infocirlceo"
-                  size={28}
-                  color={theme.dark.hex}
-                />
-              </TouchableOpacity>
-            </Fragment>
+                setOverlayVisible(true);
+              }}
+            />
           )}
         />
         <View style={styles.linksContainer}>
@@ -122,117 +116,10 @@ const Home = () => {
           </View>
         </View>
       </View>
-      <Overlay
+      <ClueyInfoModal
         isVisible={overlayVisible}
-        onBackdropPress={() => setOverlayVisible(false)}
-        overlayStyle={{ width: '90%', height: '80%', borderRadius: 10 }}
-      >
-        <Fragment>
-          <ScrollView persistentScrollbar={true}>
-            <List.Item
-              titleNumberOfLines={10}
-              titleStyle={{ color: theme.dark.hex }}
-              title={
-                <Fragment>
-                  <Text style={{ fontWeight: 'bold' }}>Welcome to Cluey</Text>
-                  <Text>
-                    , an app that brings more transparency to the impacts of
-                    your consumer purchases. This is an early stage app release.
-                    It focuses on political contributions given by the companies
-                    that make the products and services you buy every day.
-                  </Text>
-                </Fragment>
-              }
-              left={(props) => (
-                <MaterialIcons
-                  name="attach-money"
-                  size={36}
-                  color={theme.dark.hex}
-                />
-              )}
-            />
-            <List.Item
-              titleNumberOfLines={10}
-              titleStyle={{ color: theme.dark.hex }}
-              title="Candidates running for office in 2020 have raised more funding than ever before in U.S. history. Corporate donations make up a big part of that. You may not realize it, but you vote with your wallet every time you make a purchase."
-              left={(props) => (
-                <Entypo name="wallet" size={36} color={theme.dark.hex} />
-              )}
-            />
-            <List.Item
-              titleStyle={{ color: theme.dark.hex, fontWeight: 'bold' }}
-              title="How to use this app in three simple steps:"
-              titleNumberOfLines={2}
-            />
-            <List.Item
-              titleNumberOfLines={10}
-              titleStyle={{ color: theme.dark.hex }}
-              title="Search for brands you buy every day"
-              left={(props) => (
-                <MaterialCommunityIcons
-                  name="numeric-1-circle"
-                  size={36}
-                  color={theme.dark.hex}
-                />
-              )}
-            />
-            <List.Item
-              titleNumberOfLines={10}
-              titleStyle={{ color: theme.dark.hex }}
-              title="Discover which party their corporate dollars are funding"
-              left={(props) => (
-                <MaterialCommunityIcons
-                  name="numeric-2-circle"
-                  size={36}
-                  color={theme.dark.hex}
-                />
-              )}
-            />
-            <List.Item
-              titleNumberOfLines={10}
-              titleStyle={{ color: theme.dark.hex }}
-              title="Make a decision to continue buying those brands or learn about other brands that better align with your ideals."
-              left={(props) => (
-                <MaterialCommunityIcons
-                  name="numeric-3-circle"
-                  size={36}
-                  color={theme.dark.hex}
-                />
-              )}
-            />
-          </ScrollView>
-
-          <View
-            style={{
-              alignItems: 'flex-end',
-              justifyContent: 'flex-end',
-              marginTop: 10,
-            }}
-          >
-            <ActionButton
-              title="Makes sense, take me to the app"
-              handlePress={() => {
-                setOverlayVisible(false);
-              }}
-              buttonStyles={{ marginTop: 15 }}
-              textColor={theme.dark.hex}
-              color={theme.dark.rgba(0.4)}
-              textStyle={{ fontFamily: 'MontserratBold', fontSize: 14 }}
-            />
-            <ActionButton
-              title="Take me to Cluey's website"
-              handlePress={() => {
-                setOverlayVisible(false);
-                Linking.openURL('https://clueyconsumer.com/faqs');
-              }}
-              buttonStyles={{ marginTop: 15 }}
-              textColor={theme.dark.hex}
-              color={theme.dark.rgba(0.4)}
-              textStyle={{ fontFamily: 'MontserratBold', fontSize: 14 }}
-            />
-          </View>
-        </Fragment>
-      </Overlay>
+        setVisible={setOverlayVisible}
+      />
     </StandardContainer>
   );
 };

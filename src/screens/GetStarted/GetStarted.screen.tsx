@@ -50,6 +50,17 @@ const GetStarted = () => {
               Sign In
             </Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Categories')}
+            style={{
+              width: '100%',
+              height: 50,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Text style={styles.skipText}>Skip for now {'>'}</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </ImageBackground>

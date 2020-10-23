@@ -52,4 +52,10 @@ export default StyleSheet.create({
     borderColor: theme.buttonBorder,
     borderWidth: 1,
   },
+  skipText: {
+    fontFamily: 'Montserrat',
+    fontWeight: 'bold',
+    color: theme.charcoal,
+    fontSize: 16,
+  },
 });

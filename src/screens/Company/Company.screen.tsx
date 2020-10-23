@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect, useContext } from 'react';
 import { ScrollView, View, Text } from 'react-native';
 
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Formik } from 'formik';
 
 import { useLazyQuery } from '@apollo/react-hooks';
@@ -29,11 +29,13 @@ import { AppContext } from '../../config/context';
 import { CompanyLogo } from '../../components/Images';
 import { NavHeader } from '../../components/Headers';
 import { ParentCompaniesText } from '../../components/Text';
+import { ActionButton } from '../../components/Buttons';
 
 const Company: FC = () => {
   const { user } = useContext(AppContext);
 
   const route = useRoute();
+  const navigation = useNavigation();
   const [company, setCompany] = useState<ICompany | undefined>();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -101,7 +103,25 @@ const Company: FC = () => {
                 <PlanetScoreCard company={company} />
               </ScrollView>
               <View style={styles.actionButtonContainer}>
-                <ActionsView company={company} />
+                {user ? (
+                  <ActionsView company={company} />
+                ) : (
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginHorizontal: 10,
+                    }}
+                  >
+                    <ActionButton
+                      handlePress={() => navigation.popToTop()}
+                      textColor={theme.buttonText}
+                      color={theme.dark.hex}
+                      title="For full features, sign up or sign in"
+                      buttonStyles={{ marginTop: -100 }}
+                    />
+                  </View>
+                )}
               </View>
             </View>
           </StandardContainer>
