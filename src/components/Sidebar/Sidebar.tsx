@@ -2,7 +2,7 @@ import React, { useState, useContext, Fragment, useEffect } from 'react';
 import { Text, View, SafeAreaView } from 'react-native';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
+import Constants from 'expo-constants';
 import styles from './styles';
 
 import { AppContext } from '../../config/context';
@@ -233,6 +233,9 @@ const Sidebar = () => {
           </View>
         </Fragment>
       </Overlay>
+      <View style={{ justifyContent: 'flex-end', alignItems: 'center' }}>
+        <Text>{`Version: ${Constants.manifest.version}`}</Text>
+      </View>
     </SafeAreaView>
   );
 };
