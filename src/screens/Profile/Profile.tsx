@@ -248,7 +248,7 @@ const Profile: FC = () => {
               <ListItem.Chevron />
             </ListItem>
 
-            {user?.facebookId || user?.googleId ? null : (
+            {user?.facebookId || user?.googleId || user?.appleId ? null : (
               <Fragment>
                 <ListItem
                   style={{

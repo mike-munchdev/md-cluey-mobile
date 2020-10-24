@@ -25,6 +25,7 @@ export const userStructure = `{
     gender     
     googleId
     facebookId    
+    appleId   
     createdAt
     isProfilePublic
     mustResetPassword

@@ -7,6 +7,7 @@ export interface IUser {
   username?: string;
   googleId: string;
   facebookId: string;
+  appleId: string;
   companyResponses: ICompanyReponse[];
   confirmToken: string;
   isProfilePublic: Boolean;
