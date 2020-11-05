@@ -2,13 +2,9 @@ import gql from 'graphql-tag';
 import { ApolloError } from 'apollo-client';
 import { AlertHelper } from '../../../utils/alert';
 import Bugsnag from '@bugsnag/expo';
-
-export const productTypesStructure = `{    
-    id
-    name
-    isActive 
-  }
-`;
+import { errors } from '../../../constants/errors';
+import { productTypesStructure } from '../structures';
+import { getErrorMessage } from '../../../utils/errors';
 
 export const GET_PRODUCT_TYPES_BY_CATEGORY = gql`
   query GetProductTypesByCategory ($id: String!) {
@@ -29,7 +25,7 @@ export const getProductTypesByCategoryError = (
 ) => (e: ApolloError) => {
   setLoading(false);
   setProductTypes([]);
-  AlertHelper.show('error', 'Error', 'An error occurred. Please try again.');
+  AlertHelper.show('error', 'Error', getErrorMessage(e));
 };
 
 export const getProductTypesByCategoryCompleted = (

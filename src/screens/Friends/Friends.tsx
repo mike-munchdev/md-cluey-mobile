@@ -1,8 +1,7 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
-import { FlatList, View, Text } from 'react-native';
+import React, { FC, Fragment, useContext, useEffect, useState } from 'react';
+import { FlatList, View, Text, SectionList } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
-import { FontAwesome5 } from '@expo/vector-icons';
 
 import styles from './styles';
 import theme from '../../constants/theme';
@@ -18,16 +17,16 @@ import {
   getUserFriendsCompleted,
   getUserFriendsError,
   GET_USER_FRIENDS,
-} from '../../graphql/queries/friends/friends';
+} from '../../graphql/queries/friends/';
 import { AppContext } from '../../config/context';
 import { FlatListHeader, NavHeader } from '../../components/Headers';
 import {
   getPublicAndActiveNonFriendsByNameCompleted,
   getPublicAndActiveNonFriendsByNameError,
   GET_PUBLIC_AND_ACTVE_NON_FRIENDS_BY_NAME,
-} from '../../graphql/queries/user/user';
+} from '../../graphql/queries/user/';
 import { throttle, debounce } from 'throttle-debounce';
-import { IFriend } from '../../interfaces';
+import ListEmptyView from '../../components/ListItem/ListEmptyView';
 
 const Friends: FC = () => {
   const [isPublicUsersLoading, setIsPublicUsersLoading] = useState(false);
@@ -35,18 +34,39 @@ const Friends: FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredList, setFilteredList] = useState([]);
   const [friendships, setFriendships] = useState([]);
-  const [publicUsers, setPublicUsers] = useState([]);
-  const [filteredUsersList, setFilteredUsersList] = useState([]);
-  const [autoCompleteCache, setAutoCompleteCache] = useState({});
-  const { user, setUser } = useContext(AppContext);
+  const [data, setData] = useState([
+    { title: 'Friends', data: [] },
+    { title: 'Other Users', data: [] },
+  ]);
 
+  const [autoCompleteCache, setAutoCompleteCache] = useState({});
+  const { state, dispatch } = useContext(AppContext);
+
+  const { friends, publicUsers } = state;
   const navigation = useNavigation();
+
+  useEffect(() => {
+    setData([
+      {
+        title: 'Friends',
+        data: friends || [],
+        renderItem: renderFriendItem,
+        ListEmptyComponent: <ListEmptyView title="No Friends" />,
+      },
+      {
+        title: 'Other Users',
+        data: publicUsers || [],
+        renderItem: renderOtherUserItem,
+        ListEmptyComponent: <ListEmptyView title="No Other Users" />,
+      },
+    ]);
+  }, [friends, publicUsers]);
 
   const [getUserFriends] = useLazyQuery(GET_USER_FRIENDS, {
     fetchPolicy: 'network-only',
     onError: getUserFriendsError(setFriendships, setIsPublicUsersLoading),
     onCompleted: getUserFriendsCompleted(
-      setFriendships,
+      dispatch,
       setFilteredList,
       setIsLoading
     ),
@@ -57,11 +77,11 @@ const Friends: FC = () => {
     {
       fetchPolicy: 'network-only',
       onError: getPublicAndActiveNonFriendsByNameError(
-        setFriendships,
+        dispatch,
         setIsPublicUsersLoading
       ),
       onCompleted: getPublicAndActiveNonFriendsByNameCompleted(
-        setPublicUsers,
+        dispatch,
         setIsPublicUsersLoading,
         setAutoCompleteCache,
         autoCompleteCache
@@ -71,10 +91,11 @@ const Friends: FC = () => {
 
   useEffect(() => {
     (async () => {
-      if (user) {
+      if (state.user) {
+        // console.log('user', state.user.id);
         await getUserFriends({
           variables: {
-            userId: user.id,
+            userId: state.user.id,
           },
         });
       }
@@ -83,7 +104,7 @@ const Friends: FC = () => {
 
   const filterFriends = () => {
     const searchLowercase = searchQuery.toLowerCase();
-    const newList = friendships.filter((f) => {
+    const newList = state.friends.filter((f) => {
       const friend = f.requester.id === user?.id ? f.recipient : f.requester;
       return (
         friend.firstName.toLowerCase().includes(searchLowercase) ||
@@ -101,7 +122,7 @@ const Friends: FC = () => {
     if (searchQuery.length < 5 && searchQuery.length >= 3) {
       const cached = autoCompleteCache[searchQuery];
       if (cached) {
-        setPublicUsers(cached);
+        dispatch({ type: 'UPDATE_PUBLIC_USERS', payload: cached });
         setIsPublicUsersLoading(false);
       } else {
         setIsPublicUsersLoading(true);
@@ -110,14 +131,14 @@ const Friends: FC = () => {
     } else if (searchQuery.length >= 5) {
       const cached = autoCompleteCache[searchQuery];
       if (cached) {
-        setPublicUsers(cached);
+        dispatch({ type: 'UPDATE_PUBLIC_USERS', payload: cached });
         setIsPublicUsersLoading(false);
       } else {
         setIsPublicUsersLoading(true);
         autocompleteSearchDebounced(searchQuery);
       }
     } else {
-      setPublicUsers([]);
+      dispatch({ type: 'UPDATE_PUBLIC_USERS', payload: [] });
     }
   };
 
@@ -137,6 +158,67 @@ const Friends: FC = () => {
     });
   };
 
+  const renderFriendItem = ({ item }) => {
+    const friend =
+      item.requester.id === user?.id ? item.recipient : item.requester;
+
+    return (
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Friend', { friend: friend })}
+      >
+        <ListItem style={{ marginBottom: 5 }}>
+          <Avatar
+            icon={{
+              name: 'user',
+              type: 'font-awesome',
+              size: 20,
+            }}
+            overlayContainerStyle={{
+              backgroundColor: theme.dark.hex,
+            }}
+            size="small"
+            rounded
+          />
+          <ListItem.Content>
+            <ListItem.Title>{`${friend.firstName} ${friend.lastName}`}</ListItem.Title>
+            <ListItem.Subtitle>
+              {friend.username ? `@${friend.username}` : ''}
+            </ListItem.Subtitle>
+          </ListItem.Content>
+        </ListItem>
+      </TouchableOpacity>
+    );
+  };
+
+  const renderOtherUserItem = ({ item }) => {
+    return (
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Friend', { friend: item })}
+      >
+        <ListItem style={{ marginBottom: 5 }}>
+          <Avatar
+            icon={{
+              name: 'user',
+              type: 'font-awesome',
+              size: 20,
+            }}
+            overlayContainerStyle={{
+              backgroundColor: theme.dark.hex,
+            }}
+            size="small"
+            rounded
+          />
+          <ListItem.Content>
+            <ListItem.Title>{`${item.firstName} ${item.lastName}`}</ListItem.Title>
+            <ListItem.Subtitle>
+              {item.username ? `@${item.username}` : ''}
+            </ListItem.Subtitle>
+          </ListItem.Content>
+        </ListItem>
+      </TouchableOpacity>
+    );
+  };
+
   const autocompleteSearchDebounced = debounce(500, autocompleteSearch);
   const autocompleteSearchThrottled = throttle(500, autocompleteSearch);
 
@@ -145,7 +227,7 @@ const Friends: FC = () => {
   return (
     <StandardContainer>
       <View style={styles.overlayContainer}>
-        <NavHeader goBack title="Friends" />
+        <NavHeader showMenu title="Friends" />
 
         <View style={styles.friendsContainer}>
           <Searchbar
@@ -156,95 +238,29 @@ const Friends: FC = () => {
             onChangeText={onChangeSearch}
             value={searchQuery}
           />
-          <View style={{ width: '100%', marginHorizontal: 10, marginTop: 10 }}>
-            <FlatListHeader title="Friends" />
+          <Fragment>
             {isLoading ? (
               <ActivityIndicator color={theme.dark.hex} size="large" />
             ) : (
-              <FlatList
-                data={filteredList}
+              <SectionList
+                style={{ width: '100%', marginHorizontal: 10, marginTop: 10 }}
+                sections={data}
                 keyExtractor={(item, index) => item.id.toString()}
-                renderItem={({ item }) => {
-                  const friend =
-                    item.requester.id === user?.id
-                      ? item.recipient
-                      : item.requester;
-
-                  return (
-                    <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate('Friend', { friend: friend })
-                      }
-                    >
-                      <ListItem style={{ marginBottom: 5 }}>
-                        <Avatar
-                          icon={{
-                            name: 'user',
-                            type: 'font-awesome',
-                            size: 20,
-                          }}
-                          overlayContainerStyle={{
-                            backgroundColor: theme.dark.hex,
-                          }}
-                          size="small"
-                          rounded
-                        />
-                        <ListItem.Content>
-                          <ListItem.Title>{`${friend.firstName} ${friend.lastName}`}</ListItem.Title>
-                          <ListItem.Subtitle>{`@${friend.username}`}</ListItem.Subtitle>
-                        </ListItem.Content>
-                      </ListItem>
-                    </TouchableOpacity>
-                  );
+                renderSectionHeader={({ section: { title } }) => (
+                  <FlatListHeader title={title} />
+                )}
+                renderSectionFooter={({ section }) => {
+                  if (section.data.length === 0) {
+                    return section.ListEmptyComponent;
+                  }
+                  return null;
                 }}
                 ListEmptyComponent={() => {
-                  return <View style={{ alignItems: 'center' }}></View>;
+                  return <ListEmptyView title="No data" />;
                 }}
               />
             )}
-          </View>
-          {searchQuery.length >= 3 ? (
-            <View
-              style={{ width: '100%', marginHorizontal: 10, marginTop: 10 }}
-            >
-              <FlatListHeader title="Other Users" />
-              <FlatList
-                data={publicUsers}
-                keyExtractor={(item, index) => item.id.toString()}
-                renderItem={({ item }) => {
-                  return (
-                    <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate('Friend', { friend: item })
-                      }
-                    >
-                      <ListItem style={{ marginBottom: 5 }}>
-                        <Avatar
-                          icon={{
-                            name: 'user',
-                            type: 'font-awesome',
-                            size: 20,
-                          }}
-                          overlayContainerStyle={{
-                            backgroundColor: theme.dark.hex,
-                          }}
-                          size="small"
-                          rounded
-                        />
-                        <ListItem.Content>
-                          <ListItem.Title>{`${item.firstName} ${item.lastName}`}</ListItem.Title>
-                          <ListItem.Subtitle>{`@${item.username}`}</ListItem.Subtitle>
-                        </ListItem.Content>
-                      </ListItem>
-                    </TouchableOpacity>
-                  );
-                }}
-                ListEmptyComponent={() => {
-                  return <View style={{ alignItems: 'center' }}></View>;
-                }}
-              />
-            </View>
-          ) : null}
+          </Fragment>
         </View>
       </View>
     </StandardContainer>

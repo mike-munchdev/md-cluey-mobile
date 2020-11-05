@@ -17,7 +17,7 @@ import {
   updateUserPasswordCompleted,
   updateUserPasswordError,
   UPDATE_USER_PASSWORD,
-} from '../../graphql/queries/user/user';
+} from '../../graphql/queries/user';
 import { LogoText } from '../../components/Text';
 import { KeyboardAvoidingContainer } from '../../components/Containers';
 
@@ -27,7 +27,7 @@ import { Button, Overlay } from 'react-native-elements';
 import { passwordRequirments } from '../../validation/passwordSchema';
 
 const RequestPasswordReset: FC = () => {
-  const { user, setUser } = useContext(AppContext);
+  const { state, dispatch } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
   const { updatePasswordReset } = useContext(AuthContext);
   const [passwordSnackVisible, setPasswordSnackVisible] = useState(false);
@@ -39,7 +39,7 @@ const RequestPasswordReset: FC = () => {
     onError: updateUserPasswordError(setIsLoading),
     onCompleted: updateUserPasswordCompleted(
       setIsLoading,
-      setUser,
+      dispatch,
       navigation,
       'Drawer'
     ),
@@ -68,7 +68,7 @@ const RequestPasswordReset: FC = () => {
             await updateUserPassword({
               variables: {
                 input: {
-                  userId: user?.id,
+                  userId: state.user?.id,
                   password,
                   isReset: true,
                 },

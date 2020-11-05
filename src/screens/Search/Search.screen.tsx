@@ -19,7 +19,7 @@ import {
   getCompaniesByNameCompleted,
   getCompaniesByNameError,
   GET_COMPANIES_BY_NAME,
-} from '../../graphql/queries/company/companies';
+} from '../../graphql/queries/company';
 import { sortByFieldName } from '../../utils/sort';
 import { NavHeader } from '../../components/Headers';
 import theme from '../../constants/theme';

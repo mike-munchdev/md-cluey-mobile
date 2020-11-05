@@ -4,6 +4,7 @@ import { ActivityIndicator } from 'react-native-paper';
 import theme from '../../constants/theme';
 import { IProductType } from '../../interfaces';
 import { NavListItem } from '../ListItem';
+import ListEmptyView from '../ListItem/ListEmptyView';
 
 import styles from './styles';
 
@@ -49,19 +50,7 @@ const ProductTypesList: FC<IProductTypesListProps> = ({ list, loading }) => {
               );
             }}
             ListEmptyComponent={() => {
-              return (
-                <View style={{ alignItems: 'center' }}>
-                  <Text
-                    style={{
-                      fontFamily: 'MontserratMedium',
-                      fontSize: 24,
-                      color: theme.dark.hex,
-                    }}
-                  >
-                    No Subcategories
-                  </Text>
-                </View>
-              );
+              return <ListEmptyView title="No Subcategories" />;
             }}
           />
         </Fragment>

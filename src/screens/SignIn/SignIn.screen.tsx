@@ -13,7 +13,7 @@ import {
   getUserTokenCompleted,
   getUserTokenError,
   GET_USER_TOKEN,
-} from '../../graphql/queries/token/tokens';
+} from '../../graphql/queries/token';
 import styles from './styles';
 
 import signinSchema from '../../validation/signin';
@@ -29,7 +29,10 @@ import {
   facebookAuthentication,
   googleAuthentication,
 } from '../../utils/socialAuth';
-import { KeyboardAvoidingContainer } from '../../components/Containers';
+import {
+  KeyboardAvoidingContainer,
+  StandardContainer,
+} from '../../components/Containers';
 import { AppleAuthenticationScope } from 'expo-apple-authentication';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -61,6 +64,7 @@ const SignIn: FC = () => {
       });
 
       const { email, authorizationCode, identityToken, user } = response;
+
       // signed in
       await getUserToken({
         variables: {
@@ -111,9 +115,30 @@ const SignIn: FC = () => {
       );
     }
   };
+  const googleSignin = async () => {
+    try {
+      const { data, token } = await googleAuthentication();
+      const { id, email, family_name, give_name } = data;
+      setSignInLoading(true);
+      await getUserToken({
+        variables: {
+          email,
+          googleId: id,
+          googleAuthToken: token,
+        },
+      });
+    } catch (error) {
+      Bugsnag.notify(error);
+      AlertHelper.show(
+        'error',
+        'Google Login Error',
+        'Error logging into Google'
+      );
+    }
+  };
 
   return (
-    <KeyboardAvoidingContainer isLoading={signInLoading}>
+    <StandardContainer isLoading={signInLoading}>
       <View style={styles.overlayContainer}>
         <View style={styles.top}>
           {myIndex > 0 ? <NavBackButton /> : null}
@@ -226,6 +251,18 @@ const SignIn: FC = () => {
                       <FontAwesome5 name="facebook" size={24} color="white" />
                     }
                   />
+                  <ActionButton
+                    handlePress={async () => {
+                      await googleSignin();
+                    }}
+                    buttonStyles={{ marginTop: 10 }}
+                    textColor={theme.buttonText}
+                    color={theme.googleBlue}
+                    title="Sign In with Google"
+                    leftIcon={
+                      <FontAwesome5 name="google" size={24} color="white" />
+                    }
+                  />
                   <AppleAuthentication.AppleAuthenticationButton
                     buttonType={
                       AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
@@ -239,18 +276,6 @@ const SignIn: FC = () => {
                       await appleSignin();
                     }}
                   />
-                  {/* <ActionButton
-                    handlePress={async () => {
-                      await googleSignin();
-                    }}
-                    buttonStyles={{ marginTop: 10 }}
-                    textColor={theme.buttonText}
-                    color={theme.googleBlue}
-                    title="Sign In with Google"
-                    leftIcon={
-                      <FontAwesome5 name="google" size={24} color="white" />
-                    }
-                  /> */}
                   <ActionButton
                     handlePress={() => navigation.navigate('SignUp')}
                     textColor={theme.buttonText}
@@ -265,7 +290,7 @@ const SignIn: FC = () => {
           }}
         </Formik>
       </View>
-    </KeyboardAvoidingContainer>
+    </StandardContainer>
   );
 };
 export default SignIn;

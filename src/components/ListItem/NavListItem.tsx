@@ -12,9 +12,9 @@ export interface INavListItemProps {
   params: any;
   title: string;
   subTitle?: string;
-  logoUrl: string;
+  logoUrl?: string;
   showLogo: boolean;
-  rounded: boolean;
+  rounded?: boolean;
 }
 
 const NavListItem: FC<INavListItemProps> = ({
@@ -44,7 +44,9 @@ const NavListItem: FC<INavListItemProps> = ({
         width: '100%',
       }}
     >
-      {showLogo ? <NavItemLogo logoUri={logoUrl} rounded={rounded} /> : null}
+      {showLogo ? (
+        <NavItemLogo logoUri={logoUrl} rounded={rounded || false} />
+      ) : null}
       <ListItem.Content>
         <ListItem.Title
           style={{

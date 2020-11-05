@@ -12,7 +12,7 @@ import {
   updateCompanyResponseForUserError,
   updateCompanyResponseForUserCompleted,
   UPDATE_COMPANY_RESPONSE_FOR_USER,
-} from '../../graphql/queries/user/user';
+} from '../../graphql/queries/user';
 import { AppContext } from '../../config/context';
 import { ICompany, ICompanyReponse } from '../../interfaces';
 import { StackActions, useNavigation } from '@react-navigation/native';
@@ -24,7 +24,7 @@ export interface IActionsViewProps {
 
 const ActionsView: FC<IActionsViewProps> = ({ company }) => {
   const navigation = useNavigation();
-  const { user, setUser } = useContext(AppContext);
+  const { state, dispatch } = useContext(AppContext);
   const [companyResponse, setCompanyResponse] = useState<
     ICompanyReponse | null | undefined
   >(null);
@@ -32,7 +32,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
 
   useEffect(() => {
     if (company) {
-      const response = user?.companyResponses.find(
+      const response = state.companyResponses.find(
         (r) => r.companyId === company.id
       );
 
@@ -43,13 +43,11 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
   useEffect(() => {
     if (companyResponse) {
       const responses = [
-        ...user?.companyResponses.filter((r) => r.id !== companyResponse.id),
+        ...state.companyResponses.filter((r) => r.id !== companyResponse.id),
         companyResponse,
       ];
-      const updatedUser = { ...user };
-      updatedUser.companyResponses = responses;
 
-      setUser(updatedUser);
+      dispatch({ type: 'UPDATE_USER_COMPANY_RESPONSES', payload: responses });
     }
   }, [companyResponse]);
 
@@ -71,7 +69,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
     updateCompanyResponseForUser({
       variables: {
         input: {
-          userId: user?.id,
+          userId: state.user?.id,
           companyId: company?.id,
           response,
         },

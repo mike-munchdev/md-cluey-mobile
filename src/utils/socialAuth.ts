@@ -2,6 +2,7 @@ import Bugsnag from '@bugsnag/expo';
 import Constants from 'expo-constants';
 import * as Facebook from 'expo-facebook';
 import * as Google from 'expo-google-app-auth';
+import { errors } from '../constants/errors';
 import { NODE_ENV } from '../hooks/serverInfo';
 
 export const facebookAuthentication = async () => {
@@ -30,7 +31,7 @@ export const facebookAuthentication = async () => {
       }
     } catch (error) {
       Bugsnag.notify(error);
-      reject(error.message);
+      reject(errors.DEFAULT_ERROR_MESSAGE);
     }
   });
 };

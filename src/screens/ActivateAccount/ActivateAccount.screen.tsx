@@ -18,7 +18,7 @@ import {
   ACTIVATE_USER_ACCOUNT,
   activateUserAccountError,
   activateUserAccountCompleted,
-} from '../../graphql/queries/user/user';
+} from '../../graphql/queries/user';
 import { LogoText } from '../../components/Text';
 import { StandardContainer } from '../../components/Containers';
 

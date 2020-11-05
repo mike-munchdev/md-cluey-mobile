@@ -8,7 +8,7 @@ import {
   getCompaniesByProductTypeCompleted,
   getCompaniesByProductTypeError,
   GET_COMPANIES_BY_PRODUCT_TYPE,
-} from '../../graphql/queries/company/companies';
+} from '../../graphql/queries/company';
 import { useLazyQuery } from '@apollo/react-hooks';
 import { CompaniesList } from '../../components/Lists';
 import { StandardContainer } from '../../components/Containers';

@@ -1,13 +1,15 @@
 import { ApolloClient } from 'apollo-client';
-import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import { split } from 'apollo-link';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 import { setContext } from 'apollo-link-context';
-import { useServerInfo } from '../hooks/serverInfo';
-
+import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-community/async-storage';
+import { onError } from 'apollo-link-error';
+
+import { useServerInfo } from '../hooks/serverInfo';
 
 const [httpLinkUri, wsLinkUri] = useServerInfo();
 
@@ -23,9 +25,9 @@ const wsLink = new WebSocketLink({
     reconnect: true,
     connectionParams: async () => {
       const token = await AsyncStorage.getItem('token');
-
+      const version = Constants.manifest.version;
       return {
-        headers: { 'x-auth': token },
+        headers: { 'x-auth': token, version },
       };
     },
   },
@@ -34,14 +36,16 @@ const wsLink = new WebSocketLink({
 const authLink = setContext(async (_, { headers }) => {
   // return the headers to the context so httpLink can read them
   const token = await AsyncStorage.getItem('token');
-
+  const version = Constants.manifest.version;
   return {
     headers: {
       ...headers,
       'x-auth': token,
+      version,
     },
   };
 });
+
 // using the ability to split links, you can send data to each link
 // depending on what kind of operation is being sent
 const link = split(
@@ -53,6 +57,7 @@ const link = split(
       definition.operation === 'subscription'
     );
   },
+
   wsLink,
   httpLink
 );

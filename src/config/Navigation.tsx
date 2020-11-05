@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useReducer } from 'react';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { AuthContext, AppContext } from './context';
+import { initialState, appReducer } from './store';
 import { Splash } from '../screens/Splash';
 import { SignIn } from '../screens/SignIn';
 import { SignUp } from '../screens/SignUp';
@@ -27,6 +28,8 @@ import { Home } from '../screens/Home';
 import { RequestPasswordReset } from '../screens/RequestPasswordReset';
 import { IUser } from '../interfaces';
 import { ResetPassword } from '../screens/ResetPassword';
+import { errors } from '../constants/errors';
+import { SystemNotifications } from '../screens/SystemNotifications';
 
 const Drawer = createDrawerNavigator();
 const AuthStack = createStackNavigator();
@@ -35,6 +38,7 @@ const ClueyStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
 const FriendsStack = createStackNavigator();
 const MyLikesStack = createStackNavigator();
+const NotificationsStack = createStackNavigator();
 const AppStack = createStackNavigator();
 
 const ProfileStackScreen = () => (
@@ -46,8 +50,19 @@ const ProfileStackScreen = () => (
 const MyLikesStackScreen = () => (
   <MyLikesStack.Navigator screenOptions={{ headerShown: false }}>
     <MyLikesStack.Screen name="MyLikes" component={MyLikes} />
+    <MyLikesStack.Screen name="Company" component={Company} />
   </MyLikesStack.Navigator>
 );
+
+const NotificationsStackScreen = () => (
+  <NotificationsStack.Navigator screenOptions={{ headerShown: false }}>
+    <NotificationsStack.Screen
+      name="SystemNotifications"
+      component={SystemNotifications}
+    />
+  </NotificationsStack.Navigator>
+);
+
 const FriendsStackScreen = () => (
   <FriendsStack.Navigator screenOptions={{ headerShown: false }}>
     <FriendsStack.Screen name="Friends" component={Friends} />
@@ -61,6 +76,10 @@ const DrawerScreen = () => (
     <Drawer.Screen name="Profile" component={ProfileStackScreen} />
     <Drawer.Screen name="Friends" component={FriendsStackScreen} />
     <Drawer.Screen name="MyLikes" component={MyLikesStackScreen} />
+    <Drawer.Screen
+      name="SystemNotifications"
+      component={NotificationsStackScreen}
+    />
   </Drawer.Navigator>
 );
 
@@ -170,14 +189,8 @@ const RootStackScreen = (props: any) => {
 export default () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isRequesting, setIsRequesting] = useState(true);
-  const [userToken, setUserToken] = useState<string | null>(null);
-  const [user, setUser] = useState<IUser | null | undefined>(null);
-  const [location] = useState(null);
 
-  const updateUser = async (user: any) => {
-    setUser(user);
-    await AsyncStorage.setItem('user', JSON.stringify(user));
-  };
+  const [state, dispatch] = useReducer(appReducer, initialState);
 
   const authContext = useMemo(() => {
     return {
@@ -201,8 +214,11 @@ export default () => {
           await AsyncStorage.setItem('token', token);
           await AsyncStorage.setItem('user', JSON.stringify(user));
           await AsyncStorage.setItem('isStarted', '1');
-          setUserToken(token);
-          setUser(user);
+          dispatch({ type: 'UPDATE_USER', payload: user });
+          dispatch({
+            type: 'UPDATE_USER_TOKEN',
+            payload: token,
+          });
           setIsLoading(false);
 
           if (user.mustResetPassword) {
@@ -211,7 +227,7 @@ export default () => {
             navigation.navigate(location ? location : 'App');
           }
         } catch (error) {
-          AlertHelper.show('error', 'Sign In', error.message);
+          AlertHelper.show('error', 'Sign In', errors.DEFAULT_ERROR_MESSAGE);
         }
       },
       signUp: (message: string, navigation: any) => {
@@ -252,11 +268,14 @@ export default () => {
           await AsyncStorage.removeItem('user');
 
           setIsLoading(false);
-          setUserToken(null);
-          setUser(null);
+          dispatch({ type: 'UPDATE_USER', payload: null });
+          dispatch({
+            type: 'UPDATE_USER_TOKEN',
+            payload: null,
+          });
           navigation.dispatch(StackActions.replace('SignIn'));
         } catch (error) {
-          AlertHelper.show('error', 'Sign Out', error.message);
+          AlertHelper.show('error', 'Sign Out', errors.DEFAULT_ERROR_MESSAGE);
         }
       },
       isLoggedIn: async () => {
@@ -272,12 +291,15 @@ export default () => {
       const userJson = await AsyncStorage.getItem('user');
 
       if (token) {
-        setUserToken(token);
+        dispatch({
+          type: 'UPDATE_USER_TOKEN',
+          payload: token,
+        });
       }
       if (userJson) {
         const user = JSON.parse(userJson || '');
 
-        setUser(user);
+        dispatch({ type: 'UPDATE_USER', payload: user });
       }
     })();
   }, []);
@@ -286,7 +308,7 @@ export default () => {
     (async () => {
       setIsRequesting(false);
     })();
-  }, [user]);
+  }, [state.user]);
 
   if (isLoading || isRequesting) {
     return <Splash finishLoading={() => setIsLoading(false)} />;
@@ -294,14 +316,9 @@ export default () => {
 
   return (
     <AuthContext.Provider value={authContext}>
-      <AppContext.Provider
-        value={{
-          user: user,
-          setUser: updateUser,
-        }}
-      >
+      <AppContext.Provider value={{ dispatch, state }}>
         <NavigationContainer>
-          <RootStackScreen userToken={userToken} />
+          <RootStackScreen userToken={state.token} />
         </NavigationContainer>
       </AppContext.Provider>
     </AuthContext.Provider>

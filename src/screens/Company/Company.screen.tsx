@@ -23,7 +23,7 @@ import {
   getCompanyByIdCompleted,
   getCompanyByIdError,
   GET_COMPANY_BY_ID,
-} from '../../graphql/queries/company/companies';
+} from '../../graphql/queries/company';
 import { StandardContainer } from '../../components/Containers';
 import { AppContext } from '../../config/context';
 import { CompanyLogo } from '../../components/Images';
@@ -32,7 +32,7 @@ import { ParentCompaniesText } from '../../components/Text';
 import { ActionButton } from '../../components/Buttons';
 
 const Company: FC = () => {
-  const { user } = useContext(AppContext);
+  const { state, dispatch } = useContext(AppContext);
 
   const route = useRoute();
   const navigation = useNavigation();
@@ -103,7 +103,7 @@ const Company: FC = () => {
                 <PlanetScoreCard company={company} />
               </ScrollView>
               <View style={styles.actionButtonContainer}>
-                {user ? (
+                {state.user ? (
                   <ActionsView company={company} />
                 ) : (
                   <View

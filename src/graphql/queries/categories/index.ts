@@ -2,6 +2,8 @@ import gql from 'graphql-tag';
 import { ApolloError } from 'apollo-client';
 import { AlertHelper } from '../../../utils/alert';
 import Bugsnag from '@bugsnag/expo';
+import { errors } from '../../../constants/errors';
+import { getErrorMessage } from '../../../utils/errors';
 
 export const categoriesStructure = `{    
     id
@@ -29,7 +31,8 @@ export const getCategoriesError = (
 ) => (e: ApolloError) => {
   setLoading(false);
   setCategories([]);
-  AlertHelper.show('error', 'Error', 'An error occurred. Please try again.');
+
+  AlertHelper.show('error', 'Error', getErrorMessage(e));
 };
 
 export const getCategoriesCompleted = (
@@ -42,6 +45,6 @@ export const getCategoriesCompleted = (
   if (ok) {
     setCategories(categories);
   } else {
-    AlertHelper.show('error', 'Error', error.message);
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   }
 };

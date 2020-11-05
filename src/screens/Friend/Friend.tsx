@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { FlatList, View, Text } from 'react-native';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -13,63 +13,140 @@ import { Avatar } from 'react-native-elements';
 
 import { HorizontalRule } from '../../components/HorizontalRule';
 import { StandardContainer } from '../../components/Containers';
-import { IFriend } from '../../interfaces';
+import { IFriend, IUser } from '../../interfaces';
+import {
+  getUserByIdCompleted,
+  getUserByIdError,
+  GET_USER_BY_ID,
+} from '../../graphql/queries/user/';
+import { useLazyQuery, useMutation } from '@apollo/react-hooks';
+import { NavHeader } from '../../components/Headers';
+import { FriendLikesList } from '../../components/Lists';
+import { AppContext } from '../../config/context';
+import {
+  getFriendshipBetweenUsersCompleted,
+  getFriendshipBetweenUsersError,
+  GET_FRIENDSHIP_BETWEEN_USERS,
+  requestFriendshipCompleted,
+  requestFriendshipError,
+  REQUEST_FRIENDSHIP,
+} from '../../graphql/queries/friends/';
 
 const Friend: FC = () => {
-  const [] = useState('');
+  const { state, dispatch } = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState(true);
   const [areWeFriends, setAreWeFriends] = useState(true);
   const [isSwitchOn, setIsSwitchOn] = React.useState(false);
-
+  const [iconName, setIconName] = useState('account-plus-outline');
+  const [buttonText, setButtonText] = useState('Add Friend');
   const navigation = useNavigation();
   const route = useRoute();
-  const [friend] = useState<IFriend | undefined>(
-    route.params.friendId
-      ? friends.find((f) => f.id === route.params.friendId)
-      : null
+  const { friend, user, friends, friendship } = state;
+
+  const [getUserById] = useLazyQuery(GET_USER_BY_ID, {
+    fetchPolicy: 'network-only',
+    onError: getUserByIdError(dispatch, setIsLoading),
+    onCompleted: getUserByIdCompleted(dispatch, setIsLoading),
+  });
+
+  const [requestFriendship] = useMutation(REQUEST_FRIENDSHIP, {
+    onError: requestFriendshipError(dispatch, setIsLoading),
+    onCompleted: requestFriendshipCompleted(dispatch, setIsLoading),
+  });
+
+  const [getFriendshipBetweenUsers] = useLazyQuery(
+    GET_FRIENDSHIP_BETWEEN_USERS,
+    {
+      fetchPolicy: 'network-only',
+      onError: getFriendshipBetweenUsersError(dispatch, setIsLoading),
+      onCompleted: getFriendshipBetweenUsersCompleted(dispatch, setIsLoading),
+    }
   );
-  const toggleFriendship = () => {
-    setAreWeFriends(!areWeFriends);
+  const updateFriendship = async () => {
+    console.log('updateFriendship', areWeFriends);
+    if (!areWeFriends) {
+      // console.log('areWeFriends', areWeFriends);
+      // console.log('user', user);
+      // console.log('friend', friend);
+      await requestFriendship({
+        variables: {
+          input: {
+            requestorId: user?.id,
+            recipientId: friend?.id,
+          },
+        },
+      });
+    }
   };
+
+  useEffect(() => {
+    (async () => {
+      console.log('useEffect', route.params.friend);
+      if (route.params.friend) {
+        await getUserById({ variables: { userId: route.params.friend.id } });
+        await getFriendshipBetweenUsers({
+          variables: { userId1: route.params.friend.id, userId2: user?.id },
+        });
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (friend && user) {
+      console.log('friendship', friendship);
+
+      if (friendship) {
+        switch (friendship.status) {
+          case 'accepted':
+            setIconName('account-check-outline');
+            setButtonText('Friends');
+            setAreWeFriends(true);
+            break;
+          case 'requested':
+            setIconName('account-clock-outline');
+            setButtonText('Requested');
+            setAreWeFriends(true);
+            break;
+          default:
+            setIconName('account-plus-outline');
+            setButtonText('Add Friend');
+            setAreWeFriends(false);
+        }
+      } else {
+        setIconName('account-plus-outline');
+        setButtonText('Add Friend');
+        setAreWeFriends(false);
+      }
+    }
+  }, [friend, friendship]);
 
   return (
     <StandardContainer>
       <View style={styles.overlayContainer}>
-        <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity
-            style={{ marginLeft: 20, marginTop: 20 }}
-            onPress={() => {
-              navigation.goBack();
-            }}
-          >
-            <FontAwesome5 name="angle-left" size={24} color={theme.dark.hex} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ marginLeft: 20, marginTop: 20 }}
-            onPress={() => {
-              navigation.openDrawer();
-            }}
-          >
-            <FontAwesome5 name="bars" size={24} color={theme.dark.hex} />
-          </TouchableOpacity>
-        </View>
+        <NavHeader goBack />
         <View style={styles.friendsContainer}>
           <Avatar
-            size="xlarge"
-            rounded
-            source={{
-              uri: friend.avatar_url,
+            icon={{
+              name: 'user',
+              type: 'font-awesome',
+              size: 36,
             }}
+            overlayContainerStyle={{
+              backgroundColor: theme.dark.hex,
+            }}
+            size="large"
+            rounded
           />
           <View style={{ width: '100%', marginHorizontal: 10, marginTop: 10 }}>
             <View style={{ alignItems: 'center' }}>
               <Text style={{ fontSize: 24, color: theme.dark.hex }}>
-                {friend.name}
+                {friend ? `${friend.firstName} ${friend.lastName}` : ''}
               </Text>
             </View>
             <View style={{ alignItems: 'center' }}>
-              <Text
-                style={{ fontSize: 14, color: theme.dark.rgba(0.6) }}
-              >{`@${friend.userName}`}</Text>
+              <Text style={{ fontSize: 14, color: theme.dark.hex }}>
+                {friend?.username ? `@${friend.username}` : ''}
+              </Text>
             </View>
             <View
               style={{
@@ -89,15 +166,11 @@ const Friend: FC = () => {
                   labelStyle={{ color: theme.text }}
                   color={theme.text}
                   style={{ marginRight: 10, width: 150 }}
-                  icon={
-                    areWeFriends
-                      ? 'account-check-outline'
-                      : 'account-plus-outline'
-                  }
+                  icon={iconName}
                   mode="contained"
-                  onPress={() => toggleFriendship()}
+                  onPress={() => updateFriendship()}
                 >
-                  {areWeFriends ? 'Friends' : 'Add Friend'}
+                  {buttonText}
                 </Button>
               </View>
               <View
@@ -107,14 +180,13 @@ const Friend: FC = () => {
                 }}
               >
                 <Button
-                  contentStyle={{ backgroundColor: theme.dark.hex }}
-                  labelStyle={{ color: theme.text }}
+                  contentStyle={{ backgroundColor: theme.white.hex }}
+                  labelStyle={{ color: theme.dark.hex }}
                   color={theme.text}
                   style={{ marginLeft: 10, width: 150 }}
                   mode="contained"
-                  onPress={() => console.log('friends')}
                 >
-                  {`500 Friends`}
+                  {friend?.friendCount || 0}
                 </Button>
               </View>
             </View>
@@ -125,30 +197,12 @@ const Friend: FC = () => {
                 backgroundColor: theme.dark.rgba(0.4),
               }}
             />
-            <View
-              style={{ width: '100%', marginHorizontal: 10, marginTop: 10 }}
-            >
-              <FlatList
-                data={[]}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => {
-                  return (
-                    <List.Item
-                      a
-                      style={{ backgroundColor: 'white' }}
-                      title={item.title}
-                      description={item.brand ? item.brand.name : ''}
-                      // left={(props) => <List.Icon {...props} icon="folder" />}
-                    />
-                  );
-                }}
-                //   renderItem={({ item }) => (
-                //     <TouchableOpacity onPress={() => handleItemPress(item)}>
-                //       <Text>{item}</Text>
-                //     </TouchableOpacity>
-                //   )}
-              />
-            </View>
+          </View>
+          <View style={styles.infoContainer}>
+            <FriendLikesList
+              list={friend?.companyResponses}
+              loading={isLoading}
+            />
           </View>
         </View>
       </View>

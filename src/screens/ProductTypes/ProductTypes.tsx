@@ -8,7 +8,7 @@ import {
   getProductTypesByCategoryCompleted,
   getProductTypesByCategoryError,
   GET_PRODUCT_TYPES_BY_CATEGORY,
-} from '../../graphql/queries/productTypes/productTypes';
+} from '../../graphql/queries/productTypes';
 import { useLazyQuery } from '@apollo/react-hooks';
 import NavigationHeader from '../../components/Headers/NavigationHeader';
 import { ProductTypesList } from '../../components/Lists';

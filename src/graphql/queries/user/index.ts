@@ -3,41 +3,14 @@ import { ApolloError } from 'apollo-client';
 import { AlertHelper } from '../../../utils/alert';
 import Bugsnag from '@bugsnag/expo';
 import { IUser } from '../../../interfaces';
-import { companyStructure } from '../company/companies';
-import ERRORS from '../../../constants/errors';
+import { errors } from '../../../constants/errors';
 
-export const responseStructure = `{  
-    id
-    companyId
-    company ${companyStructure}
-    response  
-}`;
-export const userStructure = `{
-    id
-    email
-    username
-    firstName
-    middleName
-    lastName   
-    dob
-    city
-    state
-    gender     
-    googleId
-    facebookId    
-    appleId   
-    createdAt
-    isProfilePublic
-    mustResetPassword
-    isActive
-    companyResponses ${responseStructure}
-}`;
-export const publicUserStructure = `{
-  id
-  firstName
-  lastName
-  username
-}`;
+import {
+  publicUserStructure,
+  responseStructure,
+  userStructure,
+} from '../structures';
+import { getErrorMessage } from '../../../utils/errors';
 
 export const GET_USER_COMPANY_RESPONSES = gql`
   query GetUserCompanyResponses($userId: String!) {
@@ -186,7 +159,7 @@ export const RESET_PASSWORD = gql`
 
 export const userSignupError = (setLoading: Function) => (e: ApolloError) => {
   setLoading(false);
-  AlertHelper.show('error', 'Error', 'An error occurred. Please try again.');
+  AlertHelper.show('error', 'Error', getErrorMessage(e));
 };
 
 export const userSignupCompleted = (
@@ -207,7 +180,7 @@ export const userSignupCompleted = (
       await signUp(message, navigation);
     }
   } else {
-    AlertHelper.show('error', 'Error', error.message);
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   }
 };
 
@@ -222,7 +195,7 @@ export const updateUserError = (setLoading: Function) => (e: ApolloError) => {
 
 export const updateUserCompleted = (
   setLoading: Function,
-  setUser: ((user: IUser) => void) | undefined
+  dispatch: React.Dispatch<any>
 ) => async ({ updateUser }) => {
   const { ok, user, error } = updateUser;
 
@@ -231,11 +204,11 @@ export const updateUserCompleted = (
     if (!user) {
       AlertHelper.show('error', 'Error', 'Error retrieving information.');
     } else {
-      setUser(user);
+      dispatch({ type: 'UPDATE_USER', payload: user });
     }
   } else {
     setLoading(false);
-    AlertHelper.show('error', 'Error', error.message);
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   }
 };
 
@@ -262,11 +235,11 @@ export const updateUserSettingsCompleted = (
       AlertHelper.show('error', 'Error', 'Error retrieving information.');
     } else {
       AlertHelper.show('success', 'Success', 'Information saved.');
-      setUser(user);
+      dispatch({ type: 'UPDATE_USER', payload: user });
     }
   } else {
     setLoading(false);
-    AlertHelper.show('error', 'Error', error.message);
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   }
 };
 
@@ -286,7 +259,7 @@ export const addPushTokenError = (
 
 export const addPushTokenCompleted = (
   setLoading: Function,
-  setUser: ((user: IUser) => void) | undefined,
+  dispatch: React.Dispatch<any>,
   setRequesting: Function
 ) => async ({ addPushToken }) => {
   const { ok, user, error } = addPushToken;
@@ -298,11 +271,11 @@ export const addPushTokenCompleted = (
       // AlertHelper.show('error', 'Error', 'Error retrieving information.');
     } else {
       // AlertHelper.show('success', 'Success', 'Information saved.');
-      setUser(user);
+      dispatch({ type: 'UPDATE_USER', payload: user });
     }
   } else {
     setLoading(false);
-    AlertHelper.show('error', 'Error', error.message);
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   }
 };
 
@@ -310,7 +283,7 @@ export const activateUserAccountError = (setLoading: Function) => (
   e: ApolloError
 ) => {
   setLoading(false);
-  AlertHelper.show('error', 'Error', ERRORS.DEFAULT_ERROR_MESSAGE);
+  AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   Bugsnag.notify(e);
 };
 
@@ -339,7 +312,7 @@ export const activateUserAccountCompleted = (
       await signIn(token, user, navigation, location);
     }
   } else {
-    AlertHelper.show('error', 'Error', error.message);
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   }
 };
 
@@ -349,7 +322,7 @@ export const updateCompanyResponseForUserError = (
 ) => (e: ApolloError) => {
   setLoading(false);
   setCompanyResponse(null);
-  AlertHelper.show('error', 'Error', 'An error occurred. Please try again.');
+  AlertHelper.show('error', 'Error', getErrorMessage(e));
 };
 
 export const updateCompanyResponseForUserCompleted = (
@@ -362,7 +335,7 @@ export const updateCompanyResponseForUserCompleted = (
   if (ok) {
     setCompanyResponse(companyResponse);
   } else {
-    AlertHelper.show('error', 'Error', error.message);
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   }
 };
 
@@ -379,7 +352,7 @@ export const updateUserPasswordError = (setLoading: Function) => (
 
 export const updateUserPasswordCompleted = (
   setLoading: Function,
-  setUser: ((user: IUser) => void) | undefined,
+  dispatch: React.Dispatch<any>,
   navigation?: any,
   location?: string | undefined
 ) => async ({ updateUserPassword }) => {
@@ -388,17 +361,18 @@ export const updateUserPasswordCompleted = (
   if (ok) {
     setLoading(false);
     AlertHelper.show('success', 'Reset Password', 'Password Reset');
-    if (setUser) {
-      setUser(user);
+    if (dispatch) {
+      dispatch({ type: 'UPDATE_USER', payload: user });
     }
     if (navigation && location) {
       navigation.navigate(location);
     }
   } else {
     setLoading(false);
-    AlertHelper.show('error', 'Error', error.message);
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   }
 };
+
 export const getUserCompanyResponsesError = (reset: Function) => (
   e: ApolloError
 ) => {
@@ -412,43 +386,49 @@ export const getUserCompanyResponsesError = (reset: Function) => (
 
 export const getUserCompanyResponsesCompleted = (
   reset: Function,
-  setResponses: Function,
+  dispatch: React.Dispatch<any>,
   setFilteredList: Function
 ) => async ({ getUserCompanyResponses }) => {
   const { ok, companyResponses, error } = getUserCompanyResponses;
 
+  // console.log('companyResponses', companyResponses);
   if (ok) {
-    setResponses(companyResponses);
+    dispatch({
+      type: 'UPDATE_USER_COMPANY_RESPONSES',
+      payload: companyResponses,
+    });
+
     setFilteredList(companyResponses);
     reset();
   } else {
     reset();
-    AlertHelper.show('error', 'Error', error.message);
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   }
 };
 
 export const getPublicAndActiveNonFriendsByNameError = (
-  setUsers: Function,
+  dispatch: React.Dispatch<any>,
   setLoading: Function
 ) => (e: ApolloError) => {
   setLoading(false);
-  setUsers([]);
-  AlertHelper.show('error', 'Error', 'An error occurred. Please try again.');
+  dispatch({ type: 'UPDATE_PUBLIC_USERS', payload: [] });
+  AlertHelper.show('error', 'Error', getErrorMessage(e));
 };
 
 export const getPublicAndActiveNonFriendsByNameCompleted = (
-  setUsers: Function,
+  dispatch: React.Dispatch<any>,
   setLoading: Function,
   setCache: Function,
   cache: any
 ) => async ({ getPublicAndActiveNonFriendsByName }) => {
   const { ok, users, error, searchText } = getPublicAndActiveNonFriendsByName;
   setLoading(false);
+
   if (ok) {
     if (searchText) setCache({ ...cache, [searchText]: users });
-    setUsers(users);
+    dispatch({ type: 'UPDATE_PUBLIC_USERS', payload: users });
   } else {
-    AlertHelper.show('error', 'Error', error.message);
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   }
 };
 
@@ -456,7 +436,7 @@ export const resetPasswordError = (setLoading: Function) => (
   e: ApolloError
 ) => {
   setLoading(false);
-  AlertHelper.show('error', 'Error', ERRORS.DEFAULT_ERROR_MESSAGE);
+  AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   Bugsnag.notify(e);
 };
 
@@ -479,7 +459,7 @@ export const resetPasswordCompleted = (
       await requestPasswordReset(message, navigation);
     }
   } else {
-    AlertHelper.show('error', 'Error', error.message);
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   }
 };
 
@@ -496,16 +476,40 @@ export const updateUserPasswordInternalError = (resetDialog: Function) => (
 
 export const updateUserPasswordInternalCompleted = (
   resetDialog: Function,
-  setUser: ((user: IUser) => void) | undefined
+  dispatch: React.Dispatch<any>
 ) => async ({ updateUserPassword }) => {
   const { ok, user, error } = updateUserPassword;
   resetDialog();
   if (ok) {
     AlertHelper.show('success', 'Reset Password', 'Password Reset');
-    if (setUser) {
-      setUser(user);
+    if (dispatch) {
+      dispatch({ type: 'UPDATE_USER', payload: user });
     }
   } else {
-    AlertHelper.show('error', 'Error', error.message);
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
+  }
+};
+
+export const getUserByIdError = (
+  dispatch: React.Dispatch<any>,
+  setLoading: Function
+) => (e: ApolloError) => {
+  setLoading(false);
+  dispatch({ type: 'UPDATE_FRIEND', payload: null });
+
+  AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
+};
+
+export const getUserByIdCompleted = (
+  dispatch: React.Dispatch<any>,
+  setLoading: Function
+) => async ({ getUserById }) => {
+  const { ok, user, error } = getUserById;
+  setLoading(false);
+  if (ok) {
+    // console.log('getUserByIdCompleted: user', user);
+    dispatch({ type: 'UPDATE_FRIEND', payload: user });
+  } else {
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   }
 };

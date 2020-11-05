@@ -17,7 +17,7 @@ import {
   userSignupError,
   userSignupCompleted,
   USER_SIGNUP,
-} from '../../graphql/queries/user/user';
+} from '../../graphql/queries/user';
 import theme from '../../constants/theme';
 import { ActionButton, NavBackButton } from '../../components/Buttons';
 import { HrText, LogoText } from '../../components/Text';
@@ -238,6 +238,18 @@ const SignUp: FC = () => {
                         <FontAwesome5 name="facebook" size={24} color="white" />
                       }
                     />
+                    <ActionButton
+                      handlePress={async () => {
+                        await googleSignup();
+                      }}
+                      buttonStyles={{ marginTop: 10 }}
+                      textColor={theme.buttonText}
+                      color={theme.googleBlue}
+                      title="Sign Up with Google"
+                      leftIcon={
+                        <FontAwesome5 name="google" size={24} color="white" />
+                      }
+                    />
                     <AppleAuthentication.AppleAuthenticationButton
                       buttonType={
                         AppleAuthentication.AppleAuthenticationButtonType
@@ -252,18 +264,6 @@ const SignUp: FC = () => {
                         await appleSignup();
                       }}
                     />
-                    {/* <ActionButton
-                      handlePress={async () => {
-                        await googleSignup();
-                      }}
-                      buttonStyles={{ marginTop: 10 }}
-                      textColor={theme.buttonText}
-                      color={theme.googleBlue}
-                      title="Sign Up with Google"
-                      leftIcon={
-                        <FontAwesome5 name="google" size={24} color="white" />
-                      }
-                    /> */}
                   </View>
                 </View>
               );

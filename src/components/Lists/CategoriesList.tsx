@@ -6,6 +6,7 @@ import theme from '../../constants/theme';
 import { NODE_ENV } from '../../hooks/serverInfo';
 import { ICategory } from '../../interfaces';
 import { NavListItem } from '../ListItem';
+import ListEmptyView from '../ListItem/ListEmptyView';
 
 import styles from './styles';
 
@@ -65,19 +66,7 @@ const CategoriesList: FC<ICategoriesListProps> = ({ list, loading }) => {
             );
           }}
           ListEmptyComponent={() => {
-            return (
-              <View style={{ alignItems: 'center' }}>
-                <Text
-                  style={{
-                    fontFamily: 'MontserratMedium',
-                    fontSize: 24,
-                    color: theme.dark.hex,
-                  }}
-                >
-                  No categories
-                </Text>
-              </View>
-            );
+            return <ListEmptyView title="No Categories" />;
           }}
         />
       )}

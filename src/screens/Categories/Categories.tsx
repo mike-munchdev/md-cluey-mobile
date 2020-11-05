@@ -6,7 +6,7 @@ import {
   getCategoriesCompleted,
   getCategoriesError,
   GET_CATEGORIES,
-} from '../../graphql/queries/categories/categories';
+} from '../../graphql/queries/categories';
 import { useLazyQuery } from '@apollo/react-hooks';
 
 import { CategoriesList } from '../../components/Lists';
@@ -18,7 +18,7 @@ import { ClueyInfoIcon } from '../../components/Icons';
 import { ClueyInfoModal } from '../../components/Modals';
 
 const Categories: FC = () => {
-  const { user } = useContext(AppContext);
+  const { state, dispatch } = useContext(AppContext);
   const [] = useState('');
 
   const [categories, setCategories] = useState([]);
@@ -30,6 +30,7 @@ const Categories: FC = () => {
     fetchPolicy: 'network-only',
     onError: getCategoriesError(setCategories, setIsLoading),
     onCompleted: getCategoriesCompleted(setCategories, setIsLoading),
+    errorPolicy: 'all',
   });
 
   useEffect(() => {

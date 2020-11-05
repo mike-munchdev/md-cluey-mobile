@@ -1,16 +1,5 @@
 import React, { createContext } from 'react';
-import { IUser, ILocation } from '../interfaces';
-
-export type AppContextStateProps = {
-  setUser: (user: IUser) => void;
-  user: IUser | undefined | null;
-  // location: ILocation | undefined | null;
-};
-
-export type AppContextActionProps = {
-  type: string;
-  payload: object;
-};
+import { IAppStateProps, appReducer, initialState } from './store';
 
 type AuthContextProps = {
   getIsStarted: () => void;
@@ -32,4 +21,7 @@ type AuthContextProps = {
 
 export const AuthContext = createContext<Partial<AuthContextProps>>({});
 
-export const AppContext = createContext<Partial<AppContextStateProps>>({});
+export const AppContext = createContext<{
+  state: IAppStateProps;
+  dispatch: React.Dispatch<any>;
+}>({ state: initialState, dispatch: () => null });

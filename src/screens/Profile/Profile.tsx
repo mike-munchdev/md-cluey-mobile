@@ -28,7 +28,7 @@ import {
   updateUserPasswordInternalError,
   UPDATE_USER,
   UPDATE_USER_PASSWORD,
-} from '../../graphql/queries/user/user';
+} from '../../graphql/queries/user';
 import { AppContext, AuthContext } from '../../config/context';
 import { passwordRequirments } from '../../validation/passwordSchema';
 import moment from 'moment';
@@ -67,7 +67,7 @@ export interface IDateFieldProps {
   emptyText?: string;
 }
 
-const initialStringFieldProps = {
+const initialStringFieldProps: IStringFieldProps = {
   fieldLabel: '',
   fieldName: '',
   fieldValue: '',
@@ -96,7 +96,7 @@ const initialDateFieldProps = {
 };
 
 const Profile: FC = () => {
-  const { user, setUser } = useContext(AppContext);
+  const { state, dispatch } = useContext(AppContext);
   const { signOut } = useContext(AuthContext);
   const [isSaving, setIsSaving] = useState(false);
   const [isStringDialogVisible, setIsStringDialogVisible] = useState(false);
@@ -118,12 +118,12 @@ const Profile: FC = () => {
 
   const [updateUser] = useMutation(UPDATE_USER, {
     onError: updateUserError(resetDialog),
-    onCompleted: updateUserCompleted(resetDialog, setUser),
+    onCompleted: updateUserCompleted(resetDialog, dispatch),
   });
 
   const [updateUserPassword] = useMutation(UPDATE_USER_PASSWORD, {
     onError: updateUserPasswordInternalError(resetDialog),
-    onCompleted: updateUserPasswordInternalCompleted(resetDialog, setUser),
+    onCompleted: updateUserPasswordInternalCompleted(resetDialog, dispatch),
   });
 
   const updateDateValue = (updatedValue: Date | undefined) => {
@@ -140,7 +140,7 @@ const Profile: FC = () => {
         await updateUserPassword({
           variables: {
             input: {
-              userId: user?.id,
+              userId: state.user?.id,
               password: updatedValue,
             },
           },
@@ -152,13 +152,13 @@ const Profile: FC = () => {
         };
 
         if (stringFieldProps.fieldName === 'state') {
-          if (updatedValue !== user?.state)
+          if (updatedValue !== state.user?.state)
             updateObject = { ...updateObject, city: null };
         }
         await updateUser({
           variables: {
             input: {
-              userId: user?.id,
+              userId: state.user?.id,
               ...updateObject,
             },
           },
@@ -199,7 +199,7 @@ const Profile: FC = () => {
                 setStringFieldProps({
                   fieldName: 'firstName',
                   fieldLabel: 'First Name',
-                  fieldValue: user?.firstName || '',
+                  fieldValue: state.user?.firstName || '',
                   secureTextEntry: false,
                   isValid: (value: string) => {
                     return value ? value.length > 0 : false;
@@ -213,7 +213,7 @@ const Profile: FC = () => {
               }}
             >
               <ListItem.Content>
-                <ListItem.Title>{user?.firstName}</ListItem.Title>
+                <ListItem.Title>{state.user?.firstName}</ListItem.Title>
                 <ListItem.Subtitle>First Name</ListItem.Subtitle>
               </ListItem.Content>
               <ListItem.Chevron />
@@ -227,7 +227,7 @@ const Profile: FC = () => {
                 setStringFieldProps({
                   fieldName: 'lastName',
                   fieldLabel: 'Last Name',
-                  fieldValue: user ? user.lastName : '',
+                  fieldValue: state.user ? state.user.lastName : '',
                   secureTextEntry: false,
                   isValid: (value: string) => {
                     return value ? value.length > 0 : false;
@@ -242,7 +242,7 @@ const Profile: FC = () => {
               }}
             >
               <ListItem.Content>
-                <ListItem.Title>{user?.lastName}</ListItem.Title>
+                <ListItem.Title>{state.user?.lastName}</ListItem.Title>
                 <ListItem.Subtitle>Last Name</ListItem.Subtitle>
               </ListItem.Content>
               <ListItem.Chevron />
@@ -256,7 +256,7 @@ const Profile: FC = () => {
                 setStringFieldProps({
                   fieldName: 'username',
                   fieldLabel: 'Username',
-                  fieldValue: user ? user.username : '',
+                  fieldValue: state.user ? state.user.username : '',
                   secureTextEntry: false,
                   isValid: (value: string) => {
                     return value ? value.length > 0 : false;
@@ -270,12 +270,14 @@ const Profile: FC = () => {
               }}
             >
               <ListItem.Content>
-                <ListItem.Title>{user?.username}</ListItem.Title>
+                <ListItem.Title>{state.user?.username}</ListItem.Title>
                 <ListItem.Subtitle>Username</ListItem.Subtitle>
               </ListItem.Content>
               <ListItem.Chevron />
             </ListItem>
-            {user?.facebookId || user?.googleId || user?.appleId ? null : (
+            {state.user?.facebookId ||
+            state.user?.googleId ||
+            state.user?.appleId ? null : (
               <Fragment>
                 <ListItem
                   style={{
@@ -286,7 +288,7 @@ const Profile: FC = () => {
                     setStringFieldProps({
                       fieldName: 'email',
                       fieldLabel: 'E-mail',
-                      fieldValue: user ? user.email : '',
+                      fieldValue: state.user ? state.user.email : '',
                       secureTextEntry: false,
                       isValid: (value: string) => {
                         return (
@@ -303,7 +305,7 @@ const Profile: FC = () => {
                   }}
                 >
                   <ListItem.Content>
-                    <ListItem.Title>{user?.email}</ListItem.Title>
+                    <ListItem.Title>{state.user?.email}</ListItem.Title>
                     <ListItem.Subtitle>Email</ListItem.Subtitle>
                   </ListItem.Content>
                   <ListItem.Chevron />
@@ -356,7 +358,7 @@ const Profile: FC = () => {
                 setDateFieldProps({
                   fieldName: 'dob',
                   fieldLabel: 'Age',
-                  fieldValue: user?.dob,
+                  fieldValue: state.user?.dob,
                   secureTextEntry: false,
                   isValid: (value: string) => {
                     return isDate(value);
@@ -370,8 +372,8 @@ const Profile: FC = () => {
             >
               <ListItem.Content>
                 <ListItem.Title>
-                  {user && user.dob
-                    ? moment(user.dob).format('MM/DD/YYYY')
+                  {state.user && state.user.dob
+                    ? moment(state.user.dob).format('MM/DD/YYYY')
                     : null}
                 </ListItem.Title>
                 <ListItem.Subtitle>Age</ListItem.Subtitle>
@@ -387,7 +389,7 @@ const Profile: FC = () => {
                 setStringFieldProps({
                   fieldName: 'gender',
                   fieldLabel: 'Gender',
-                  fieldValue: user ? user.gender : '',
+                  fieldValue: state.user ? state.user.gender : '',
                   secureTextEntry: false,
                   isValid: (value: string) => {
                     return value ? value.length > 0 : false;
@@ -402,7 +404,7 @@ const Profile: FC = () => {
             >
               <ListItem.Content>
                 <ListItem.Title>
-                  {user ? capitalize(user.gender) : ''}
+                  {state.user ? capitalize(state.user.gender) : ''}
                 </ListItem.Title>
                 <ListItem.Subtitle>Gender</ListItem.Subtitle>
               </ListItem.Content>
@@ -417,7 +419,7 @@ const Profile: FC = () => {
                 setStringFieldProps({
                   fieldName: 'city',
                   fieldLabel: 'City',
-                  fieldValue: user ? user.city : '',
+                  fieldValue: state.user ? state.user.city : '',
                   secureTextEntry: false,
                   isValid: (value: string) => {
                     return value ? value.length > 0 : false;
@@ -425,14 +427,14 @@ const Profile: FC = () => {
                   captionText: [],
                   placeholder: 'City',
                   emptyText: 'Must Select State First',
-                  options: getCityOptionsFromStateName(user?.state),
+                  options: getCityOptionsFromStateName(state.user?.state || ''),
                 });
 
                 setIsOptionsDialogVisible(true);
               }}
             >
               <ListItem.Content>
-                <ListItem.Title>{user?.city}</ListItem.Title>
+                <ListItem.Title>{state.user?.city}</ListItem.Title>
                 <ListItem.Subtitle>City</ListItem.Subtitle>
               </ListItem.Content>
               <ListItem.Chevron />
@@ -446,7 +448,7 @@ const Profile: FC = () => {
                 setStringFieldProps({
                   fieldName: 'state',
                   fieldLabel: 'State',
-                  fieldValue: user ? user.state : '',
+                  fieldValue: state.user ? state.user.state : '',
                   secureTextEntry: false,
                   isValid: (value: string) => {
                     return value ? value.length > 0 : false;
@@ -461,7 +463,9 @@ const Profile: FC = () => {
             >
               <ListItem.Content>
                 <ListItem.Title>
-                  {user && user.state ? user.state.toUpperCase() : ''}
+                  {state.user && state.user.state
+                    ? state.user.state.toUpperCase()
+                    : ''}
                 </ListItem.Title>
                 <ListItem.Subtitle>State</ListItem.Subtitle>
               </ListItem.Content>

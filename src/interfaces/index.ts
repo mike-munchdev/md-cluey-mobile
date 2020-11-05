@@ -17,6 +17,7 @@ export interface IUser {
   state?: string;
   gender?: string;
   mustResetPassword: Boolean;
+  friendCount?: number;
 }
 export interface ICompanyReponse {
   id: string;
@@ -95,4 +96,14 @@ export interface IFriendship {
   requester: IFriend;
   recipient: IFriend;
   status: string;
+}
+
+export interface ISystemNotification {
+  id: string;
+  message: string;
+  notificationType: string;
+  linkId: string;
+  isRead: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }

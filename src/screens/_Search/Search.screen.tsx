@@ -29,7 +29,7 @@ import {
   GET_COMPANIES_BY_NAME,
   getCompaniesByNameError,
   getCompaniesByNameCompleted,
-} from '../../graphql/queries/company/companies';
+} from '../../graphql/queries/company';
 import { sortByFieldName } from '../../utils/sort';
 import { IAutoCompleteItemProps } from '../../components/TextInput/AutoCompleteTextInput';
 import { Avatar } from 'react-native-elements';

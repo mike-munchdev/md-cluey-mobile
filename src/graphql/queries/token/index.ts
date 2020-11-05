@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import { ApolloError } from 'apollo-client';
 import { AlertHelper } from '../../../utils/alert';
-import { userStructure } from '../user/user';
+import { userStructure } from '../structures/';
 
 export const GET_USER_TOKEN = gql`
   query GetUserToken(

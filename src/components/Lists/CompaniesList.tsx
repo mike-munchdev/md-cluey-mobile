@@ -8,6 +8,7 @@ import { NavListItem } from '../ListItem';
 import styles from './styles';
 import { NODE_ENV } from '../../hooks/serverInfo';
 import { ICompany } from '../../interfaces';
+import ListEmptyView from '../ListItem/ListEmptyView';
 
 export interface ICompaniesListProps {
   list: [];
@@ -78,19 +79,7 @@ const CompaniesList: FC<ICompaniesListProps> = ({
               );
             }}
             ListEmptyComponent={() => {
-              return (
-                <View style={{ alignItems: 'center' }}>
-                  <Text
-                    style={{
-                      fontFamily: 'MontserratMedium',
-                      fontSize: 24,
-                      color: theme.dark.hex,
-                    }}
-                  >
-                    No Brands
-                  </Text>
-                </View>
-              );
+              return <ListEmptyView title="No Brands" />;
             }}
           />
         </Fragment>

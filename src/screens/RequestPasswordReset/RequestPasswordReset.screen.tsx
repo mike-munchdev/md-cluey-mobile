@@ -17,7 +17,7 @@ import {
   resetPasswordError,
   resetPasswordCompleted,
   RESET_PASSWORD,
-} from '../../graphql/queries/user/user';
+} from '../../graphql/queries/user';
 import { LogoText } from '../../components/Text';
 import { KeyboardAvoidingContainer } from '../../components/Containers';
 import { NavHeader } from '../../components/Headers';
