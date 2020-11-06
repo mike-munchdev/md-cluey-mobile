@@ -35,13 +35,12 @@ import {
 const Friend: FC = () => {
   const { state, dispatch } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
-  const [areWeFriends, setAreWeFriends] = useState(true);
-  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+
   const [iconName, setIconName] = useState('account-plus-outline');
   const [buttonText, setButtonText] = useState('Add Friend');
   const navigation = useNavigation();
   const route = useRoute();
-  const { friend, user, friends, friendship } = state;
+  const { friend, user, friendship } = state;
 
   const [getUserById] = useLazyQuery(GET_USER_BY_ID, {
     fetchPolicy: 'network-only',
@@ -63,11 +62,7 @@ const Friend: FC = () => {
     }
   );
   const updateFriendship = async () => {
-    console.log('updateFriendship', areWeFriends);
-    if (!areWeFriends) {
-      // console.log('areWeFriends', areWeFriends);
-      // console.log('user', user);
-      // console.log('friend', friend);
+    if (!friendship) {
       await requestFriendship({
         variables: {
           input: {
@@ -92,7 +87,7 @@ const Friend: FC = () => {
   }, []);
 
   useEffect(() => {
-    if (friend && user) {
+    if (friend && friendship) {
       console.log('friendship', friendship);
 
       if (friendship) {
@@ -100,22 +95,20 @@ const Friend: FC = () => {
           case 'accepted':
             setIconName('account-check-outline');
             setButtonText('Friends');
-            setAreWeFriends(true);
+
             break;
           case 'requested':
             setIconName('account-clock-outline');
             setButtonText('Requested');
-            setAreWeFriends(true);
+
             break;
           default:
             setIconName('account-plus-outline');
             setButtonText('Add Friend');
-            setAreWeFriends(false);
         }
       } else {
         setIconName('account-plus-outline');
         setButtonText('Add Friend');
-        setAreWeFriends(false);
       }
     }
   }, [friend, friendship]);

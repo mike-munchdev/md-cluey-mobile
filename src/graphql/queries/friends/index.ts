@@ -66,6 +66,7 @@ export const requestFriendshipCompleted = (
   setLoading(false);
   if (ok) {
     dispatch({ type: 'ADD_FRIEND', payload: friendship });
+    dispatch({ type: 'UPDATE_FRIENDSHIP', payload: friendship });
   } else {
     AlertHelper.show('error', 'Error', error.message);
   }
@@ -76,7 +77,6 @@ export const requestFriendshipError = (
   setLoading: Function
 ) => (e: ApolloError) => {
   setLoading(false);
-
   AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
 };
 
@@ -94,23 +94,24 @@ export const ACCEPT_FRIENDSHIP = gql`
 `;
 
 export const acceptFriendshipCompleted = (
-  setNotifications: Function,
+  dispatch: React.Dispatch<any>,
   setLoading: Function
-) => async ({ setNotifications }) => {
+) => async ({ acceptFriendship }) => {
   const { ok, notifications, error } = acceptFriendship;
   setLoading(false);
   if (ok) {
-    setNotifications(notifications);
+    dispatch({ type: 'UPDATE_NOTIFICATIONS', payload: notifications });
   } else {
     AlertHelper.show('error', 'Error', error.message);
   }
 };
 
 export const acceptFriendshipError = (
-  setNotifications: Function,
+  dispatch: React.Dispatch<any>,
   setLoading: Function
 ) => (e: ApolloError) => {
   setLoading(false);
+  dispatch({ type: 'UPDATE_NOTIFICATIONS', payload: [] });
   AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
 };
 

@@ -19,27 +19,24 @@ export const GET_USER_SYSTEM_NOTIFICATIONS = gql`
 `;
 
 export const getUserSystemNotificationsError = (
-  setUserSystemNotifications: Function,
+  dispatch: React.Dispatch<any>,
   setLoading: Function
 ) => (e: ApolloError) => {
   setLoading(false);
-  setUserSystemNotifications([]);
+  dispatch({ type: 'UPDATE_NOTIFICATIONS', payload: [] });
   AlertHelper.show('error', 'Error', getErrorMessage(e));
 };
 
 export const getUserSystemNotificationsCompleted = (
-  setUserSystemNotifications: Function,
+  dispatch: React.Dispatch<any>,
   setLoading: Function
 ) => async ({ getUserSystemNotifications }) => {
-  // console.log(
-  //   'getUserSystemNotificationsCompleted',
-  //   getUserSystemNotificationsCompleted
-  // );
   const { ok, systemNotifications, error } = getUserSystemNotifications;
+  console.log('getUserSystemNotificationsCompleted', systemNotifications);
 
   setLoading(false);
   if (ok) {
-    setUserSystemNotifications(systemNotifications);
+    dispatch({ type: 'UPDATE_NOTIFICATIONS', payload: systemNotifications });
   } else {
     AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   }

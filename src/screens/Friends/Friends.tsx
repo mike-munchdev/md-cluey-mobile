@@ -42,7 +42,7 @@ const Friends: FC = () => {
   const [autoCompleteCache, setAutoCompleteCache] = useState({});
   const { state, dispatch } = useContext(AppContext);
 
-  const { friends, publicUsers } = state;
+  const { friends, publicUsers, user } = state;
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -91,11 +91,11 @@ const Friends: FC = () => {
 
   useEffect(() => {
     (async () => {
-      if (state.user) {
-        // console.log('user', state.user.id);
+      if (user) {
+        // console.log('user', user.id);
         await getUserFriends({
           variables: {
-            userId: state.user.id,
+            userId: user.id,
           },
         });
       }

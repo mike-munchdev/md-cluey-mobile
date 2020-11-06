@@ -38,8 +38,8 @@ const SystemNotificationListItem: FC<ISystemNotificationListItemProps> = ({
   // }, [notification]);
 
   const [acceptFriendship] = useMutation(ACCEPT_FRIENDSHIP, {
-    onError: acceptFriendshipError(setNotification, setIsLoading),
-    onCompleted: acceptFriendshipCompleted(setNotifications, setIsLoading),
+    onError: acceptFriendshipError(dispatch, setIsLoading),
+    onCompleted: acceptFriendshipCompleted(dispatch, setIsLoading),
   });
 
   // const updateResponse = (response: string, companyId: string) => {

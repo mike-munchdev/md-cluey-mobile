@@ -1,6 +1,8 @@
 import {
+  ICategory,
   ICompanyReponse,
   IFriendship,
+  IProductType,
   ISystemNotification,
   IUser,
 } from '../interfaces';
@@ -15,6 +17,8 @@ export interface IAppStateProps {
   publicUsers: IUser[] | undefined | null;
   friend: IUser | undefined | null;
   friendship: IFriendship | undefined | null;
+  categories: ICategory[] | undefined | null;
+  productTypes: IProductType[] | undefined | null;
 }
 
 export const initialState: IAppStateProps = {
@@ -27,6 +31,8 @@ export const initialState: IAppStateProps = {
   users: null,
   publicUsers: null,
   friend: null,
+  categories: [],
+  productTypes: [],
 };
 
 export const UPDATE_USER = 'UPDATE_USER';
@@ -94,15 +100,35 @@ export interface IUpdateFriendsAction {
   type: typeof UPDATE_FRIENDS;
   payload: IFriendship[] | null | undefined;
 }
+
 export const UPDATE_FRIEND = 'UPDATE_FRIEND';
 export interface IUpdateFriendAction {
   type: typeof UPDATE_FRIEND;
   payload: IUser | null | undefined;
 }
+
 export const UPDATE_FRIENDSHIP = 'UPDATE_FRIENDSHIP';
 export interface IUpdateFriendshipAction {
   type: typeof UPDATE_FRIENDSHIP;
   payload: IFriendship | null | undefined;
+}
+
+export const UPDATE_NOTIFICATIONS = 'UPDATE_NOTIFICATIONS';
+export interface IUpdateNotificationsAction {
+  type: typeof UPDATE_NOTIFICATIONS;
+  payload: ISystemNotification[] | null | undefined;
+}
+
+export const UPDATE_CATEGORIES = 'UPDATE_CATEGORIES';
+export interface IUpdateCategoriesAction {
+  type: typeof UPDATE_CATEGORIES;
+  payload: ICategory[] | null | undefined;
+}
+
+export const UPDATE_PRODUCT_TYPES = 'UPDATE_PRODUCT_TYPES';
+export interface IUpdateProductTypesAction {
+  type: typeof UPDATE_PRODUCT_TYPES;
+  payload: IProductType[] | null | undefined;
 }
 
 export const appReducer = (
@@ -121,6 +147,9 @@ export const appReducer = (
     | IUpdateFriendsAction
     | IAddFriendAction
     | IUpdateFriendshipAction
+    | IUpdateNotificationsAction
+    | IUpdateCategoriesAction
+    | IUpdateProductTypesAction
 ): IAppStateProps => {
   // console.log('action', action);
 
@@ -181,7 +210,6 @@ export const appReducer = (
         friends: action.payload,
       };
     case 'ADD_FRIEND':
-      console.log('ADD_FRIEND: action.payload', action.payload);
       return {
         ...state,
         friends: [...state.friends, action.payload],
@@ -195,6 +223,11 @@ export const appReducer = (
       return {
         ...state,
         friendship: action.payload,
+      };
+    case 'UPDATE_NOTIFICATIONS':
+      return {
+        ...state,
+        notifications: action.payload,
       };
     default:
       return state;
