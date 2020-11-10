@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FC, Fragment } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 
 import styles from './styles';
@@ -50,7 +50,6 @@ const PoliticalScoreCard: FC<IPoliticalScoreCardProps> = ({ company }) => {
       const pacs = getPoliticalContributionsValue(company, 'pacs');
       const pacsDems = getPoliticalContributionsValue(company, 'pacs_dems');
       const pacsRepubs = getPoliticalContributionsValue(company, 'pacs_repubs');
-      const pacsThird = getPoliticalContributionsValue(company, 'pacs_third');
 
       setIndividualTotal(indivs);
       setIndividualDemocratPercent(Math.round((indivsDems / indivs) * 100));

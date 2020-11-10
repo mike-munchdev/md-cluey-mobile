@@ -1,12 +1,9 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { View } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
-
 import styles from './styles';
 
 import { StandardContainer } from '../../components/Containers';
-import NavigationHeader from '../../components/Headers/NavigationHeader';
 import { useLazyQuery } from '@apollo/react-hooks';
 import {
   getUserCompanyResponsesCompleted,
@@ -15,7 +12,6 @@ import {
 } from '../../graphql/queries/user';
 import { AppContext } from '../../config/context';
 import MyLikesList from '../../components/Lists/MyLikesList';
-import { PageHeaderText } from '../../components/Text';
 import { NavHeader } from '../../components/Headers';
 import { ICompanyReponse } from '../../interfaces';
 
@@ -25,7 +21,7 @@ const MyLikes: FC = () => {
   const [filteredList, setFilteredList] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
-  const { user, companyResponses } = state;
+  const { user } = state;
 
   const reset = () => {
     setIsLoading(false);

@@ -1,16 +1,9 @@
-import React, { useContext, FC } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  SafeAreaView,
-  TouchableHighlight,
-} from 'react-native';
-import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
+import React, { FC } from 'react';
+import { View, TouchableOpacity, SafeAreaView } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 import styles from './styles';
-import colors from '../../constants/colors';
 import theme from '../../constants/theme';
 import { PageHeaderText } from '../Text';
 import { NavBackButton } from '../Buttons';

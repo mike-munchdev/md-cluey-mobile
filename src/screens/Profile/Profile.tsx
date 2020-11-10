@@ -22,8 +22,6 @@ import { useMutation } from '@apollo/react-hooks';
 import {
   updateUserCompleted,
   updateUserError,
-  updateUserPasswordCompleted,
-  updateUserPasswordError,
   updateUserPasswordInternalCompleted,
   updateUserPasswordInternalError,
   UPDATE_USER,

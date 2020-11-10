@@ -1,9 +1,8 @@
-import React, { FC, Fragment, useContext, useEffect, useState } from 'react';
+import React, { FC, Fragment, useState } from 'react';
 import { Text } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import theme from '../../constants/theme';
 
-import { AppContext } from '../../config/context';
 import { ActivityIndicator } from 'react-native-paper';
 
 export interface IFriendLikesListItemProps {
@@ -11,13 +10,9 @@ export interface IFriendLikesListItemProps {
   title: string;
 }
 
-const FriendLikesListItem: FC<IFriendLikesListItemProps> = ({
-  item,
-  title,
-}) => {
-  const { state, dispatch } = useContext(AppContext);
-  const [companyResponse, setCompanyResponse] = useState(item);
-  const [isLoading, setIsLoading] = useState(false);
+const FriendLikesListItem: FC<IFriendLikesListItemProps> = ({ item }) => {
+  const [companyResponse] = useState(item);
+  const [isLoading] = useState(false);
 
   // useEffect(() => {
   //   console.log('companyResponse', companyResponse);

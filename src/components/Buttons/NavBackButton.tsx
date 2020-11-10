@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import { TouchableOpacity } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import theme from '../../constants/theme';
 

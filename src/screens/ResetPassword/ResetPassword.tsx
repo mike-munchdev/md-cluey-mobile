@@ -1,7 +1,7 @@
-import React, { useContext, FC, useState, useEffect } from 'react';
+import React, { useContext, FC, useState } from 'react';
 import { View, Text } from 'react-native';
 
-import { StackActions, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { useMutation } from '@apollo/react-hooks';
 
 import { Formik } from 'formik';
@@ -29,7 +29,6 @@ import { passwordRequirments } from '../../validation/passwordSchema';
 const RequestPasswordReset: FC = () => {
   const { state, dispatch } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
-  const { updatePasswordReset } = useContext(AuthContext);
   const [passwordSnackVisible, setPasswordSnackVisible] = useState(false);
   const [passwordSecureTextEntry, setPasswordSecureTextEntry] = useState(true);
   const navigation = useNavigation();
@@ -61,7 +60,7 @@ const RequestPasswordReset: FC = () => {
             password: '',
           }}
           validationSchema={updatePasswordSchema}
-          onSubmit={async (values, { setSubmitting }) => {
+          onSubmit={async (values, {}) => {
             setIsLoading(true);
             const { password } = values;
 

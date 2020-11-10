@@ -1,5 +1,5 @@
 import React, { FC, Fragment, useContext, useEffect, useState } from 'react';
-import { FlatList, View, Text, SectionList } from 'react-native';
+import { View, SectionList } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -29,11 +29,11 @@ import { throttle, debounce } from 'throttle-debounce';
 import ListEmptyView from '../../components/ListItem/ListEmptyView';
 
 const Friends: FC = () => {
-  const [isPublicUsersLoading, setIsPublicUsersLoading] = useState(false);
+  const [, setIsPublicUsersLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredList, setFilteredList] = useState([]);
-  const [friendships, setFriendships] = useState([]);
+  const [, setFilteredList] = useState([]);
+  const [, setFriendships] = useState([]);
   const [data, setData] = useState([
     { title: 'Friends', data: [] },
     { title: 'Other Users', data: [] },
@@ -245,7 +245,7 @@ const Friends: FC = () => {
               <SectionList
                 style={{ width: '100%', marginHorizontal: 10, marginTop: 10 }}
                 sections={data}
-                keyExtractor={(item, index) => item.id.toString()}
+                keyExtractor={(item) => item.id.toString()}
                 renderSectionHeader={({ section: { title } }) => (
                   <FlatListHeader title={title} />
                 )}

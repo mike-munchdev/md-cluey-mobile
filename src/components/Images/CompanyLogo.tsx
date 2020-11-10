@@ -1,6 +1,5 @@
 import React, { useState, useEffect, FC } from 'react';
 import { Dimensions, Text, View } from 'react-native';
-import { Avatar } from 'react-native-elements';
 import { SvgUri } from 'react-native-svg';
 import Constants from 'expo-constants';
 import { Image } from 'react-native-elements';
@@ -68,7 +67,7 @@ const CompanyLogo: FC<ICompanyLogoProps> = ({
       PlaceholderContent={
         <ActivityIndicator color={theme.dark.hex} size="large" />
       }
-      onError={(error) => {
+      onError={() => {
         setImageErrored(true);
       }}
     />

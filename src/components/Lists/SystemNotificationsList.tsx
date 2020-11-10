@@ -1,11 +1,9 @@
-import Constants from 'expo-constants';
 import React, { FC, Fragment, useEffect, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import theme from '../../constants/theme';
-import { NODE_ENV } from '../../hooks/serverInfo';
 import { ISystemNotification } from '../../interfaces';
-import { NavListItem, SystemNotificationListItem } from '../ListItem';
+import { SystemNotificationListItem } from '../ListItem';
 import ListEmptyView from '../ListItem/ListEmptyView';
 
 import styles from './styles';

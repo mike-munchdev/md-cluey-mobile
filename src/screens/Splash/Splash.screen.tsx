@@ -12,7 +12,6 @@ export interface ISplashProps {
   user?: any;
 }
 const AnimatedIcon = Animatable.createAnimatableComponent(Entypo);
-const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const slideIn = {
   from: {

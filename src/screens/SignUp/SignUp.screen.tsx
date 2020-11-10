@@ -6,7 +6,6 @@ import { Formik } from 'formik';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useMutation } from '@apollo/react-hooks';
 import { Overlay, Button } from 'react-native-elements';
-import { TextInput } from 'react-native-paper';
 
 import styles from './styles';
 import { AuthContext } from '../../config/context';
@@ -36,7 +35,7 @@ const SignUp: FC = () => {
   const [isLoading] = useState(false);
   const [signInLoading, setSignInLoading] = useState(false);
   const [passwordSnackVisible, setPasswordSnackVisible] = useState(false);
-  const [passwordSecureTextEntry, setPasswordSecureTextEntry] = useState(true);
+  const [] = useState(true);
   const navigation = useNavigation();
 
   const [userSignup] = useMutation(USER_SIGNUP, {

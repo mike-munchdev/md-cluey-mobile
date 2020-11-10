@@ -11,14 +11,13 @@ import SidebarMenuItem from './SidebarMenuItem';
 import { HorizontalRule } from '../HorizontalRule/';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import theme from '../../constants/theme';
-import { AlertHelper } from '../../utils/alert';
 import { useMutation } from '@apollo/react-hooks';
 import {
   updateUserCompleted,
   updateUserError,
   UPDATE_USER,
 } from '../../graphql/queries/user';
-import { Button, Overlay } from 'react-native-elements';
+import { Overlay } from 'react-native-elements';
 import { ActionButton } from '../Buttons';
 
 const Sidebar = () => {

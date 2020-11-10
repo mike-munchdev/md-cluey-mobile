@@ -1,5 +1,5 @@
 import React, { createContext } from 'react';
-import { IAppStateProps, appReducer, initialState } from './store';
+import { IAppStateProps, initialState } from './store';
 
 type AuthContextProps = {
   getIsStarted: () => void;

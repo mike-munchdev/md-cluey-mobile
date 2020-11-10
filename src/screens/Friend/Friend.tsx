@@ -1,19 +1,15 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
-import { FlatList, View, Text } from 'react-native';
+import { View, Text } from 'react-native';
 
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { useRoute } from '@react-navigation/native';
 import styles from './styles';
 import theme from '../../constants/theme';
 
-import { TouchableOpacity } from 'react-native-gesture-handler';
-
-import { Button, List } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import { Avatar } from 'react-native-elements';
 
 import { HorizontalRule } from '../../components/HorizontalRule';
 import { StandardContainer } from '../../components/Containers';
-import { IFriend, IUser } from '../../interfaces';
 import {
   getUserByIdCompleted,
   getUserByIdError,
@@ -38,7 +34,6 @@ const Friend: FC = () => {
 
   const [iconName, setIconName] = useState('account-plus-outline');
   const [buttonText, setButtonText] = useState('Add Friend');
-  const navigation = useNavigation();
   const route = useRoute();
   const { friend, user, friendship } = state;
 

@@ -1,19 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { Fragment, useContext, useEffect, useState } from 'react';
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-  Linking,
-} from 'react-native';
-import { Avatar, ListItem, Overlay } from 'react-native-elements';
-import {
-  AntDesign,
-  MaterialIcons,
-  Entypo,
-  MaterialCommunityIcons,
-} from '@expo/vector-icons';
+import React, { useEffect, useState } from 'react';
+import { Text, View } from 'react-native';
+import { Avatar } from 'react-native-elements';
+import { AntDesign } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
 
 import { StandardContainer } from '../../components/Containers';
@@ -23,14 +12,10 @@ import { LogoText } from '../../components/Text';
 import theme from '../../constants/theme';
 
 import styles from './styles';
-import { ActionButton } from '../../components/Buttons';
-import { List, Paragraph } from 'react-native-paper';
-import { AuthContext } from '../../config/context';
 import AsyncStorage from '@react-native-community/async-storage';
 import { ClueyInfoModal } from '../../components/Modals';
 import { ClueyInfoIcon } from '../../components/Icons';
 
-const AnimatedAntDesign = Animatable.createAnimatableComponent(AntDesign);
 const Home = () => {
   const navigation = useNavigation();
   const [overlayVisible, setOverlayVisible] = useState(false);

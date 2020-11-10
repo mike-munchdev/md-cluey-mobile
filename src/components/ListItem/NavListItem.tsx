@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { Text } from 'react-native';
 import { ListItem } from 'react-native-elements';
 
 import { useNavigation } from '@react-navigation/native';

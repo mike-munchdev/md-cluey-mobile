@@ -131,6 +131,12 @@ export interface IUpdateProductTypesAction {
   payload: IProductType[] | null | undefined;
 }
 
+export const ADD_NOTIFICATION = 'ADD_NOTIFICATION';
+export interface IAddNotificationAction {
+  type: typeof ADD_NOTIFICATION;
+  payload: ISystemNotification | null | undefined;
+}
+
 export const appReducer = (
   state: IAppStateProps,
   action:
@@ -150,6 +156,7 @@ export const appReducer = (
     | IUpdateNotificationsAction
     | IUpdateCategoriesAction
     | IUpdateProductTypesAction
+    | IAddNotificationAction
 ): IAppStateProps => {
   // console.log('action', action);
 
@@ -225,9 +232,16 @@ export const appReducer = (
         friendship: action.payload,
       };
     case 'UPDATE_NOTIFICATIONS':
+      console.log('UPDATE_NOTIFICATIONS', action.payload);
       return {
         ...state,
         notifications: action.payload,
+      };
+    case 'ADD_NOTIFICATION':
+      console.log('ADD_NOTIFICATION', action.payload);
+      return {
+        ...state,
+        notifications: [...state.notifications, action.payload],
       };
     default:
       return state;

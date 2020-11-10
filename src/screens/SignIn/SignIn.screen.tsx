@@ -1,5 +1,5 @@
-import React, { useContext, FC, useState, Fragment, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import React, { useContext, FC, useState, Fragment } from 'react';
+import { View, Platform } from 'react-native';
 
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
@@ -29,17 +29,13 @@ import {
   facebookAuthentication,
   googleAuthentication,
 } from '../../utils/socialAuth';
-import {
-  KeyboardAvoidingContainer,
-  StandardContainer,
-} from '../../components/Containers';
+import { StandardContainer } from '../../components/Containers';
 import { AppleAuthenticationScope } from 'expo-apple-authentication';
-import AsyncStorage from '@react-native-community/async-storage';
 
 const SignIn: FC = () => {
   const [signInLoading, setSignInLoading] = useState(false);
   const index = useNavigationState((state) => state.index);
-  const [myIndex, setMyIndex] = useState(index);
+  const [myIndex] = useState(index);
   const { signIn } = useContext(AuthContext);
   const navigation = useNavigation();
 
@@ -118,7 +114,7 @@ const SignIn: FC = () => {
   const googleSignin = async () => {
     try {
       const { data, token } = await googleAuthentication();
-      const { id, email, family_name, give_name } = data;
+      const { id, email } = data;
       setSignInLoading(true);
       await getUserToken({
         variables: {
@@ -263,19 +259,23 @@ const SignIn: FC = () => {
                       <FontAwesome5 name="google" size={24} color="white" />
                     }
                   />
-                  <AppleAuthentication.AppleAuthenticationButton
-                    buttonType={
-                      AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
-                    }
-                    buttonStyle={
-                      AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
-                    }
-                    cornerRadius={5}
-                    style={{ width: '100%', height: 50, marginTop: 10 }}
-                    onPress={async () => {
-                      await appleSignin();
-                    }}
-                  />
+                  {Platform.OS === 'ios' ? (
+                    <AppleAuthentication.AppleAuthenticationButton
+                      buttonType={
+                        AppleAuthentication.AppleAuthenticationButtonType
+                          .SIGN_IN
+                      }
+                      buttonStyle={
+                        AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
+                      }
+                      cornerRadius={5}
+                      style={{ width: '100%', height: 50, marginTop: 10 }}
+                      onPress={async () => {
+                        await appleSignin();
+                      }}
+                    />
+                  ) : null}
+
                   <ActionButton
                     handlePress={() => navigation.navigate('SignUp')}
                     textColor={theme.buttonText}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC } from 'react';
+import React, { FC } from 'react';
 import { Text, View } from 'react-native';
 
 import styles from './styles';

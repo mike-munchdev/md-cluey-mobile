@@ -11,7 +11,6 @@ import { useLazyQuery } from '@apollo/react-hooks';
 
 import { SystemNotificationsList } from '../../components/Lists';
 import { StandardContainer } from '../../components/Containers';
-import { PageHeaderText } from '../../components/Text';
 import { NavHeader } from '../../components/Headers';
 import { AppContext } from '../../config/context';
 

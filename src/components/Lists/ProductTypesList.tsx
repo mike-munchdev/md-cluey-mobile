@@ -1,5 +1,5 @@
 import React, { FC, Fragment, useEffect, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import theme from '../../constants/theme';
 import { IProductType } from '../../interfaces';
