@@ -1,5 +1,5 @@
 import React, { FC, Fragment, useEffect, useState } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, RefreshControl, View } from 'react-native';
 import { ActivityIndicator, Searchbar } from 'react-native-paper';
 import Constants from 'expo-constants';
 import theme from '../../constants/theme';
@@ -17,12 +17,16 @@ export interface ICompaniesListProps {
     | (((text: string) => void) & ((query: string) => void))
     | undefined;
   loading: boolean;
+  handleRefresh?: (() => void) | undefined;
+  refreshing: boolean;
 }
 const CompaniesList: FC<ICompaniesListProps> = ({
   list,
   searchQuery,
   onChangeSearch,
   loading,
+  handleRefresh,
+  refreshing,
 }) => {
   const [orderedList, setOrderedList] = useState(list);
 
@@ -54,6 +58,12 @@ const CompaniesList: FC<ICompaniesListProps> = ({
           />
 
           <FlatList
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+              />
+            }
             style={{ width: '100%' }}
             data={orderedList}
             keyExtractor={(item) => item.id.toString()}

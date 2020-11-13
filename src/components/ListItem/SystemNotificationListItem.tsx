@@ -13,6 +13,12 @@ import {
 } from '../../graphql/queries/friends';
 import { AppContext } from '../../config/context';
 import { ActivityIndicator } from 'react-native-paper';
+import { ISystemNotification } from '../../interfaces';
+import {
+  updateNotificationCompleted,
+  updateNotificationError,
+  UPDATE_NOTIFICATION,
+} from '../../graphql/queries/systemnotifications';
 
 export interface ISystemNotificationListItemProps {
   item: any;
@@ -24,21 +30,8 @@ const SystemNotificationListItem: FC<ISystemNotificationListItemProps> = ({
   title,
 }) => {
   const { dispatch } = useContext(AppContext);
-  const [notification] = useState(item);
+
   const [isLoading, setIsLoading] = useState(false);
-
-  // useEffect(() => {
-  // if (notification) {
-  //   const responses = [
-  //     ...user?.companyResponses.filter((r) => r.id !== notification.id),
-  //     notification,
-  //   ];
-  //   const updatedUser = { ...user };
-  //   updatedUser.companyResponses = responses;
-
-  //   setUser(updatedUser);
-  // }
-  // }, [notification]);
 
   const [acceptFriendship] = useMutation(ACCEPT_FRIENDSHIP, {
     onError: acceptFriendshipError(dispatch, setIsLoading),
@@ -49,22 +42,56 @@ const SystemNotificationListItem: FC<ISystemNotificationListItemProps> = ({
     onCompleted: rejectFriendshipCompleted(dispatch, setIsLoading),
   });
 
-  // const updateResponse = (response: string, companyId: string) => {
-  //   setIsLoading(true);
-  //   updateCompanyResponseForUser({
-  //     variables: {
-  //       input: {
-  //         userId: user?.id,
-  //         companyId,
-  //         response,
-  //       },
-  //     },
-  //   });
-  // };
+  const [updateNotification] = useMutation(UPDATE_NOTIFICATION, {
+    onError: updateNotificationError(dispatch, setIsLoading),
+    onCompleted: updateNotificationCompleted(dispatch, setIsLoading),
+  });
+
+  const getIconNameForNotificationType = (
+    notification: ISystemNotification
+  ) => {
+    switch (notification.notificationType) {
+      case 'friend-request':
+        return 'plus-circle';
+      case 'accepted-friend-request':
+        return notification.isRead ? 'envelope-open' : 'envelope';
+      case 'rejected-friend-request':
+        return 'envelope';
+      default:
+        return 'envelope';
+    }
+  };
+
+  const handleNotificationPress = (notification: ISystemNotification) => {
+    switch (notification.notificationType) {
+      case 'friend-request':
+        acceptFriendship({
+          variables: {
+            input: {
+              friendshipId: notification.linkId,
+              notificationId: notification.id,
+            },
+          },
+        });
+        break;
+      case 'accepted-friend-request':
+        updateNotification({
+          variables: {
+            input: {
+              isRead: !notification.isRead,
+              notificationId: notification.id,
+            },
+          },
+        });
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <ListItem
-      key={notification.id}
+      key={item.id}
       bottomDivider
       style={{
         marginBottom: 5,
@@ -95,36 +122,32 @@ const SystemNotificationListItem: FC<ISystemNotificationListItemProps> = ({
         <Fragment>
           <ListItem.Chevron
             style={{ marginHorizontal: 7 }}
-            name="plus-circle"
+            name={getIconNameForNotificationType(item)}
             type="font-awesome-5"
             size={22}
             color={theme.dark.hex}
             onPress={() => {
-              console.log('notification', notification);
-              acceptFriendship({
-                variables: {
-                  friendshipId: notification.linkId,
-                },
-              });
+              handleNotificationPress(item);
             }}
           />
-          <ListItem.Chevron
-            style={{ marginHorizontal: 7 }}
-            name="times-circle"
-            type="font-awesome-5"
-            size={22}
-            color={theme.dark.hex}
-            onPress={
-              () => {
+          {item.notificationType === 'friend-request' ? (
+            <ListItem.Chevron
+              style={{ marginHorizontal: 7 }}
+              name="times-circle"
+              type="font-awesome-5"
+              size={22}
+              color={theme.dark.hex}
+              onPress={() => {
                 rejectFriendship({
                   variables: {
-                    friendshipId: notification.linkId,
+                    input: {
+                      friendshipId: item.linkId,
+                    },
                   },
                 });
-              }
-              // updateResponse('will-not-buy', notification.company.id)
-            }
-          />
+              }}
+            />
+          ) : null}
         </Fragment>
       )}
     </ListItem>

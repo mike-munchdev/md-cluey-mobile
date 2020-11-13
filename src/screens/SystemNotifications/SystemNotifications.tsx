@@ -18,6 +18,7 @@ const SystemNotifications: FC = () => {
   const { state, dispatch } = useContext(AppContext);
 
   const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const [getSystemNotifications] = useLazyQuery(GET_USER_SYSTEM_NOTIFICATIONS, {
     fetchPolicy: 'network-only',
@@ -44,6 +45,14 @@ const SystemNotifications: FC = () => {
         <SystemNotificationsList
           list={state.notifications}
           loading={isLoading}
+          refreshing={isLoading}
+          handleRefresh={async () => {
+            await getSystemNotifications({
+              variables: {
+                userId: state.user?.id,
+              },
+            });
+          }}
         />
       </View>
     </StandardContainer>

@@ -1,5 +1,5 @@
 import React, { FC, Fragment, useEffect, useState } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, RefreshControl, View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import theme from '../../constants/theme';
 import { ISystemNotification } from '../../interfaces';
@@ -11,23 +11,21 @@ import styles from './styles';
 export interface ISystemNotificationsListProps {
   list: ISystemNotification[];
   loading: boolean;
+  handleRefresh?: (() => void) | undefined;
+  refreshing: boolean;
 }
 
 const SystemNotificationsList: FC<ISystemNotificationsListProps> = ({
   list,
   loading,
+  handleRefresh,
+  refreshing,
 }) => {
-  const [orderedList, setOrderedList] = useState(list);
-
-  useEffect(() => {
-    const listOrdered = list.sort(
-      (a: ISystemNotification, b: ISystemNotification) => {
-        return a.createdAt > b.createdAt;
-      }
-    );
-
-    setOrderedList(listOrdered);
-  }, [list]);
+  const sortList = (list: ISystemNotification[]) => {
+    return list.sort((a: ISystemNotification, b: ISystemNotification) => {
+      return a.createdAt > b.createdAt;
+    });
+  };
 
   return (
     <View style={styles.companiesContainer}>
@@ -36,8 +34,14 @@ const SystemNotificationsList: FC<ISystemNotificationsListProps> = ({
       ) : (
         <Fragment>
           <FlatList
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+              />
+            }
             style={{ width: '100%' }}
-            data={orderedList}
+            data={sortList(list)}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => {
               return (

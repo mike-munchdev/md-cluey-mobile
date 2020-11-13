@@ -72,7 +72,7 @@ export interface IAcceptFriendAction {
 }
 
 export const REJECT_FRIEND = 'REJECT_FRIEND';
-export interface IRemoveFriendAction {
+export interface IRejectFriendAction {
   type: typeof REJECT_FRIEND;
   payload: IFriendship;
 }
@@ -131,17 +131,29 @@ export interface IUpdateProductTypesAction {
   payload: IProductType[] | null | undefined;
 }
 
-export const ADD_NOTIFICATION = 'ADD_NOTIFICATION';
-export interface IAddNotificationAction {
-  type: typeof ADD_NOTIFICATION;
+export const REMOVE_NOTIFICATION = 'REMOVE_NOTIFICATION';
+export interface IRemoveNotificationAction {
+  type: typeof REMOVE_NOTIFICATION;
   payload: ISystemNotification | null | undefined;
+}
+
+export const UPDATE_NOTIFICATION = 'UPDATE_NOTIFICATION';
+export interface IUpdateNotificationAction {
+  type: typeof UPDATE_NOTIFICATION;
+  payload: ISystemNotification | null | undefined;
+}
+
+export const REMOVE_FRIEND = 'REMOVE_FRIEND';
+export interface IRemoveFriendAction {
+  type: typeof REMOVE_FRIEND;
+  payload: IFriendship;
 }
 
 export const appReducer = (
   state: IAppStateProps,
   action:
     | IAcceptFriendAction
-    | IRemoveFriendAction
+    | IRejectFriendAction
     | IRequestFriendAction
     | IUpdateUserCompanyResponseAction
     | IUpdateUserCompanyResponsesAction
@@ -156,10 +168,10 @@ export const appReducer = (
     | IUpdateNotificationsAction
     | IUpdateCategoriesAction
     | IUpdateProductTypesAction
-    | IAddNotificationAction
+    | IRemoveNotificationAction
+    | IUpdateNotificationAction
+    | IRemoveFriendAction
 ): IAppStateProps => {
-  // console.log('action', action);
-
   switch (action.type) {
     case 'ACCEPT_FRIEND':
       return {
@@ -191,7 +203,7 @@ export const appReducer = (
       const responses = state.companyResponses?.filter(
         (r) => r.id === action.payload.id
       );
-      // console.log('action.payload', action.payload);
+
       return {
         ...state,
         companyResponses: [...responses, action.payload],
@@ -232,16 +244,35 @@ export const appReducer = (
         friendship: action.payload,
       };
     case 'UPDATE_NOTIFICATIONS':
-      console.log('UPDATE_NOTIFICATIONS', action.payload);
       return {
         ...state,
         notifications: action.payload,
       };
-    case 'ADD_NOTIFICATION':
-      console.log('ADD_NOTIFICATION', action.payload);
+    case 'REMOVE_NOTIFICATION':
+      const notifications = state.notifications?.filter(
+        (n) => n.id !== action.payload?.id
+      );
       return {
         ...state,
-        notifications: [...state.notifications, action.payload],
+        notifications,
+      };
+    case 'UPDATE_NOTIFICATION':
+      const notificationsUpdateNotifications = state.notifications?.filter(
+        (n) => n.id !== action.payload?.id
+      );
+
+      return {
+        ...state,
+        notifications: notificationsUpdateNotifications?.push(action.payload),
+      };
+    case 'REMOVE_FRIEND':
+      const friendsWithoutFriend = state.friends?.filter(
+        (f) => f.id !== action.payload?.id
+      );
+
+      return {
+        ...state,
+        friends: friendsWithoutFriend,
       };
     default:
       return state;

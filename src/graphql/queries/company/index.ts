@@ -26,7 +26,7 @@ export const getCompaniesByNameError = (
 ) => (e: ApolloError) => {
   setLoading(false);
   setCompanies([]);
-  console.log('getCompaniesByNameError: e', e);
+
   AlertHelper.show('error', 'Error', getErrorMessage(e));
 };
 
@@ -66,7 +66,7 @@ export const getCompaniesByCategoryError = (
   setLoading(false);
   setCompanies([]);
   setFilteredList([]);
-  console.log('getCompaniesByCategoryError', e);
+
   AlertHelper.show('error', 'Error', getErrorMessage(e));
 };
 

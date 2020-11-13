@@ -20,19 +20,29 @@ import { NavHeader } from '../../components/Headers';
 import { FriendLikesList } from '../../components/Lists';
 import { AppContext } from '../../config/context';
 import {
+  deleteFriendshipByIdCompleted,
+  deleteFriendshipByIdError,
+  DELETE_FRIENDSHIP_BY_ID,
   getFriendshipBetweenUsersCompleted,
   getFriendshipBetweenUsersError,
   GET_FRIENDSHIP_BETWEEN_USERS,
   requestFriendshipCompleted,
   requestFriendshipError,
   REQUEST_FRIENDSHIP,
-} from '../../graphql/queries/friends/';
+  getUserFriendsCompleted,
+  getUserFriendsError,
+  GET_USER_FRIENDS,
+} from '../../graphql/queries/friends';
 
 const Friend: FC = () => {
   const { state, dispatch } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
+  const [friendshipLoading, setFriendshipLoading] = useState(true);
+
+  const [friendships, setFriendships] = useState([]);
 
   const [iconName, setIconName] = useState('account-plus-outline');
+  const [iconColor, setIconColor] = useState(theme.dark.hex);
   const [buttonText, setButtonText] = useState('Add Friend');
   const route = useRoute();
   const { friend, user, friendship } = state;
@@ -48,6 +58,11 @@ const Friend: FC = () => {
     onCompleted: requestFriendshipCompleted(dispatch, setIsLoading),
   });
 
+  const [deleteFriendshipById] = useMutation(DELETE_FRIENDSHIP_BY_ID, {
+    onError: deleteFriendshipByIdError(dispatch, setIsLoading),
+    onCompleted: deleteFriendshipByIdCompleted(dispatch, setIsLoading),
+  });
+
   const [getFriendshipBetweenUsers] = useLazyQuery(
     GET_FRIENDSHIP_BETWEEN_USERS,
     {
@@ -56,6 +71,13 @@ const Friend: FC = () => {
       onCompleted: getFriendshipBetweenUsersCompleted(dispatch, setIsLoading),
     }
   );
+
+  const [getUserFriends] = useLazyQuery(GET_USER_FRIENDS, {
+    fetchPolicy: 'network-only',
+    onError: getUserFriendsError(setFriendships, setFriendshipLoading),
+    onCompleted: getUserFriendsCompleted(null, setFriendships, setIsLoading),
+  });
+
   const updateFriendship = async () => {
     if (!friendship) {
       await requestFriendship({
@@ -66,16 +88,39 @@ const Friend: FC = () => {
           },
         },
       });
+    } else {
+      switch (friendship.status) {
+        case 'accepted':
+          await deleteFriendshipById({
+            variables: {
+              input: {
+                friendshipId: friendship.id,
+              },
+            },
+          });
+          await getUserFriends({
+            variables: {
+              userId: friend?.id,
+            },
+          });
+          break;
+        default:
+          break;
+      }
     }
   };
 
   useEffect(() => {
     (async () => {
-      console.log('useEffect', route.params.friend);
       if (route.params.friend) {
         await getUserById({ variables: { userId: route.params.friend.id } });
         await getFriendshipBetweenUsers({
           variables: { userId1: route.params.friend.id, userId2: user?.id },
+        });
+        await getUserFriends({
+          variables: {
+            userId: route.params.friend.id,
+          },
         });
       }
     })();
@@ -83,23 +128,24 @@ const Friend: FC = () => {
 
   useEffect(() => {
     if (friend && friendship) {
-      console.log('friendship', friendship);
-
       if (friendship) {
         switch (friendship.status) {
           case 'accepted':
-            setIconName('account-check-outline');
-            setButtonText('Friends');
+            setIconName('account-remove-outline');
+            setButtonText('Unfriend');
+            setIconColor(theme.errorText);
 
             break;
           case 'requested':
             setIconName('account-clock-outline');
             setButtonText('Requested');
+            setIconColor(theme.dark.hex);
 
             break;
           default:
             setIconName('account-plus-outline');
             setButtonText('Add Friend');
+            setIconColor(theme.dark.hex);
         }
       } else {
         setIconName('account-plus-outline');
@@ -150,9 +196,9 @@ const Friend: FC = () => {
                 }}
               >
                 <Button
-                  contentStyle={{ backgroundColor: theme.dark.hex }}
+                  contentStyle={{ backgroundColor: iconColor }}
                   labelStyle={{ color: theme.text }}
-                  color={theme.text}
+                  color={theme.dark.hex}
                   style={{ marginRight: 10, width: 150 }}
                   icon={iconName}
                   mode="contained"
@@ -174,7 +220,7 @@ const Friend: FC = () => {
                   style={{ marginLeft: 10, width: 150 }}
                   mode="contained"
                 >
-                  {friend?.friendCount || 0}
+                  {friendships ? friendships.length : 0}
                 </Button>
               </View>
             </View>

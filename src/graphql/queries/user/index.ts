@@ -391,7 +391,6 @@ export const getUserCompanyResponsesCompleted = (
 ) => async ({ getUserCompanyResponses }) => {
   const { ok, companyResponses, error } = getUserCompanyResponses;
 
-  // console.log('companyResponses', companyResponses);
   if (ok) {
     dispatch({
       type: 'UPDATE_USER_COMPANY_RESPONSES',
@@ -507,7 +506,6 @@ export const getUserByIdCompleted = (
   const { ok, user, error } = getUserById;
   setLoading(false);
   if (ok) {
-    // console.log('getUserByIdCompleted: user', user);
     dispatch({ type: 'UPDATE_FRIEND', payload: user });
   } else {
     AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);

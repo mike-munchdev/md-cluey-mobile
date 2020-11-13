@@ -71,7 +71,7 @@ export const userStructure = `{
       isProfilePublic
       mustResetPassword
       isActive
-      friendCount
+      
   }`;
 
 export const publicUserStructure = `{
@@ -112,7 +112,7 @@ export const productTypesStructure = `{
   }
 `;
 
-export const systemNotificationStructure = `{    
+export const notificationStructure = `{    
     id
     message
     notificationType

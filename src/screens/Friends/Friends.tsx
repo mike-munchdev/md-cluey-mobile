@@ -1,5 +1,5 @@
 import React, { FC, Fragment, useContext, useEffect, useState } from 'react';
-import { View, SectionList } from 'react-native';
+import { View, SectionList, RefreshControl } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -31,12 +31,13 @@ import ListEmptyView from '../../components/ListItem/ListEmptyView';
 const Friends: FC = () => {
   const [, setIsPublicUsersLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [, setFilteredList] = useState([]);
   const [, setFriendships] = useState([]);
   const [data, setData] = useState([
     { title: 'Friends', data: [] },
-    { title: 'Other Users', data: [] },
+    { title: 'Public Users', data: [] },
   ]);
 
   const [autoCompleteCache, setAutoCompleteCache] = useState({});
@@ -54,10 +55,10 @@ const Friends: FC = () => {
         ListEmptyComponent: <ListEmptyView title="No Friends" />,
       },
       {
-        title: 'Other Users',
+        title: 'Public Users',
         data: publicUsers || [],
         renderItem: renderOtherUserItem,
-        ListEmptyComponent: <ListEmptyView title="No Other Users" />,
+        ListEmptyComponent: null,
       },
     ]);
   }, [friends, publicUsers]);
@@ -89,10 +90,19 @@ const Friends: FC = () => {
     }
   );
 
+  const onRefresh = async () => {
+    if (user) {
+      await getUserFriends({
+        variables: {
+          userId: user.id,
+        },
+      });
+    }
+  };
+
   useEffect(() => {
     (async () => {
       if (user) {
-        // console.log('user', user.id);
         await getUserFriends({
           variables: {
             userId: user.id,
@@ -163,30 +173,29 @@ const Friends: FC = () => {
       item.requester.id === user?.id ? item.recipient : item.requester;
 
     return (
-      <TouchableOpacity
+      <ListItem
+        style={{ marginBottom: 5 }}
         onPress={() => navigation.navigate('Friend', { friend: friend })}
       >
-        <ListItem style={{ marginBottom: 5 }}>
-          <Avatar
-            icon={{
-              name: 'user',
-              type: 'font-awesome',
-              size: 20,
-            }}
-            overlayContainerStyle={{
-              backgroundColor: theme.dark.hex,
-            }}
-            size="small"
-            rounded
-          />
-          <ListItem.Content>
-            <ListItem.Title>{`${friend.firstName} ${friend.lastName}`}</ListItem.Title>
-            <ListItem.Subtitle>
-              {friend.username ? `@${friend.username}` : ''}
-            </ListItem.Subtitle>
-          </ListItem.Content>
-        </ListItem>
-      </TouchableOpacity>
+        <Avatar
+          icon={{
+            name: 'user',
+            type: 'font-awesome',
+            size: 20,
+          }}
+          overlayContainerStyle={{
+            backgroundColor: theme.dark.hex,
+          }}
+          size="small"
+          rounded
+        />
+        <ListItem.Content>
+          <ListItem.Title>{`${friend.firstName} ${friend.lastName}`}</ListItem.Title>
+          <ListItem.Subtitle>
+            {friend.username ? `@${friend.username}` : ''}
+          </ListItem.Subtitle>
+        </ListItem.Content>
+      </ListItem>
     );
   };
 
@@ -243,9 +252,20 @@ const Friends: FC = () => {
               <ActivityIndicator color={theme.dark.hex} size="large" />
             ) : (
               <SectionList
-                style={{ width: '100%', marginHorizontal: 10, marginTop: 10 }}
+                style={{
+                  height: '85%',
+                  width: '100%',
+                  marginHorizontal: 10,
+                  marginTop: 10,
+                }}
                 sections={data}
                 keyExtractor={(item) => item.id.toString()}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={isRefreshing}
+                    onRefresh={onRefresh}
+                  />
+                }
                 renderSectionHeader={({ section: { title } }) => (
                   <FlatListHeader title={title} />
                 )}

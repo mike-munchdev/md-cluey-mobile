@@ -118,6 +118,17 @@ const Sidebar = () => {
           viewStyles={{ marginTop: 20 }}
         />
         <SidebarMenuItem
+          onPress={() => {
+            navigation.navigate('Friends');
+          }}
+          iconName="user-friends"
+          iconSize={20}
+          title="Manage Cluey Friends"
+          iconColor={theme.dark.hex}
+          viewStyles={{ marginTop: 20 }}
+        />
+
+        <SidebarMenuItem
           onPress={onIsMakeLikesPublicToggleSwitch}
           icon={() => (
             <MaterialCommunityIcons
@@ -177,15 +188,6 @@ const Sidebar = () => {
         <View style={{ marginBottom: 10 }}>
           <Text style={{ fontSize: 14 }}>Coming Soon</Text>
         </View>
-        <SidebarMenuItem
-          onPress={() => {
-            navigation.navigate('Friends');
-          }}
-          iconName="user-friends"
-          iconSize={20}
-          title="Manage Cluey Friends"
-          iconColor={theme.disabledText}
-        />
 
         <SidebarMenuItem
           onPress={() => {}}
@@ -193,7 +195,6 @@ const Sidebar = () => {
           iconColor={theme.disabledText}
           iconSize={20}
           title="Manage Planet Preferences"
-          viewStyles={{ marginTop: 20 }}
         />
         <SidebarMenuItem
           onPress={() => {}}

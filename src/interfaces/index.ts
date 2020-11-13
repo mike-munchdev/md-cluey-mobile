@@ -17,7 +17,6 @@ export interface IUser {
   state?: string;
   gender?: string;
   mustResetPassword: Boolean;
-  friendCount?: number;
 }
 export interface ICompanyReponse {
   id: string;

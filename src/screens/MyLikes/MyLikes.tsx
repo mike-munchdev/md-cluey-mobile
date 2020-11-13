@@ -38,7 +38,6 @@ const MyLikes: FC = () => {
 
   useEffect(() => {
     (async () => {
-      // console.log('useEffect: getUserCompanyResponses');
       setIsLoading(true);
       await getUserCompanyResponses({
         variables: {

@@ -14,9 +14,6 @@ const FriendLikesListItem: FC<IFriendLikesListItemProps> = ({ item }) => {
   const [companyResponse] = useState(item);
   const [isLoading] = useState(false);
 
-  // useEffect(() => {
-  //   console.log('companyResponse', companyResponse);
-  // }, []);
   const getIconName = (response: string) => {
     switch (response) {
       case 'will-buy':

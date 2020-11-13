@@ -7,7 +7,7 @@ import { errors } from '../../../constants/errors';
 
 import {
   friendshipStructure,
-  systemNotificationStructure,
+  notificationStructure,
   userStructure,
 } from '../structures';
 import { getErrorMessage } from '../../../utils/errors';
@@ -26,27 +26,27 @@ export const GET_USER_FRIENDS = gql`
 `;
 
 export const getUserFriendsCompleted = (
-  dispatch: React.Dispatch<any>,
-  setFilteredList: Function,
+  dispatch: React.Dispatch<any> | null | undefined,
+  setFilteredList: Function | null | undefined,
   setLoading: Function
 ) => async ({ getUserFriends }) => {
   const { ok, friendships, error } = getUserFriends;
   setLoading(false);
 
   if (ok) {
-    dispatch({ type: 'UPDATE_FRIENDS', payload: friendships });
-    setFilteredList(friendships);
+    if (dispatch) dispatch({ type: 'UPDATE_FRIENDS', payload: friendships });
+    if (setFilteredList) setFilteredList(friendships);
   } else {
     AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   }
 };
 
 export const getUserFriendsError = (
-  setFriends: Function,
+  setFriends: Function | null | undefined,
   setLoading: Function
 ) => (e: ApolloError) => {
   setLoading(false);
-  setFriends([]);
+  if (setFriends) setFriends([]);
   AlertHelper.show('error', 'Error', getErrorMessage(e));
 };
 
@@ -54,7 +54,7 @@ export const REQUEST_FRIENDSHIP = gql`
   mutation RequestFriendship($input: RequestFriendshipInput!) {
     requestFriendship(input: $input) {
       ok
-      notification ${systemNotificationStructure}
+      notification ${notificationStructure}
       friendship ${friendshipStructure}
       error {        
         message
@@ -68,12 +68,11 @@ export const requestFriendshipCompleted = (
   setLoading: Function
 ) => async ({ requestFriendship }) => {
   const { ok, friendship, notification, error } = requestFriendship;
-  console.log('requestFriendship', requestFriendship);
+
   setLoading(false);
   if (ok) {
     dispatch({ type: 'ADD_FRIEND', payload: friendship });
     dispatch({ type: 'UPDATE_FRIENDSHIP', payload: friendship });
-    dispatch({ type: 'ADD_NOTIFICATION', payload: notification });
   } else {
     AlertHelper.show('error', 'Error', error.message);
   }
@@ -91,6 +90,7 @@ export const ACCEPT_FRIENDSHIP = gql`
   mutation AcceptFriendship($input: AcceptFriendshipInput!) {
     acceptFriendship(input: $input) {
       ok
+      notification ${notificationStructure}
       friendship ${friendshipStructure}
       error {        
         message
@@ -107,7 +107,7 @@ export const acceptFriendshipCompleted = (
   const { ok, notification, friendship, error } = acceptFriendship;
   setLoading(false);
   if (ok) {
-    dispatch({ type: 'ADD_NOTIFICATION', payload: notification });
+    dispatch({ type: 'REMOVE_NOTIFICATION', payload: notification });
   } else {
     AlertHelper.show('error', 'Error', error.message);
   }
@@ -126,7 +126,7 @@ export const REJECT_FRIENDSHIP = gql`
     rejectFriendship(input: $input) {
       ok
       friendship ${friendshipStructure}
-      notification ${systemNotificationStructure}
+      notification ${notificationStructure}
       error {        
         message
       }
@@ -142,7 +142,7 @@ export const rejectFriendshipCompleted = (
   const { ok, notification, friendship, error } = rejectFriendship;
   setLoading(false);
   if (ok) {
-    dispatch({ type: 'ADD_NOTIFICATION', payload: notification });
+    dispatch({ type: 'REMOVE_NOTIFICATION', payload: notification });
   } else {
     AlertHelper.show('error', 'Error', error.message);
   }
@@ -187,5 +187,42 @@ export const getFriendshipBetweenUsersError = (
 ) => (e: ApolloError) => {
   setLoading(false);
 
+  AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
+};
+
+export const DELETE_FRIENDSHIP_BY_ID = gql`
+  mutation DeleteFriendshipById($input: DeleteFriendshipByIdInput!) {
+    deleteFriendshipById(input: $input) {
+      ok      
+      friendship ${friendshipStructure}
+      error {        
+        message
+      }
+      
+    }
+  }
+`;
+
+export const deleteFriendshipByIdCompleted = (
+  dispatch: React.Dispatch<any>,
+  setLoading: Function
+) => async ({ deleteFriendshipById }) => {
+  const { ok, friendship, error } = deleteFriendshipById;
+
+  setLoading(false);
+  if (ok) {
+    dispatch({ type: 'REMOVE_NOTIFICATION', payload: friendship });
+    dispatch({ type: 'REMOVE_FRIEND', payload: friendship });
+    dispatch({ type: 'UPDATE_FRIENDSHIP', payload: friendship });
+  } else {
+    AlertHelper.show('error', 'Error', error.message);
+  }
+};
+
+export const deleteFriendshipByIdError = (
+  dispatch: React.Dispatch<any>,
+  setLoading: Function
+) => (e: ApolloError) => {
+  setLoading(false);
   AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
 };
