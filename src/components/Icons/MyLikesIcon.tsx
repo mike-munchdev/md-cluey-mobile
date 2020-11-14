@@ -17,7 +17,6 @@ const MyLikesIcon: FC<IMyLikesIconProps> = ({ response, size, color }) => {
   useEffect(() => {
     switch (response?.response) {
       case 'will-buy':
-        setIconName('laugh');
         break;
       case 'will-buy-later':
         setIconName('emoji-happy');

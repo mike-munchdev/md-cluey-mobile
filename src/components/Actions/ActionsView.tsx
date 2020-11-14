@@ -34,10 +34,10 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
   useEffect(() => {
     if (company) {
       const response = state.companyResponses.find(
-        (r) => r.companyId === company.id
+        (r) => r.company.id === company.id
       );
 
-      dispatch({ type: 'UPDATE_USER_COMPANY_RESPONSE', payload: response });
+      dispatch({ type: 'SET_COMPANY_RESPONSE', payload: response });
     }
   }, [company]);
 
@@ -62,7 +62,6 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
   ) => {
     setIsLoading(true);
     if (companyResponse?.response === response) {
-      console.log('deleteCompanyResponse');
       await deleteCompanyResponse({
         variables: {
           input: {
@@ -71,7 +70,6 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
         },
       });
     } else {
-      console.log('updateCompanyResponseForUser');
       await updateCompanyResponseForUser({
         variables: {
           input: {

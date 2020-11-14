@@ -56,7 +56,6 @@ const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item }) => {
   const updateResponse = async (response: string, item: ICompanyReponse) => {
     setIsLoading(true);
     if (item.response === response) {
-      console.log('deleteCompanyResponse');
       await deleteCompanyResponse({
         variables: {
           input: {
@@ -65,7 +64,6 @@ const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item }) => {
         },
       });
     } else {
-      console.log('updateCompanyResponseForUser');
       await updateCompanyResponseForUser({
         variables: {
           input: {

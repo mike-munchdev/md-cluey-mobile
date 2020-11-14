@@ -155,6 +155,11 @@ export interface IRemoveCompanyResponseAction {
   type: typeof REMOVE_COMPANY_RESPONSE;
   payload: ICompanyReponse;
 }
+export const SET_COMPANY_RESPONSE = 'SET_COMPANY_RESPONSE';
+export interface ISetCompanyResponseAction {
+  type: typeof SET_COMPANY_RESPONSE;
+  payload: ICompanyReponse;
+}
 
 export const appReducer = (
   state: IAppStateProps,
@@ -179,6 +184,7 @@ export const appReducer = (
     | IUpdateNotificationAction
     | IRemoveFriendAction
     | IRemoveCompanyResponseAction
+    | ISetCompanyResponseAction
 ): IAppStateProps => {
   switch (action.type) {
     case 'ACCEPT_FRIEND':
@@ -207,19 +213,21 @@ export const appReducer = (
         ...state,
         users: action.payload,
       };
+    case 'SET_COMPANY_RESPONSE':
+      return {
+        ...state,
+        companyResponse: action.payload,
+      };
     case 'UPDATE_USER_COMPANY_RESPONSE':
-      console.log('UPDATE_USER_COMPANY_RESPONSE payload', action.payload);
       const responses = state.companyResponses?.filter(
         (r) => r.id !== action.payload.id
       );
-      console.log('UPDATE_USER_COMPANY_RESPONSE responses', responses);
+
       return {
         ...state,
         companyResponses: [...responses, action.payload],
-        companyResponse: action.payload,
       };
     case 'REMOVE_COMPANY_RESPONSE':
-      console.log('REMOVE_COMPANY_RESPONSE', action.payload);
       const responsesWithDeletedRemoved = state.companyResponses?.filter(
         (r) => r.id !== action.payload.id
       );
@@ -227,13 +235,11 @@ export const appReducer = (
       return {
         ...state,
         companyResponses: responsesWithDeletedRemoved,
-        companyResponse: null,
       };
     case 'UPDATE_USER_COMPANY_RESPONSES':
       return {
         ...state,
         companyResponses: action.payload,
-        companyResponse: null,
       };
     case 'UPDATE_USER_TOKEN':
       return {
