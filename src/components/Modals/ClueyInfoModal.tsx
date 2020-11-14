@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC, Fragment } from 'react';
+import React, { FC, Fragment } from 'react';
 import { Linking, ScrollView, Text, View } from 'react-native';
 import { Overlay } from 'react-native-elements';
 import { List } from 'react-native-paper';
@@ -41,7 +41,7 @@ const ClueyInfoModal: FC<IClueyInfoModalProps> = ({
                 </Text>
               </Fragment>
             }
-            left={(props) => (
+            left={() => (
               <MaterialIcons
                 name="attach-money"
                 size={36}
@@ -53,7 +53,7 @@ const ClueyInfoModal: FC<IClueyInfoModalProps> = ({
             titleNumberOfLines={10}
             titleStyle={{ color: theme.dark.hex }}
             title="Candidates running for office in 2020 have raised more funding than ever before in U.S. history. Corporate donations make up a big part of that. You may not realize it, but you vote with your wallet every time you make a purchase."
-            left={(props) => (
+            left={() => (
               <Entypo name="wallet" size={36} color={theme.dark.hex} />
             )}
           />
@@ -66,7 +66,7 @@ const ClueyInfoModal: FC<IClueyInfoModalProps> = ({
             titleNumberOfLines={10}
             titleStyle={{ color: theme.dark.hex }}
             title="Search for brands you buy every day"
-            left={(props) => (
+            left={() => (
               <MaterialCommunityIcons
                 name="numeric-1-circle"
                 size={36}
@@ -78,7 +78,7 @@ const ClueyInfoModal: FC<IClueyInfoModalProps> = ({
             titleNumberOfLines={10}
             titleStyle={{ color: theme.dark.hex }}
             title="Discover which party their corporate dollars are funding"
-            left={(props) => (
+            left={() => (
               <MaterialCommunityIcons
                 name="numeric-2-circle"
                 size={36}
@@ -90,7 +90,7 @@ const ClueyInfoModal: FC<IClueyInfoModalProps> = ({
             titleNumberOfLines={10}
             titleStyle={{ color: theme.dark.hex }}
             title="Make a decision to continue buying those brands or learn about other brands that better align with your ideals."
-            left={(props) => (
+            left={() => (
               <MaterialCommunityIcons
                 name="numeric-3-circle"
                 size={36}

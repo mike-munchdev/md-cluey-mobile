@@ -1,5 +1,5 @@
-import React, { useContext, FC, useState, Fragment, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import React, { useContext, FC, useState, Fragment } from 'react';
+import { View, Platform } from 'react-native';
 
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
@@ -13,7 +13,7 @@ import {
   getUserTokenCompleted,
   getUserTokenError,
   GET_USER_TOKEN,
-} from '../../graphql/queries/token/tokens';
+} from '../../graphql/queries/token';
 import styles from './styles';
 
 import signinSchema from '../../validation/signin';
@@ -29,14 +29,13 @@ import {
   facebookAuthentication,
   googleAuthentication,
 } from '../../utils/socialAuth';
-import { KeyboardAvoidingContainer } from '../../components/Containers';
+import { StandardContainer } from '../../components/Containers';
 import { AppleAuthenticationScope } from 'expo-apple-authentication';
-import AsyncStorage from '@react-native-community/async-storage';
 
 const SignIn: FC = () => {
   const [signInLoading, setSignInLoading] = useState(false);
   const index = useNavigationState((state) => state.index);
-  const [myIndex, setMyIndex] = useState(index);
+  const [myIndex] = useState(index);
   const { signIn } = useContext(AuthContext);
   const navigation = useNavigation();
 
@@ -61,6 +60,7 @@ const SignIn: FC = () => {
       });
 
       const { email, authorizationCode, identityToken, user } = response;
+
       // signed in
       await getUserToken({
         variables: {
@@ -111,9 +111,30 @@ const SignIn: FC = () => {
       );
     }
   };
+  const googleSignin = async () => {
+    try {
+      const { data, token } = await googleAuthentication();
+      const { id, email } = data;
+      setSignInLoading(true);
+      await getUserToken({
+        variables: {
+          email,
+          googleId: id,
+          googleAuthToken: token,
+        },
+      });
+    } catch (error) {
+      Bugsnag.notify(error);
+      AlertHelper.show(
+        'error',
+        'Google Login Error',
+        'Error logging into Google'
+      );
+    }
+  };
 
   return (
-    <KeyboardAvoidingContainer isLoading={signInLoading}>
+    <StandardContainer isLoading={signInLoading}>
       <View style={styles.overlayContainer}>
         <View style={styles.top}>
           {myIndex > 0 ? <NavBackButton /> : null}
@@ -226,20 +247,7 @@ const SignIn: FC = () => {
                       <FontAwesome5 name="facebook" size={24} color="white" />
                     }
                   />
-                  <AppleAuthentication.AppleAuthenticationButton
-                    buttonType={
-                      AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
-                    }
-                    buttonStyle={
-                      AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
-                    }
-                    cornerRadius={5}
-                    style={{ width: '100%', height: 50, marginTop: 10 }}
-                    onPress={async () => {
-                      await appleSignin();
-                    }}
-                  />
-                  {/* <ActionButton
+                  <ActionButton
                     handlePress={async () => {
                       await googleSignin();
                     }}
@@ -250,7 +258,24 @@ const SignIn: FC = () => {
                     leftIcon={
                       <FontAwesome5 name="google" size={24} color="white" />
                     }
-                  /> */}
+                  />
+                  {Platform.OS === 'ios' ? (
+                    <AppleAuthentication.AppleAuthenticationButton
+                      buttonType={
+                        AppleAuthentication.AppleAuthenticationButtonType
+                          .SIGN_IN
+                      }
+                      buttonStyle={
+                        AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
+                      }
+                      cornerRadius={5}
+                      style={{ width: '100%', height: 50, marginTop: 10 }}
+                      onPress={async () => {
+                        await appleSignin();
+                      }}
+                    />
+                  ) : null}
+
                   <ActionButton
                     handlePress={() => navigation.navigate('SignUp')}
                     textColor={theme.buttonText}
@@ -265,7 +290,7 @@ const SignIn: FC = () => {
           }}
         </Formik>
       </View>
-    </KeyboardAvoidingContainer>
+    </StandardContainer>
   );
 };
 export default SignIn;

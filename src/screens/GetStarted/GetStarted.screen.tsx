@@ -27,14 +27,18 @@ const GetStarted = () => {
         <View style={styles.buttonContainer}>
           <ActionButton
             title="Get Started"
-            handlePress={() => navigation.navigate('SignUp')}
+            handlePress={() => {
+              navigation.navigate('SignUp');
+            }}
             buttonStyles={{ marginTop: 15 }}
             textColor={theme.buttonText}
             color={theme.dark.hex}
           />
 
           <TouchableOpacity
-            onPress={() => navigation.navigate('SignIn')}
+            onPress={() => {
+              navigation.navigate('SignIn');
+            }}
             style={[
               styles.signIn,
               {
@@ -51,7 +55,9 @@ const GetStarted = () => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate('Categories')}
+            onPress={() => {
+              navigation.navigate('Categories');
+            }}
             style={{
               width: '100%',
               height: 50,

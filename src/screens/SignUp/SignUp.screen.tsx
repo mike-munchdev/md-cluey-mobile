@@ -6,7 +6,6 @@ import { Formik } from 'formik';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useMutation } from '@apollo/react-hooks';
 import { Overlay, Button } from 'react-native-elements';
-import { TextInput } from 'react-native-paper';
 
 import styles from './styles';
 import { AuthContext } from '../../config/context';
@@ -17,7 +16,7 @@ import {
   userSignupError,
   userSignupCompleted,
   USER_SIGNUP,
-} from '../../graphql/queries/user/user';
+} from '../../graphql/queries/user';
 import theme from '../../constants/theme';
 import { ActionButton, NavBackButton } from '../../components/Buttons';
 import { HrText, LogoText } from '../../components/Text';
@@ -36,7 +35,7 @@ const SignUp: FC = () => {
   const [isLoading] = useState(false);
   const [signInLoading, setSignInLoading] = useState(false);
   const [passwordSnackVisible, setPasswordSnackVisible] = useState(false);
-  const [passwordSecureTextEntry, setPasswordSecureTextEntry] = useState(true);
+  const [] = useState(true);
   const navigation = useNavigation();
 
   const [userSignup] = useMutation(USER_SIGNUP, {
@@ -238,6 +237,18 @@ const SignUp: FC = () => {
                         <FontAwesome5 name="facebook" size={24} color="white" />
                       }
                     />
+                    <ActionButton
+                      handlePress={async () => {
+                        await googleSignup();
+                      }}
+                      buttonStyles={{ marginTop: 10 }}
+                      textColor={theme.buttonText}
+                      color={theme.googleBlue}
+                      title="Sign Up with Google"
+                      leftIcon={
+                        <FontAwesome5 name="google" size={24} color="white" />
+                      }
+                    />
                     <AppleAuthentication.AppleAuthenticationButton
                       buttonType={
                         AppleAuthentication.AppleAuthenticationButtonType
@@ -252,18 +263,6 @@ const SignUp: FC = () => {
                         await appleSignup();
                       }}
                     />
-                    {/* <ActionButton
-                      handlePress={async () => {
-                        await googleSignup();
-                      }}
-                      buttonStyles={{ marginTop: 10 }}
-                      textColor={theme.buttonText}
-                      color={theme.googleBlue}
-                      title="Sign Up with Google"
-                      leftIcon={
-                        <FontAwesome5 name="google" size={24} color="white" />
-                      }
-                    /> */}
                   </View>
                 </View>
               );

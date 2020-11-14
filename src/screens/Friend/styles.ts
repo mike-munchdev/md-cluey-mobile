@@ -8,16 +8,15 @@ export default StyleSheet.create({
   friendsContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'red',
-
     marginHorizontal: 20,
-    marginTop: 10,
-    // marginTop: 50,
+    flex: 1,
   },
   infoContainer: {
     marginHorizontal: 10,
-    height: '75%',
+    flex: 1,
     flexDirection: 'column',
+    width: '100%',
+    marginTop: 10,
   },
   searchCaptionText: {
     fontSize: 26,

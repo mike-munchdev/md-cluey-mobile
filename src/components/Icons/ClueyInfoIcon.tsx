@@ -1,5 +1,5 @@
-import React, { useState, useEffect, Fragment, FC } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import React, { Fragment, FC } from 'react';
+import { TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import theme from '../../constants/theme';
 

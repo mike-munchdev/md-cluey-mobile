@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Text, View, ViewStyle, StyleProp } from 'react-native';
+import { Text, View } from 'react-native';
 import { ICompany } from '../../interfaces';
 import styles from '../../screens/Splash/styles';
 

@@ -1,5 +1,5 @@
 import React, { FC, Fragment, useEffect, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, RefreshControl, View } from 'react-native';
 import { ActivityIndicator, Searchbar } from 'react-native-paper';
 import Constants from 'expo-constants';
 import theme from '../../constants/theme';
@@ -8,6 +8,7 @@ import { NavListItem } from '../ListItem';
 import styles from './styles';
 import { NODE_ENV } from '../../hooks/serverInfo';
 import { ICompany } from '../../interfaces';
+import ListEmptyView from '../ListItem/ListEmptyView';
 
 export interface ICompaniesListProps {
   list: [];
@@ -16,12 +17,16 @@ export interface ICompaniesListProps {
     | (((text: string) => void) & ((query: string) => void))
     | undefined;
   loading: boolean;
+  handleRefresh?: (() => void) | undefined;
+  refreshing: boolean;
 }
 const CompaniesList: FC<ICompaniesListProps> = ({
   list,
   searchQuery,
   onChangeSearch,
   loading,
+  handleRefresh,
+  refreshing,
 }) => {
   const [orderedList, setOrderedList] = useState(list);
 
@@ -53,6 +58,12 @@ const CompaniesList: FC<ICompaniesListProps> = ({
           />
 
           <FlatList
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+              />
+            }
             style={{ width: '100%' }}
             data={orderedList}
             keyExtractor={(item) => item.id.toString()}
@@ -78,19 +89,7 @@ const CompaniesList: FC<ICompaniesListProps> = ({
               );
             }}
             ListEmptyComponent={() => {
-              return (
-                <View style={{ alignItems: 'center' }}>
-                  <Text
-                    style={{
-                      fontFamily: 'MontserratMedium',
-                      fontSize: 24,
-                      color: theme.dark.hex,
-                    }}
-                  >
-                    No Brands
-                  </Text>
-                </View>
-              );
+              return <ListEmptyView title="No Brands" />;
             }}
           />
         </Fragment>

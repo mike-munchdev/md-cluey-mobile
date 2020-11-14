@@ -11,35 +11,39 @@ import SidebarMenuItem from './SidebarMenuItem';
 import { HorizontalRule } from '../HorizontalRule/';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import theme from '../../constants/theme';
-import { AlertHelper } from '../../utils/alert';
 import { useMutation } from '@apollo/react-hooks';
 import {
   updateUserCompleted,
   updateUserError,
   UPDATE_USER,
-} from '../../graphql/queries/user/user';
-import { Button, Overlay } from 'react-native-elements';
+} from '../../graphql/queries/user';
+import { Overlay } from 'react-native-elements';
 import { ActionButton } from '../Buttons';
 
 const Sidebar = () => {
   const navigation = useNavigation();
 
-  const { user, setUser } = useContext(AppContext);
+  const { state, dispatch } = useContext(AppContext);
 
   const [, setIsLoading] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(false);
   const [updateUser] = useMutation(UPDATE_USER, {
     onError: updateUserError(setIsLoading),
-    onCompleted: updateUserCompleted(setIsLoading, setUser),
+    onCompleted: updateUserCompleted(setIsLoading, dispatch),
   });
   const onIsMakeLikesPublicToggleSwitch = async () => {
     // check for consumer profile settings
-    if (user.dob && user.gender && user.city && user.state) {
+    if (
+      state.user?.dob &&
+      state.user?.gender &&
+      state.user?.city &&
+      state.user?.state
+    ) {
       await updateUser({
         variables: {
           input: {
-            userId: user?.id,
-            isProfilePublic: !user?.isProfilePublic,
+            userId: state.user?.id,
+            isProfilePublic: !state.user?.isProfilePublic,
           },
         },
       });
@@ -49,10 +53,10 @@ const Sidebar = () => {
   };
 
   useEffect(() => {
-    if (user?.mustResetPassword) {
+    if (state.user?.mustResetPassword) {
       navigation.dispatch(StackActions.replace('ResetPassword'));
     }
-  }, [user]);
+  }, [state.user]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -64,7 +68,7 @@ const Sidebar = () => {
             style={{ marginLeft: 15 }}
           >
             <Text style={{ fontSize: 18 }}>{`${
-              user ? `${user.firstName} ${user.lastName}` : ''
+              state.user ? `${state.user.firstName} ${state.user.lastName}` : ''
             }`}</Text>
 
             <Text style={{ fontSize: 14 }}>View Profile</Text>
@@ -104,15 +108,40 @@ const Sidebar = () => {
           // viewStyles={{ marginTop: 20 }}
         />
         <SidebarMenuItem
+          onPress={async () => {
+            navigation.navigate('SystemNotifications');
+          }}
+          iconName="bell"
+          iconSize={20}
+          title="Notifications"
+          iconColor={theme.dark.hex}
+          viewStyles={{ marginTop: 20 }}
+        />
+        <SidebarMenuItem
+          onPress={() => {
+            navigation.navigate('Friends');
+          }}
+          iconName="user-friends"
+          iconSize={20}
+          title="Manage Cluey Friends"
+          iconColor={theme.dark.hex}
+          viewStyles={{ marginTop: 20 }}
+        />
+
+        <SidebarMenuItem
           onPress={onIsMakeLikesPublicToggleSwitch}
           icon={() => (
             <MaterialCommunityIcons
               name={
-                user?.isProfilePublic ? 'toggle-switch' : 'toggle-switch-off'
+                state.user?.isProfilePublic
+                  ? 'toggle-switch'
+                  : 'toggle-switch-off'
               }
               size={20}
               color={
-                user?.isProfilePublic ? theme.successText : theme.errorText
+                state.user?.isProfilePublic
+                  ? theme.successText
+                  : theme.errorText
               }
             />
           )}
@@ -159,13 +188,6 @@ const Sidebar = () => {
         <View style={{ marginBottom: 10 }}>
           <Text style={{ fontSize: 14 }}>Coming Soon</Text>
         </View>
-        <SidebarMenuItem
-          onPress={() => {}}
-          iconName="user-friends"
-          iconSize={20}
-          title="Manage Cluey Friends"
-          iconColor={theme.disabledText}
-        />
 
         <SidebarMenuItem
           onPress={() => {}}
@@ -173,7 +195,6 @@ const Sidebar = () => {
           iconColor={theme.disabledText}
           iconSize={20}
           title="Manage Planet Preferences"
-          viewStyles={{ marginTop: 20 }}
         />
         <SidebarMenuItem
           onPress={() => {}}

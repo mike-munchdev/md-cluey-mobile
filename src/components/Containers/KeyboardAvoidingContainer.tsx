@@ -1,12 +1,5 @@
 import React, { FC } from 'react';
-import {
-  StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
-  StatusBar,
-  View,
-} from 'react-native';
+import { StyleSheet, SafeAreaView, StatusBar, View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 
 import { DismissKeyboard } from '../../components/TextInput';

@@ -2,7 +2,7 @@
   "expo": {
     "name": "Cluey",
     "slug": "cluey-mobile",
-    "version": "1.0.8",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/Icon-1024.png",
     "facebookScheme": "fb1187672448283641",
@@ -65,11 +65,11 @@
           "googleClientIdAndroid": "576013538553-d8gffmivuiibqtcilddvcd8ajs91e2vj.apps.googleusercontent.com"
         },
         "development": {
-          "apiServerUrl": "192.168.0.10:4004",
+          "apiServerUrl": "localhost:4004",
           "httpProtocol": "http",
           "wsProtocol": "ws",
-          "categoryImageUrlPrefix": "http://192.168.0.10:4004/categories/",
-          "brandLogoUrlPrefix": "http://192.168.0.10:4004/logos/",
+          "categoryImageUrlPrefix": "http://localhost:4004/categories/",
+          "brandLogoUrlPrefix": "http://localhost:4004/logos/",
           "googleClientIdIos": "854065862128-d6n6v1m2gjf1bgml4am349bf1s43fvkc.apps.googleusercontent.com",
           "googleClientIdAndroid": "854065862128-c9qbpsi1m8frp0a39n6bqq8dhkp2555f.apps.googleusercontent.com"
         }

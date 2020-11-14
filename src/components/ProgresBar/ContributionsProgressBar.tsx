@@ -5,7 +5,6 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import styles from './styles';
 import theme from '../../constants/theme';
 import { Tooltip } from 'react-native-elements';
-import { Paragraph } from 'react-native-paper';
 
 export interface IContributionProgrsessBarProps {
   title: React.ReactNode;

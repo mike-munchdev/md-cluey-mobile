@@ -7,9 +7,10 @@ import {
   updateCompanyResponseForUserCompleted,
   updateCompanyResponseForUserError,
   UPDATE_COMPANY_RESPONSE_FOR_USER,
-} from '../../graphql/queries/user/user';
+} from '../../graphql/queries/user';
 import { AppContext } from '../../config/context';
 import { ActivityIndicator } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 
 export interface IMyLikesListItemProps {
   item: any;
@@ -17,20 +18,19 @@ export interface IMyLikesListItemProps {
 }
 
 const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item, title }) => {
-  const { user, setUser } = useContext(AppContext);
+  const { state, dispatch } = useContext(AppContext);
   const [companyResponse, setCompanyResponse] = useState(item);
   const [isLoading, setIsLoading] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (companyResponse) {
       const responses = [
-        ...user?.companyResponses.filter((r) => r.id !== companyResponse.id),
+        ...state.companyResponses.filter((r) => r.id !== companyResponse.id),
         companyResponse,
       ];
-      const updatedUser = { ...user };
-      updatedUser.companyResponses = responses;
 
-      setUser(updatedUser);
+      dispatch({ type: 'UPDATE_USER_COMPANY_RESPONSES', payload: responses });
     }
   }, [companyResponse]);
 
@@ -53,7 +53,7 @@ const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item, title }) => {
     updateCompanyResponseForUser({
       variables: {
         input: {
-          userId: user?.id,
+          userId: state.user?.id,
           companyId,
           response,
         },
@@ -63,6 +63,9 @@ const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item, title }) => {
 
   return (
     <ListItem
+      onPress={() =>
+        navigation.navigate('Company', { company: companyResponse.company })
+      }
       key={companyResponse.id}
       bottomDivider
       style={{

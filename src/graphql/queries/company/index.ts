@@ -3,45 +3,9 @@ import { ApolloError } from 'apollo-client';
 import { AlertHelper } from '../../../utils/alert';
 import Bugsnag from '@bugsnag/expo';
 
-export const companyStructure = `{    
-    id
-    name
-    brandUrl
-    brandLogoUrl
-    isActive
-    categories {
-      id
-      name
-    }
-    productTypes {
-      id
-      name
-    }
-    parentCompanies {
-      id
-      name     
-    }
-    politicalContributions {
-      id
-      cycle
-      org_id
-      org_name
-      total
-      democrats
-      republicans 
-      third_party
-      indivs
-      indivs_dems
-      indivs_repubs
-      indivs_third
-      pacs
-      pacs_dems
-      pacs_repubs
-      pacs_third
-      
-    }
-  }
-`;
+import { errors } from '../../../constants/errors';
+import { companyStructure } from '../structures';
+import { getErrorMessage } from '../../../utils/errors';
 
 export const GET_COMPANIES_BY_NAME = gql`
   query GetCompaniesByName($name: String!, $exact: Boolean) {
@@ -62,7 +26,8 @@ export const getCompaniesByNameError = (
 ) => (e: ApolloError) => {
   setLoading(false);
   setCompanies([]);
-  AlertHelper.show('error', 'Error', 'An error occurred. Please try again.');
+
+  AlertHelper.show('error', 'Error', getErrorMessage(e));
 };
 
 export const getCompaniesByNameCompleted = (
@@ -77,7 +42,7 @@ export const getCompaniesByNameCompleted = (
     if (searchText) setCache({ ...cache, [searchText]: companies });
     setCompanies(companies);
   } else {
-    AlertHelper.show('error', 'Error', error.message);
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   }
 };
 
@@ -101,7 +66,8 @@ export const getCompaniesByCategoryError = (
   setLoading(false);
   setCompanies([]);
   setFilteredList([]);
-  AlertHelper.show('error', 'Error', 'An error occurred. Please try again.');
+
+  AlertHelper.show('error', 'Error', getErrorMessage(e));
 };
 
 export const getCompaniesByCategoryCompleted = (
@@ -115,7 +81,7 @@ export const getCompaniesByCategoryCompleted = (
     setCompanies(companies);
     setFilteredList(companies);
   } else {
-    AlertHelper.show('error', 'Error', error.message);
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   }
 };
 
@@ -139,7 +105,7 @@ export const getCompaniesByProductTypeError = (
   setLoading(false);
   setCompanies([]);
   setFilteredList([]);
-  AlertHelper.show('error', 'Error', 'An error occurred. Please try again.');
+  AlertHelper.show('error', 'Error', getErrorMessage(e));
 };
 
 export const getCompaniesByProductTypeCompleted = (
@@ -153,7 +119,7 @@ export const getCompaniesByProductTypeCompleted = (
     setCompanies(companies);
     setFilteredList(companies);
   } else {
-    AlertHelper.show('error', 'Error', error.message);
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   }
 };
 
@@ -176,7 +142,7 @@ export const getCompanyByIdError = (
   setLoading(false);
   setCompany(null);
 
-  AlertHelper.show('error', 'Error', 'An error occurred. Please try again.');
+  AlertHelper.show('error', 'Error', getErrorMessage(e));
 };
 
 export const getCompanyByIdCompleted = (
@@ -189,6 +155,6 @@ export const getCompanyByIdCompleted = (
   if (ok) {
     setCompany(company);
   } else {
-    AlertHelper.show('error', 'Error', error.message);
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   }
 };

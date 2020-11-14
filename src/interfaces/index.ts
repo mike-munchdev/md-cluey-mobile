@@ -96,3 +96,13 @@ export interface IFriendship {
   recipient: IFriend;
   status: string;
 }
+
+export interface ISystemNotification {
+  id: string;
+  message: string;
+  notificationType: string;
+  linkId: string;
+  isRead: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}

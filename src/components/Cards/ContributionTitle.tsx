@@ -1,7 +1,5 @@
-import React, { useState, useEffect, Fragment, FC } from 'react';
-import { Text, View } from 'react-native';
-
-import styles from './styles';
+import React, { Fragment, FC } from 'react';
+import { Text } from 'react-native';
 
 export interface IContributionTitleProps {
   title: string;
