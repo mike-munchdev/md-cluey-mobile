@@ -4,6 +4,9 @@ import { ListItem } from 'react-native-elements';
 import theme from '../../constants/theme';
 import { useMutation } from '@apollo/react-hooks';
 import {
+  deleteCompanyResponseCompleted,
+  deleteCompanyResponseError,
+  DELETE_COMPANY_RESPONSE,
   updateCompanyResponseForUserCompleted,
   updateCompanyResponseForUserError,
   UPDATE_COMPANY_RESPONSE_FOR_USER,
@@ -11,62 +14,71 @@ import {
 import { AppContext } from '../../config/context';
 import { ActivityIndicator } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import { ICompanyReponse } from '../../interfaces';
 
 export interface IMyLikesListItemProps {
   item: any;
-  title: string;
 }
 
-const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item, title }) => {
+const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item }) => {
   const { state, dispatch } = useContext(AppContext);
-  const [companyResponse, setCompanyResponse] = useState(item);
+
   const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
 
-  useEffect(() => {
-    if (companyResponse) {
-      const responses = [
-        ...state.companyResponses.filter((r) => r.id !== companyResponse.id),
-        companyResponse,
-      ];
+  // useEffect(() => {
+  //   if (item) {
+  //     const responses = [
+  //       ...state.companyResponses.filter((r) => r.id !== item.id),
+  //       companyResponse,
+  //     ];
 
-      dispatch({ type: 'UPDATE_USER_COMPANY_RESPONSES', payload: responses });
-    }
-  }, [companyResponse]);
+  //     dispatch({ type: 'UPDATE_USER_COMPANY_RESPONSES', payload: responses });
+  //   }
+  // }, [companyResponse]);
 
   const [updateCompanyResponseForUser] = useMutation(
     UPDATE_COMPANY_RESPONSE_FOR_USER,
     {
-      onError: updateCompanyResponseForUserError(
-        setCompanyResponse,
-        setIsLoading
-      ),
+      onError: updateCompanyResponseForUserError(dispatch, setIsLoading),
       onCompleted: updateCompanyResponseForUserCompleted(
-        setCompanyResponse,
+        dispatch,
         setIsLoading
       ),
     }
   );
 
-  const updateResponse = (response: string, companyId: string) => {
+  const [deleteCompanyResponse] = useMutation(DELETE_COMPANY_RESPONSE, {
+    onError: deleteCompanyResponseError(dispatch, setIsLoading),
+    onCompleted: deleteCompanyResponseCompleted(dispatch, setIsLoading),
+  });
+
+  const updateResponse = async (response: string, item: ICompanyReponse) => {
     setIsLoading(true);
-    updateCompanyResponseForUser({
-      variables: {
-        input: {
-          userId: state.user?.id,
-          companyId,
-          response,
+    if (item.response === response) {
+      await deleteCompanyResponse({
+        variables: {
+          input: {
+            responseId: item.id,
+          },
         },
-      },
-    });
+      });
+    } else {
+      await updateCompanyResponseForUser({
+        variables: {
+          input: {
+            responseId: item.id,
+            response,
+          },
+        },
+      });
+    }
   };
 
   return (
     <ListItem
-      onPress={() =>
-        navigation.navigate('Company', { company: companyResponse.company })
-      }
-      key={companyResponse.id}
+      onPress={() => navigation.navigate('Company', { company: item.company })}
+      key={item.id}
       bottomDivider
       style={{
         marginBottom: 5,
@@ -82,7 +94,7 @@ const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item, title }) => {
               fontSize: 18,
             }}
           >
-            {title}
+            {item.company.name}
           </Text>
         </ListItem.Title>
       </ListItem.Content>
@@ -99,42 +111,34 @@ const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item, title }) => {
             style={{ marginHorizontal: 7 }}
             name="emoji-sad"
             type="entypo"
-            size={companyResponse.response === 'will-not-buy' ? 30 : 22}
+            size={item.response === 'will-not-buy' ? 30 : 22}
             color={theme.dark.hex}
-            onPress={() =>
-              updateResponse('will-not-buy', companyResponse.company.id)
-            }
+            onPress={() => updateResponse('will-not-buy', item)}
           />
           <ListItem.Chevron
             style={{ marginHorizontal: 7 }}
             name="emoji-neutral"
             type="entypo"
-            size={companyResponse.response === 'will-not-buy-later' ? 30 : 22}
+            size={item.response === 'will-not-buy-later' ? 30 : 22}
             color={theme.dark.hex}
-            onPress={() =>
-              updateResponse('will-not-buy-later', companyResponse.company.id)
-            }
+            onPress={() => updateResponse('will-not-buy-later', item)}
           />
 
           <ListItem.Chevron
             style={{ marginHorizontal: 7 }}
             name="emoji-happy"
             type="entypo"
-            size={companyResponse.response === 'will-buy-later' ? 30 : 22}
+            size={item.response === 'will-buy-later' ? 30 : 22}
             color={theme.dark.hex}
-            onPress={() =>
-              updateResponse('will-buy-later', companyResponse.company.id)
-            }
+            onPress={() => updateResponse('will-buy-later', item)}
           />
           <ListItem.Chevron
             style={{ marginHorizontal: 7 }}
             name="laugh"
             type="font-awesome-5"
-            size={companyResponse.response === 'will-buy' ? 34 : 22}
+            size={item.response === 'will-buy' ? 34 : 22}
             color={theme.dark.hex}
-            onPress={() =>
-              updateResponse('will-buy', companyResponse.company.id)
-            }
+            onPress={() => updateResponse('will-buy', item)}
           />
         </Fragment>
       )}

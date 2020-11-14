@@ -12,6 +12,9 @@ import {
   updateCompanyResponseForUserError,
   updateCompanyResponseForUserCompleted,
   UPDATE_COMPANY_RESPONSE_FOR_USER,
+  DELETE_COMPANY_RESPONSE,
+  deleteCompanyResponseError,
+  deleteCompanyResponseCompleted,
 } from '../../graphql/queries/user';
 import { AppContext } from '../../config/context';
 import { ICompany, ICompanyReponse } from '../../interfaces';
@@ -25,56 +28,59 @@ export interface IActionsViewProps {
 const ActionsView: FC<IActionsViewProps> = ({ company }) => {
   const navigation = useNavigation();
   const { state, dispatch } = useContext(AppContext);
-  const [companyResponse, setCompanyResponse] = useState<
-    ICompanyReponse | null | undefined
-  >(null);
-  const [isLoading, setIsLoading] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(false);
+  const { companyResponse } = state;
   useEffect(() => {
     if (company) {
       const response = state.companyResponses.find(
-        (r) => r.companyId === company.id
+        (r) => r.company.id === company.id
       );
 
-      setCompanyResponse(response);
+      dispatch({ type: 'SET_COMPANY_RESPONSE', payload: response });
     }
   }, [company]);
-
-  useEffect(() => {
-    if (companyResponse) {
-      const responses = [
-        ...state.companyResponses.filter((r) => r.id !== companyResponse.id),
-        companyResponse,
-      ];
-
-      dispatch({ type: 'UPDATE_USER_COMPANY_RESPONSES', payload: responses });
-    }
-  }, [companyResponse]);
 
   const [updateCompanyResponseForUser] = useMutation(
     UPDATE_COMPANY_RESPONSE_FOR_USER,
     {
-      onError: updateCompanyResponseForUserError(
-        setCompanyResponse,
-        setIsLoading
-      ),
+      onError: updateCompanyResponseForUserError(dispatch, setIsLoading),
       onCompleted: updateCompanyResponseForUserCompleted(
-        setCompanyResponse,
+        dispatch,
         setIsLoading
       ),
     }
   );
+  const [deleteCompanyResponse] = useMutation(DELETE_COMPANY_RESPONSE, {
+    onError: deleteCompanyResponseError(dispatch, setIsLoading),
+    onCompleted: deleteCompanyResponseCompleted(dispatch, setIsLoading),
+  });
 
-  const updateResponse = (response: string) => {
-    updateCompanyResponseForUser({
-      variables: {
-        input: {
-          userId: state.user?.id,
-          companyId: company?.id,
-          response,
+  const updateResponse = async (
+    response: string,
+    companyResponse: ICompanyReponse | null | undefined
+  ) => {
+    setIsLoading(true);
+    if (companyResponse?.response === response) {
+      await deleteCompanyResponse({
+        variables: {
+          input: {
+            responseId: companyResponse?.id,
+          },
         },
-      },
-    });
+      });
+    } else {
+      await updateCompanyResponseForUser({
+        variables: {
+          input: {
+            responseId: companyResponse?.id,
+            userId: state.user.id,
+            companyId: company?.id,
+            response,
+          },
+        },
+      });
+    }
   };
 
   return (
@@ -99,7 +105,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
               <TouchableOpacity
                 style={styles.likesButton}
                 onPress={() => {
-                  updateResponse('will-buy');
+                  updateResponse('will-buy', companyResponse);
                 }}
               >
                 <FontAwesome5
@@ -121,7 +127,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
               <TouchableOpacity
                 style={styles.likesButton}
                 onPress={() => {
-                  updateResponse('will-buy-later');
+                  updateResponse('will-buy-later', companyResponse);
                 }}
               >
                 <Entypo
@@ -145,7 +151,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
               <TouchableOpacity
                 style={styles.likesButton}
                 onPress={() => {
-                  updateResponse('will-not-buy-later');
+                  updateResponse('will-not-buy-later', companyResponse);
                 }}
               >
                 <Entypo
@@ -169,7 +175,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
               <TouchableOpacity
                 style={styles.likesButton}
                 onPress={() => {
-                  updateResponse('will-not-buy');
+                  updateResponse('will-not-buy', companyResponse);
                 }}
               >
                 <Entypo

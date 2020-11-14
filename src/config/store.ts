@@ -10,6 +10,7 @@ import {
 export interface IAppStateProps {
   user: IUser | undefined | null;
   companyResponses: ICompanyReponse[] | undefined | null;
+  companyResponse: ICompanyReponse | undefined | null;
   friends: IFriendship[] | undefined | null;
   notifications: ISystemNotification[] | undefined | null;
   token: string | undefined | null;
@@ -33,6 +34,7 @@ export const initialState: IAppStateProps = {
   friend: null,
   categories: [],
   productTypes: [],
+  companyResponse: null,
 };
 
 export const UPDATE_USER = 'UPDATE_USER';
@@ -148,6 +150,16 @@ export interface IRemoveFriendAction {
   type: typeof REMOVE_FRIEND;
   payload: IFriendship;
 }
+export const REMOVE_COMPANY_RESPONSE = 'REMOVE_COMPANY_RESPONSE';
+export interface IRemoveCompanyResponseAction {
+  type: typeof REMOVE_COMPANY_RESPONSE;
+  payload: ICompanyReponse;
+}
+export const SET_COMPANY_RESPONSE = 'SET_COMPANY_RESPONSE';
+export interface ISetCompanyResponseAction {
+  type: typeof SET_COMPANY_RESPONSE;
+  payload: ICompanyReponse;
+}
 
 export const appReducer = (
   state: IAppStateProps,
@@ -171,6 +183,8 @@ export const appReducer = (
     | IRemoveNotificationAction
     | IUpdateNotificationAction
     | IRemoveFriendAction
+    | IRemoveCompanyResponseAction
+    | ISetCompanyResponseAction
 ): IAppStateProps => {
   switch (action.type) {
     case 'ACCEPT_FRIEND':
@@ -199,14 +213,28 @@ export const appReducer = (
         ...state,
         users: action.payload,
       };
+    case 'SET_COMPANY_RESPONSE':
+      return {
+        ...state,
+        companyResponse: action.payload,
+      };
     case 'UPDATE_USER_COMPANY_RESPONSE':
       const responses = state.companyResponses?.filter(
-        (r) => r.id === action.payload.id
+        (r) => r.id !== action.payload.id
       );
 
       return {
         ...state,
         companyResponses: [...responses, action.payload],
+      };
+    case 'REMOVE_COMPANY_RESPONSE':
+      const responsesWithDeletedRemoved = state.companyResponses?.filter(
+        (r) => r.id !== action.payload.id
+      );
+
+      return {
+        ...state,
+        companyResponses: responsesWithDeletedRemoved,
       };
     case 'UPDATE_USER_COMPANY_RESPONSES':
       return {

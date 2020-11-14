@@ -20,7 +20,6 @@ export interface IUser {
 }
 export interface ICompanyReponse {
   id: string;
-  companyId: string;
   company: ICompany;
   response: string;
 }

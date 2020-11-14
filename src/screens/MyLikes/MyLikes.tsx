@@ -47,15 +47,15 @@ const MyLikes: FC = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    const searchLowercase = searchQuery.toLowerCase();
+  const filterList = (query: String) => {
+    const searchLowercase = query.toLowerCase();
 
     const newList = state.companyResponses.filter((f: ICompanyReponse) =>
       f.company.name.toLowerCase().includes(searchLowercase)
     );
 
-    setFilteredList(newList);
-  }, [searchQuery]);
+    return newList;
+  };
 
   const onChangeSearch = (query: string) => setSearchQuery(query);
 
@@ -65,9 +65,17 @@ const MyLikes: FC = () => {
         <NavHeader title="My Likes" showMenu />
         <MyLikesList
           loading={isLoading}
-          list={filteredList}
+          list={searchQuery ? filterList(searchQuery) : state.companyResponses}
           searchQuery={searchQuery}
           onChangeSearch={onChangeSearch}
+          refreshing={isLoading}
+          handleRefresh={async () => {
+            await getUserCompanyResponses({
+              variables: {
+                userId: user?.id,
+              },
+            });
+          }}
         />
       </View>
     </StandardContainer>

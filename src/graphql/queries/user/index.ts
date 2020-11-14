@@ -24,6 +24,78 @@ export const GET_USER_COMPANY_RESPONSES = gql`
   }
 `;
 
+export const getUserCompanyResponsesError = (reset: Function) => (
+  e: ApolloError
+) => {
+  reset();
+  AlertHelper.show(
+    'error',
+    'Error',
+    'An error occurred and has been logged. Please try again.'
+  );
+};
+
+export const getUserCompanyResponsesCompleted = (
+  reset: Function,
+  dispatch: React.Dispatch<any>,
+  setFilteredList: Function
+) => async ({ getUserCompanyResponses }) => {
+  const { ok, companyResponses, error } = getUserCompanyResponses;
+
+  if (ok) {
+    dispatch({
+      type: 'UPDATE_USER_COMPANY_RESPONSES',
+      payload: companyResponses,
+    });
+
+    setFilteredList(companyResponses);
+    reset();
+  } else {
+    reset();
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
+  }
+};
+
+export const GET_USER_COMPANY_RESPONSE = gql`
+  query GetUserCompanyResponse($input: GetCompanyResponseInput!) {
+    getUserCompanyResponse(input: $input) {
+      ok
+      companyResponse ${responseStructure}
+      error {        
+        message
+      }
+    }
+  }
+`;
+
+export const getUserCompanyResponseError = (reset: Function) => (
+  e: ApolloError
+) => {
+  reset();
+  AlertHelper.show(
+    'error',
+    'Error',
+    'An error occurred and has been logged. Please try again.'
+  );
+};
+
+export const getUserCompanyResponseCompleted = (
+  reset: Function,
+  dispatch: React.Dispatch<any>,
+  setFilteredList: Function
+) => async ({ getUserCompanyResponse }) => {
+  const { ok, companyResponse, error } = getUserCompanyResponse;
+
+  if (ok) {
+    dispatch({
+      type: 'UPDATE_USER_COMPANY_RESPONSE',
+      payload: companyResponse,
+    });
+  } else {
+    reset();
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
+  }
+};
 export const GET_USER_BY_ID = gql`
   query GetUserById($userId: String!) {
     getUserById(userId: $userId) {
@@ -133,6 +205,36 @@ export const UPDATE_COMPANY_RESPONSE_FOR_USER = gql`
   }
 `;
 
+export const updateCompanyResponseForUserError = (
+  dispatch: React.Dispatch<any>,
+  setLoading: Function
+) => (e: ApolloError) => {
+  setLoading(false);
+
+  AlertHelper.show('error', 'Error', getErrorMessage(e));
+};
+
+export const updateCompanyResponseForUserCompleted = (
+  dispatch: React.Dispatch<any>,
+  setLoading: Function
+) => async ({ updateCompanyResponseForUser }) => {
+  const { ok, companyResponse, error } = updateCompanyResponseForUser;
+
+  setLoading(false);
+  if (ok) {
+    dispatch({
+      type: 'UPDATE_USER_COMPANY_RESPONSE',
+      payload: companyResponse,
+    });
+    dispatch({
+      type: 'SET_COMPANY_RESPONSE',
+      payload: companyResponse,
+    });
+  } else {
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
+  }
+};
+
 export const GET_PUBLIC_AND_ACTVE_NON_FRIENDS_BY_NAME = gql`
   query GetPublicAndActiveNonFriendsByName($name: String!, $exact: Boolean) {
     getPublicAndActiveNonFriendsByName(name: $name, exact: $exact) {
@@ -156,6 +258,41 @@ export const RESET_PASSWORD = gql`
     }
   }
 `;
+
+export const DELETE_COMPANY_RESPONSE = gql`
+  mutation DeleteCompanyResponse($input: DeleteCompanyResponseInput!) {
+    deleteCompanyResponse(input: $input) {
+      ok
+      companyResponse ${responseStructure}
+      error {
+        message
+      }
+    }
+  }
+`;
+
+export const deleteCompanyResponseError = (
+  dispatch: React.Dispatch<any>,
+  setLoading: Function
+) => (e: ApolloError) => {
+  setLoading(false);
+
+  AlertHelper.show('error', 'Error', getErrorMessage(e));
+};
+
+export const deleteCompanyResponseCompleted = (
+  dispatch: React.Dispatch<any>,
+  setLoading: Function
+) => async ({ deleteCompanyResponse }) => {
+  const { ok, companyResponse, error } = deleteCompanyResponse;
+
+  setLoading(false);
+  if (ok) {
+    dispatch({ type: 'REMOVE_COMPANY_RESPONSE', payload: companyResponse });
+  } else {
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
+  }
+};
 
 export const userSignupError = (setLoading: Function) => (e: ApolloError) => {
   setLoading(false);
@@ -316,29 +453,6 @@ export const activateUserAccountCompleted = (
   }
 };
 
-export const updateCompanyResponseForUserError = (
-  setCompanyResponse: Function,
-  setLoading: Function
-) => (e: ApolloError) => {
-  setLoading(false);
-  setCompanyResponse(null);
-  AlertHelper.show('error', 'Error', getErrorMessage(e));
-};
-
-export const updateCompanyResponseForUserCompleted = (
-  setCompanyResponse: Function,
-  setLoading: Function
-) => async ({ updateCompanyResponseForUser }) => {
-  const { ok, companyResponse, error } = updateCompanyResponseForUser;
-
-  setLoading(false);
-  if (ok) {
-    setCompanyResponse(companyResponse);
-  } else {
-    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
-  }
-};
-
 export const updateUserPasswordError = (setLoading: Function) => (
   e: ApolloError
 ) => {
@@ -369,38 +483,6 @@ export const updateUserPasswordCompleted = (
     }
   } else {
     setLoading(false);
-    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
-  }
-};
-
-export const getUserCompanyResponsesError = (reset: Function) => (
-  e: ApolloError
-) => {
-  reset();
-  AlertHelper.show(
-    'error',
-    'Error',
-    'An error occurred and has been logged. Please try again.'
-  );
-};
-
-export const getUserCompanyResponsesCompleted = (
-  reset: Function,
-  dispatch: React.Dispatch<any>,
-  setFilteredList: Function
-) => async ({ getUserCompanyResponses }) => {
-  const { ok, companyResponses, error } = getUserCompanyResponses;
-
-  if (ok) {
-    dispatch({
-      type: 'UPDATE_USER_COMPANY_RESPONSES',
-      payload: companyResponses,
-    });
-
-    setFilteredList(companyResponses);
-    reset();
-  } else {
-    reset();
     AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   }
 };

@@ -1,5 +1,5 @@
 import React, { FC, Fragment, useEffect, useState } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, RefreshControl, View } from 'react-native';
 import { ActivityIndicator, Searchbar } from 'react-native-paper';
 import theme from '../../constants/theme';
 import { ICompanyReponse } from '../../interfaces';
@@ -15,6 +15,8 @@ export interface IMyLikesListProps {
     | (((text: string) => void) & ((query: string) => void))
     | undefined;
   loading: boolean;
+  handleRefresh?: (() => void) | undefined;
+  refreshing: boolean;
 }
 
 const MyLikesList: FC<IMyLikesListProps> = ({
@@ -22,16 +24,16 @@ const MyLikesList: FC<IMyLikesListProps> = ({
   loading,
   onChangeSearch,
   searchQuery,
+  handleRefresh,
+  refreshing,
 }) => {
-  const [orderedList, setOrderedList] = useState(list);
-
-  useEffect(() => {
+  const sortList = (list: ICompanyReponse[]) => {
     const orderedList = list.sort((a: ICompanyReponse, b: ICompanyReponse) => {
       return a.company.name > b.company.name;
     });
 
-    setOrderedList(orderedList);
-  }, [list]);
+    return orderedList;
+  };
   return (
     <View style={styles.companiesContainer}>
       {loading ? (
@@ -49,11 +51,17 @@ const MyLikesList: FC<IMyLikesListProps> = ({
           />
 
           <FlatList
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+              />
+            }
             style={{ width: '100%' }}
-            data={orderedList}
+            data={list ? sortList(list) : list}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => {
-              return <MyLikesListItem item={item} title={item.company.name} />;
+              return <MyLikesListItem item={item} />;
             }}
             ListEmptyComponent={() => {
               return <ListEmptyView title="No Likes" />;
