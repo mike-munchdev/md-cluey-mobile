@@ -133,6 +133,32 @@ export const UPDATE_COMPANY_RESPONSE_FOR_USER = gql`
   }
 `;
 
+export const updateCompanyResponseForUserError = (
+  dispatch: React.Dispatch<any>,
+  setLoading: Function
+) => (e: ApolloError) => {
+  setLoading(false);
+
+  AlertHelper.show('error', 'Error', getErrorMessage(e));
+};
+
+export const updateCompanyResponseForUserCompleted = (
+  dispatch: React.Dispatch<any>,
+  setLoading: Function
+) => async ({ updateCompanyResponseForUser }) => {
+  const { ok, companyResponse, error } = updateCompanyResponseForUser;
+  console.log(' updateCompanyResponseForUserCompleted', companyResponse);
+  setLoading(false);
+  if (ok) {
+    dispatch({
+      type: 'UPDATE_USER_COMPANY_RESPONSE',
+      payload: companyResponse,
+    });
+  } else {
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
+  }
+};
+
 export const GET_PUBLIC_AND_ACTVE_NON_FRIENDS_BY_NAME = gql`
   query GetPublicAndActiveNonFriendsByName($name: String!, $exact: Boolean) {
     getPublicAndActiveNonFriendsByName(name: $name, exact: $exact) {
@@ -156,6 +182,41 @@ export const RESET_PASSWORD = gql`
     }
   }
 `;
+
+export const DELETE_COMPANY_RESPONSE = gql`
+  mutation DeleteCompanyResponse($input: DeleteCompanyResponseInput!) {
+    deleteCompanyResponse(input: $input) {
+      ok
+      companyResponse ${responseStructure}
+      error {
+        message
+      }
+    }
+  }
+`;
+
+export const deleteCompanyResponseError = (
+  dispatch: React.Dispatch<any>,
+  setLoading: Function
+) => (e: ApolloError) => {
+  setLoading(false);
+  console.log('deleteCompanyResponseError', e);
+  AlertHelper.show('error', 'Error', getErrorMessage(e));
+};
+
+export const deleteCompanyResponseCompleted = (
+  dispatch: React.Dispatch<any>,
+  setLoading: Function
+) => async ({ deleteCompanyResponse }) => {
+  const { ok, companyResponse, error } = deleteCompanyResponse;
+  console.log('deleteCompanyResponseCompleted', deleteCompanyResponse);
+  setLoading(false);
+  if (ok) {
+    dispatch({ type: 'REMOVE_COMPANY_RESPONSE', payload: companyResponse });
+  } else {
+    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
+  }
+};
 
 export const userSignupError = (setLoading: Function) => (e: ApolloError) => {
   setLoading(false);
@@ -311,29 +372,6 @@ export const activateUserAccountCompleted = (
     } else {
       await signIn(token, user, navigation, location);
     }
-  } else {
-    AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
-  }
-};
-
-export const updateCompanyResponseForUserError = (
-  setCompanyResponse: Function,
-  setLoading: Function
-) => (e: ApolloError) => {
-  setLoading(false);
-  setCompanyResponse(null);
-  AlertHelper.show('error', 'Error', getErrorMessage(e));
-};
-
-export const updateCompanyResponseForUserCompleted = (
-  setCompanyResponse: Function,
-  setLoading: Function
-) => async ({ updateCompanyResponseForUser }) => {
-  const { ok, companyResponse, error } = updateCompanyResponseForUser;
-
-  setLoading(false);
-  if (ok) {
-    setCompanyResponse(companyResponse);
   } else {
     AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   }

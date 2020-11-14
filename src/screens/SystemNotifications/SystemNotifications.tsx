@@ -18,7 +18,6 @@ const SystemNotifications: FC = () => {
   const { state, dispatch } = useContext(AppContext);
 
   const [isLoading, setIsLoading] = useState(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const [getSystemNotifications] = useLazyQuery(GET_USER_SYSTEM_NOTIFICATIONS, {
     fetchPolicy: 'network-only',

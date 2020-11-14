@@ -6,7 +6,7 @@ import { ICompanyReponse } from '../../interfaces';
 import styles from './styles';
 import theme from '../../constants/theme';
 export interface IMyLikesIconProps {
-  response: ICompanyReponse;
+  response: ICompanyReponse | null | undefined;
   size?: number | undefined;
   color?: string | undefined;
 }

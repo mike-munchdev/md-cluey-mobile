@@ -10,6 +10,7 @@ import {
 export interface IAppStateProps {
   user: IUser | undefined | null;
   companyResponses: ICompanyReponse[] | undefined | null;
+  companyResponse: ICompanyReponse | undefined | null;
   friends: IFriendship[] | undefined | null;
   notifications: ISystemNotification[] | undefined | null;
   token: string | undefined | null;
@@ -33,6 +34,7 @@ export const initialState: IAppStateProps = {
   friend: null,
   categories: [],
   productTypes: [],
+  companyResponse: null,
 };
 
 export const UPDATE_USER = 'UPDATE_USER';
@@ -148,6 +150,11 @@ export interface IRemoveFriendAction {
   type: typeof REMOVE_FRIEND;
   payload: IFriendship;
 }
+export const REMOVE_COMPANY_RESPONSE = 'REMOVE_COMPANY_RESPONSE';
+export interface IRemoveCompanyResponseAction {
+  type: typeof REMOVE_COMPANY_RESPONSE;
+  payload: ICompanyReponse;
+}
 
 export const appReducer = (
   state: IAppStateProps,
@@ -171,6 +178,7 @@ export const appReducer = (
     | IRemoveNotificationAction
     | IUpdateNotificationAction
     | IRemoveFriendAction
+    | IRemoveCompanyResponseAction
 ): IAppStateProps => {
   switch (action.type) {
     case 'ACCEPT_FRIEND':
@@ -200,18 +208,32 @@ export const appReducer = (
         users: action.payload,
       };
     case 'UPDATE_USER_COMPANY_RESPONSE':
+      console.log('UPDATE_USER_COMPANY_RESPONSE payload', action.payload);
       const responses = state.companyResponses?.filter(
-        (r) => r.id === action.payload.id
+        (r) => r.id !== action.payload.id
+      );
+      console.log('UPDATE_USER_COMPANY_RESPONSE responses', responses);
+      return {
+        ...state,
+        companyResponses: [...responses, action.payload],
+        companyResponse: action.payload,
+      };
+    case 'REMOVE_COMPANY_RESPONSE':
+      console.log('REMOVE_COMPANY_RESPONSE', action.payload);
+      const responsesWithDeletedRemoved = state.companyResponses?.filter(
+        (r) => r.id !== action.payload.id
       );
 
       return {
         ...state,
-        companyResponses: [...responses, action.payload],
+        companyResponses: responsesWithDeletedRemoved,
+        companyResponse: null,
       };
     case 'UPDATE_USER_COMPANY_RESPONSES':
       return {
         ...state,
         companyResponses: action.payload,
+        companyResponse: null,
       };
     case 'UPDATE_USER_TOKEN':
       return {
