@@ -58,7 +58,7 @@ const ProductTypes: FC = () => {
           title={
             route.params.company ? route.params.company.name : 'Subcategories'
           }
-          subTitle={route.params.company ? 'Alternatives' : ''}
+          subTitle={route.params.company ? 'Alternatives' : null}
         />
 
         <ProductTypesList list={productTypes} loading={isLoading} />
