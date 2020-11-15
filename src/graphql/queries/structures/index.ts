@@ -23,6 +23,7 @@ export const companyStructure = `{
     productTypes {
       id
       name
+      isActive
     }
     parentCompanies {
       id

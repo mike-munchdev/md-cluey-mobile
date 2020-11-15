@@ -18,10 +18,10 @@ const ProductTypes: FC = () => {
   const route = useRoute();
 
   const [productTypes, setProductTypes] = useState(
-    route.params.productTypes ? route.params.productTypes : []
+    route.params.company ? route.params.company.productTypes : []
   );
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [categoryId] = useState(
     route.params.categoryId ? route.params.categoryId : null
   );
@@ -55,7 +55,10 @@ const ProductTypes: FC = () => {
       <View style={styles.overlayContainer}>
         <NavHeader
           goBack
-          title={route.params.productTypes ? 'Alternatives' : 'Subcategories'}
+          title={
+            route.params.company ? route.params.company.name : 'Subcategories'
+          }
+          subTitle={route.params.company ? 'Alternatives' : ''}
         />
 
         <ProductTypesList list={productTypes} loading={isLoading} />

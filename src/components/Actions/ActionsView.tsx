@@ -18,7 +18,11 @@ import {
 } from '../../graphql/queries/user';
 import { AppContext } from '../../config/context';
 import { ICompany, ICompanyReponse } from '../../interfaces';
-import { StackActions, useNavigation } from '@react-navigation/native';
+import {
+  StackActions,
+  useNavigation,
+  useNavigationState,
+} from '@react-navigation/native';
 import { MyLikesIcon } from '../Icons';
 
 export interface IActionsViewProps {
@@ -28,7 +32,8 @@ export interface IActionsViewProps {
 const ActionsView: FC<IActionsViewProps> = ({ company }) => {
   const navigation = useNavigation();
   const { state, dispatch } = useContext(AppContext);
-
+  const routes = useNavigationState((state) => state.routes);
+  const currentRouteIndex = useNavigationState((state) => state.index);
   const [isLoading, setIsLoading] = useState(false);
   const { companyResponse } = state;
   useEffect(() => {
@@ -80,6 +85,25 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
           },
         },
       });
+    }
+  };
+
+  const getAlternatives = () => {
+    const lastRoute = routes[currentRouteIndex - 1];
+
+    switch (lastRoute.name.toLowerCase()) {
+      case 'companies':
+        navigation.goBack();
+        break;
+      case 'search':
+      case 'mylikes':
+        navigation.navigate('ProductTypes', {
+          company: company,
+        });
+        break;
+      default:
+        navigation.goBack();
+        break;
     }
   };
 
@@ -220,11 +244,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
         text="Search/Home"
       />
       <RoundedIconButton
-        onPress={() =>
-          navigation.navigate('ProductTypes', {
-            productTypes: company?.productTypes,
-          })
-        }
+        onPress={getAlternatives}
         backgroundColor={theme.white.hex}
         borderColor={theme.dark.hex}
         size={64}
