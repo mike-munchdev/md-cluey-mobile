@@ -128,7 +128,7 @@ const Profile: FC = () => {
     updateValue(updatedValue);
   };
   const updateStringValue = (updatedValue: String) => {
-    updateValue(updatedValue);
+    updateValue(updatedValue.trim());
   };
 
   const updateValue = (updatedValue: String | Date | null | undefined) => {
@@ -165,6 +165,9 @@ const Profile: FC = () => {
       setStringFieldProps(initialStringFieldProps);
     })();
   };
+  const isStringValueValid = (value: string) => {
+    return value ? value.trim().length > 0 : false;
+  };
 
   const navigation = useNavigation();
 
@@ -200,7 +203,7 @@ const Profile: FC = () => {
                   fieldValue: state.user?.firstName || '',
                   secureTextEntry: false,
                   isValid: (value: string) => {
-                    return value ? value.length > 0 : false;
+                    return value ? value.trim().length > 0 : false;
                   },
                   captionText: [],
                   placeholder: 'First Name',
@@ -227,9 +230,7 @@ const Profile: FC = () => {
                   fieldLabel: 'Last Name',
                   fieldValue: state.user ? state.user.lastName : '',
                   secureTextEntry: false,
-                  isValid: (value: string) => {
-                    return value ? value.length > 0 : false;
-                  },
+                  isValid: isStringValueValid,
                   captionText: [],
                   placeholder: 'Last Name',
 
@@ -256,9 +257,7 @@ const Profile: FC = () => {
                   fieldLabel: 'Username',
                   fieldValue: state.user ? state.user.username : '',
                   secureTextEntry: false,
-                  isValid: (value: string) => {
-                    return value ? value.length > 0 : false;
-                  },
+                  isValid: isStringValueValid,
                   captionText: [],
                   placeholder: 'Username',
                   options: [],
@@ -290,7 +289,8 @@ const Profile: FC = () => {
                       secureTextEntry: false,
                       isValid: (value: string) => {
                         return (
-                          value.length > 0 && EmailValidator.validate(value)
+                          isStringValueValid(value) &&
+                          EmailValidator.validate(value)
                         );
                       },
                       captionText: [],
@@ -320,7 +320,9 @@ const Profile: FC = () => {
                       fieldValue: '************',
                       secureTextEntry: true,
                       isValid: (value: string) => {
-                        return value.length > 0 && schema.validate(value);
+                        return (
+                          isStringValueValid(value) && schema.validate(value)
+                        );
                       },
                       captionText: passwordRequirments,
                       placeholder: 'Password',
@@ -389,9 +391,7 @@ const Profile: FC = () => {
                   fieldLabel: 'Gender',
                   fieldValue: state.user ? state.user.gender : '',
                   secureTextEntry: false,
-                  isValid: (value: string) => {
-                    return value ? value.length > 0 : false;
-                  },
+                  isValid: isStringValueValid,
                   captionText: [],
                   placeholder: 'Gender',
                   options: genderOptions,
@@ -419,9 +419,7 @@ const Profile: FC = () => {
                   fieldLabel: 'City',
                   fieldValue: state.user ? state.user.city : '',
                   secureTextEntry: false,
-                  isValid: (value: string) => {
-                    return value ? value.length > 0 : false;
-                  },
+                  isValid: isStringValueValid,
                   captionText: [],
                   placeholder: 'City',
                   emptyText: 'Must Select State First',
