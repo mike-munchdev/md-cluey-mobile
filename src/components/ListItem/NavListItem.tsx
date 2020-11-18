@@ -50,7 +50,7 @@ const NavListItem: FC<INavListItemProps> = ({
         <ListItem.Title
           style={{
             fontFamily: 'Montserrat',
-            color: item.isActive ? theme.black : theme.charcoal,
+            color: item.isActive ? theme.opaqueText.hex : theme.charcoal,
           }}
         >
           {`${title}${!item.isActive ? ' (coming soon)' : ''}`}

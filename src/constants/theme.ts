@@ -52,7 +52,19 @@ export default {
   willNotBuy: colors.orange.normal,
   opaque: colors.gray.dark,
   charcoal: colors.gray.charcoal,
-  opaqueLight: colors.gray.light,
+  opaqueLight: colors.gray.lightgrey,
   transparent: 'transparent',
   black: 'black',
+  opaqueText: {
+    hex: colors.gray.opaque,
+    rgba: (alpha: number) => {
+      return hex2rgba(colors.gray.opaque, alpha);
+    },
+  },
+  gray: {
+    hex: colors.gray.light,
+    rgba: (alpha: number) => {
+      return hex2rgba(colors.gray.light, alpha);
+    },
+  },
 };
