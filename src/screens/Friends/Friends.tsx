@@ -27,6 +27,7 @@ import {
 } from '../../graphql/queries/user/';
 import { throttle, debounce } from 'throttle-debounce';
 import ListEmptyView from '../../components/ListItem/ListEmptyView';
+import { NotificationsIcon } from '../../components/Icons';
 
 const Friends: FC = () => {
   const [, setIsPublicUsersLoading] = useState(false);
@@ -236,7 +237,17 @@ const Friends: FC = () => {
   return (
     <StandardContainer>
       <View style={styles.overlayContainer}>
-        <NavHeader showMenu title="Friends" />
+        <NavHeader
+          showMenu
+          title="Friends"
+          rightIcon={() => (
+            <NotificationsIcon
+              onPress={() => {
+                navigation.navigate('SystemNotifications');
+              }}
+            />
+          )}
+        />
 
         <View style={styles.friendsContainer}>
           <Searchbar

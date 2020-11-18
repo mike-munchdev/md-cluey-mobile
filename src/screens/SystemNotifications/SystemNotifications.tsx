@@ -40,7 +40,7 @@ const SystemNotifications: FC = () => {
   return (
     <StandardContainer>
       <View style={styles.overlayContainer}>
-        <NavHeader showMenu title="Notifications" />
+        <NavHeader goBack title="Notifications" />
         <SystemNotificationsList
           list={state.notifications}
           loading={isLoading}
