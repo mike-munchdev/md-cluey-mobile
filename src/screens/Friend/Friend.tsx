@@ -127,32 +127,30 @@ const Friend: FC = () => {
   }, []);
 
   useEffect(() => {
-    if (friend && friendship) {
-      if (friendship) {
-        switch (friendship.status) {
-          case 'accepted':
-            setIconName('account-remove-outline');
-            setButtonText('Unfriend');
-            setIconColor(theme.errorText);
+    if (friendship) {
+      switch (friendship.status) {
+        case 'accepted':
+          setIconName('account-remove-outline');
+          setButtonText('Unfriend');
+          setIconColor(theme.errorText);
 
-            break;
-          case 'requested':
-            setIconName('account-clock-outline');
-            setButtonText('Requested');
-            setIconColor(theme.dark.hex);
+          break;
+        case 'requested':
+          setIconName('account-clock-outline');
+          setButtonText('Requested');
+          setIconColor(theme.dark.hex);
 
-            break;
-          default:
-            setIconName('account-plus-outline');
-            setButtonText('Add Friend');
-            setIconColor(theme.dark.hex);
-        }
-      } else {
-        setIconName('account-plus-outline');
-        setButtonText('Add Friend');
+          break;
+        default:
+          setIconName('account-plus-outline');
+          setButtonText('Add Friend');
+          setIconColor(theme.dark.hex);
       }
+    } else {
+      setIconName('account-plus-outline');
+      setButtonText('Add Friend');
     }
-  }, [friend, friendship]);
+  }, [friendship]);
 
   return (
     <StandardContainer>
