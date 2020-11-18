@@ -56,7 +56,7 @@ const Friends: FC = () => {
         ListEmptyComponent: <ListEmptyView title="No Friends" />,
       },
       {
-        title: 'Public Users',
+        title: 'Users',
         data: publicUsers || [],
         renderItem: renderOtherUserItem,
         ListEmptyComponent: null,
