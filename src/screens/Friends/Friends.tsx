@@ -59,7 +59,7 @@ const Friends: FC = () => {
         title: 'Users',
         data: publicUsers || [],
         renderItem: renderOtherUserItem,
-        ListEmptyComponent: null,
+        ListEmptyComponent: <ListEmptyView title="No Users Found" />,
       },
     ]);
   }, [friends, publicUsers]);
@@ -279,7 +279,7 @@ const Friends: FC = () => {
                   />
                 }
                 renderSectionHeader={({ section }) => {
-                  if (section.data.length === 0 && section.title === 'Users')
+                  if (searchQuery.length < 3 && section.title === 'Users')
                     return null;
                   return (
                     <FlatListHeader
@@ -290,10 +290,11 @@ const Friends: FC = () => {
                   );
                 }}
                 renderSectionFooter={({ section }) => {
-                  if (section.data.length === 0) {
+                  if (searchQuery.length < 3 && section.title === 'Users') {
+                    return null;
+                  } else {
                     return section.ListEmptyComponent;
                   }
-                  return null;
                 }}
                 ListEmptyComponent={() => {
                   return <ListEmptyView title="No data" />;
