@@ -9,7 +9,7 @@ import { Formik } from 'formik';
 import styles from './styles';
 
 import { AnimatableTextInput } from '../../components/TextInput/';
-import { AuthContext } from '../../config/context';
+import { AppContext, AuthContext } from '../../config/context';
 import theme from '../../constants/theme';
 import { ActionButton, NavBackButton } from '../../components/Buttons';
 
@@ -25,11 +25,16 @@ import { StandardContainer } from '../../components/Containers';
 const ActivateAccount: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { signIn } = useContext(AuthContext);
+  const { dispatch, state } = useContext(AppContext);
   const navigation = useNavigation();
 
   const [activateUserAccount] = useMutation(ACTIVATE_USER_ACCOUNT, {
     fetchPolicy: 'no-cache',
-    onError: activateUserAccountError(setIsLoading),
+    onError: activateUserAccountError(
+      dispatch,
+      state.alertVisible,
+      setIsLoading
+    ),
     onCompleted: activateUserAccountCompleted(
       signIn,
       navigation,

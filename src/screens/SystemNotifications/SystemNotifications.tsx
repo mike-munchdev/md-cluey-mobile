@@ -21,7 +21,11 @@ const SystemNotifications: FC = () => {
 
   const [getSystemNotifications] = useLazyQuery(GET_USER_SYSTEM_NOTIFICATIONS, {
     fetchPolicy: 'network-only',
-    onError: getUserSystemNotificationsError(dispatch, setIsLoading),
+    onError: getUserSystemNotificationsError(
+      dispatch,
+      state.alertVisible,
+      setIsLoading
+    ),
     onCompleted: getUserSystemNotificationsCompleted(dispatch, setIsLoading),
   });
 

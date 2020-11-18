@@ -36,13 +36,17 @@ const Sidebar = () => {
   const [friendsOverlayVisible, setFriendsOverlayVisible] = useState(false);
 
   const [updateUser] = useMutation(UPDATE_USER, {
-    onError: updateUserError(setIsLoading),
+    onError: updateUserError(dispatch, state.alertVisible, setIsLoading),
     onCompleted: updateUserCompleted(setIsLoading, dispatch),
   });
 
   const [getSystemNotifications] = useLazyQuery(GET_USER_SYSTEM_NOTIFICATIONS, {
     fetchPolicy: 'network-only',
-    onError: getUserSystemNotificationsError(dispatch, setNotificationsLoading),
+    onError: getUserSystemNotificationsError(
+      dispatch,
+      state.alertVisible,
+      setNotificationsLoading
+    ),
     onCompleted: getUserSystemNotificationsCompleted(
       dispatch,
       setNotificationsLoading

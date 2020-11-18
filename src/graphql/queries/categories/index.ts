@@ -3,7 +3,7 @@ import { ApolloError } from 'apollo-client';
 import { AlertHelper } from '../../../utils/alert';
 import Bugsnag from '@bugsnag/expo';
 import { errors } from '../../../constants/errors';
-import { getErrorMessage } from '../../../utils/errors';
+import { getErrorMessage, showErrorAlert } from '../../../utils/errors';
 
 export const categoriesStructure = `{    
     id
@@ -27,12 +27,14 @@ export const GET_CATEGORIES = gql`
 
 export const getCategoriesError = (
   setCategories: Function,
-  setLoading: Function
+  setLoading: Function,
+  dispatch: React.Dispatch<any>,
+  alertVisible: boolean
 ) => (e: ApolloError) => {
   setLoading(false);
   setCategories([]);
 
-  AlertHelper.show('error', 'Error', getErrorMessage(e));
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const getCategoriesCompleted = (

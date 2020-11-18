@@ -8,7 +8,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { Overlay, Button } from 'react-native-elements';
 
 import styles from './styles';
-import { AuthContext } from '../../config/context';
+import { AppContext, AuthContext } from '../../config/context';
 
 import signupSchema from '../../validation/signup';
 import AnimatableTextInput from '../../components/TextInput/AnimatableTextInput';
@@ -32,6 +32,7 @@ import Bugsnag from '@bugsnag/expo';
 
 const SignUp: FC = () => {
   const { signUp } = useContext(AuthContext);
+  const { dispatch, state } = useContext(AppContext);
   const [isLoading] = useState(false);
   const [signInLoading, setSignInLoading] = useState(false);
   const [passwordSnackVisible, setPasswordSnackVisible] = useState(false);
@@ -39,7 +40,7 @@ const SignUp: FC = () => {
   const navigation = useNavigation();
 
   const [userSignup] = useMutation(USER_SIGNUP, {
-    onError: userSignupError(setSignInLoading),
+    onError: userSignupError(dispatch, state.alertVisible, setSignInLoading),
     onCompleted: userSignupCompleted(signUp, navigation, setSignInLoading),
   });
 

@@ -40,7 +40,11 @@ const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item }) => {
   const [updateCompanyResponseForUser] = useMutation(
     UPDATE_COMPANY_RESPONSE_FOR_USER,
     {
-      onError: updateCompanyResponseForUserError(dispatch, setIsLoading),
+      onError: updateCompanyResponseForUserError(
+        dispatch,
+        state.alertVisible,
+        setIsLoading
+      ),
       onCompleted: updateCompanyResponseForUserCompleted(
         dispatch,
         setIsLoading
@@ -49,7 +53,11 @@ const MyLikesListItem: FC<IMyLikesListItemProps> = ({ item }) => {
   );
 
   const [deleteCompanyResponse] = useMutation(DELETE_COMPANY_RESPONSE, {
-    onError: deleteCompanyResponseError(dispatch, setIsLoading),
+    onError: deleteCompanyResponseError(
+      dispatch,
+      state.alertVisible,
+      setIsLoading
+    ),
     onCompleted: deleteCompanyResponseCompleted(dispatch, setIsLoading),
   });
 

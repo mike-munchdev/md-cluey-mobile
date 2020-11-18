@@ -9,7 +9,7 @@ import { Formik } from 'formik';
 import styles from './styles';
 
 import { AnimatableTextInput } from '../../components/TextInput';
-import { AuthContext } from '../../config/context';
+import { AppContext, AuthContext } from '../../config/context';
 import theme from '../../constants/theme';
 import { ActionButton } from '../../components/Buttons';
 
@@ -26,11 +26,12 @@ import requestPasswordResetSchema from '../../validation/requestPasswordResetSch
 const RequestPasswordReset: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { requestPasswordReset } = useContext(AuthContext);
+  const { dispatch, state } = useContext(AppContext);
   const navigation = useNavigation();
 
   const [resetPassword] = useMutation(RESET_PASSWORD, {
     fetchPolicy: 'no-cache',
-    onError: resetPasswordError(setIsLoading),
+    onError: resetPasswordError(dispatch, state.alertVisible, setIsLoading),
     onCompleted: resetPasswordCompleted(
       requestPasswordReset,
       setIsLoading,

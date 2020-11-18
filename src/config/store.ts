@@ -20,6 +20,7 @@ export interface IAppStateProps {
   friendship: IFriendship | undefined | null;
   categories: ICategory[] | undefined | null;
   productTypes: IProductType[] | undefined | null;
+  alertVisible: boolean;
 }
 
 export const initialState: IAppStateProps = {
@@ -35,7 +36,14 @@ export const initialState: IAppStateProps = {
   categories: [],
   productTypes: [],
   companyResponse: null,
+  alertVisible: false,
 };
+
+export const UPDATE_ALERT_VISIBLE = 'UPDATE_ALERT_VISIBLE';
+export interface IUpdateAlertVisibleAction {
+  type: typeof UPDATE_ALERT_VISIBLE;
+  payload: boolean;
+}
 
 export const UPDATE_USER = 'UPDATE_USER';
 export interface IUpdateUserAction {
@@ -164,6 +172,7 @@ export interface ISetCompanyResponseAction {
 export const appReducer = (
   state: IAppStateProps,
   action:
+    | IUpdateAlertVisibleAction
     | IAcceptFriendAction
     | IRejectFriendAction
     | IRequestFriendAction
@@ -187,6 +196,11 @@ export const appReducer = (
     | ISetCompanyResponseAction
 ): IAppStateProps => {
   switch (action.type) {
+    case 'UPDATE_ALERT_VISIBLE':
+      return {
+        ...state,
+        alertVisible: action.payload,
+      };
     case 'ACCEPT_FRIEND':
       return {
         ...state,

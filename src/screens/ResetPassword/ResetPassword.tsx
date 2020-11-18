@@ -35,7 +35,11 @@ const RequestPasswordReset: FC = () => {
 
   const [updateUserPassword] = useMutation(UPDATE_USER_PASSWORD, {
     fetchPolicy: 'no-cache',
-    onError: updateUserPasswordError(setIsLoading),
+    onError: updateUserPasswordError(
+      dispatch,
+      state.alertVisible,
+      setIsLoading
+    ),
     onCompleted: updateUserPasswordCompleted(
       setIsLoading,
       dispatch,

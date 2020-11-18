@@ -115,12 +115,16 @@ const Profile: FC = () => {
   };
 
   const [updateUser] = useMutation(UPDATE_USER, {
-    onError: updateUserError(resetDialog),
+    onError: updateUserError(dispatch, state.alertVisible, resetDialog),
     onCompleted: updateUserCompleted(resetDialog, dispatch),
   });
 
   const [updateUserPassword] = useMutation(UPDATE_USER_PASSWORD, {
-    onError: updateUserPasswordInternalError(resetDialog),
+    onError: updateUserPasswordInternalError(
+      dispatch,
+      state.alertVisible,
+      resetDialog
+    ),
     onCompleted: updateUserPasswordInternalCompleted(resetDialog, dispatch),
   });
 

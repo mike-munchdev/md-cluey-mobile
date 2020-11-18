@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState, useEffect } from 'react';
+import React, { FC, useRef, useState, useEffect, useContext } from 'react';
 import { View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { throttle, debounce } from 'throttle-debounce';
@@ -34,6 +34,7 @@ import { sortByFieldName } from '../../utils/sort';
 import { IAutoCompleteItemProps } from '../../components/TextInput/AutoCompleteTextInput';
 import { Avatar } from 'react-native-elements';
 import { KeyboardAvoidingContainer } from '../../components/Containers';
+import { AppContext } from '../../config/context';
 
 const Search: FC = () => {
   const navigation = useNavigation();
@@ -51,6 +52,7 @@ const Search: FC = () => {
     selectedCompany,
     setSelectedCompany,
   ] = useState<IAutoCompleteItemProps | null>(null);
+  const { state, dispatch } = useContext(AppContext);
 
   useEffect(() => {
     if (selectedCompany) {
@@ -84,7 +86,12 @@ const Search: FC = () => {
 
   const [getCompanysByName] = useLazyQuery(GET_COMPANIES_BY_NAME, {
     fetchPolicy: 'network-only',
-    onError: getCompaniesByNameError(setCompanies, setIsLoading),
+    onError: getCompaniesByNameError(
+      setCompanies,
+      setIsLoading,
+      dispatch,
+      state.alertVisible
+    ),
     onCompleted: getCompaniesByNameCompleted(
       setCompanies,
       setIsLoading,

@@ -10,7 +10,7 @@ import {
   responseStructure,
   userStructure,
 } from '../structures';
-import { getErrorMessage } from '../../../utils/errors';
+import { getErrorMessage, showErrorAlert } from '../../../utils/errors';
 
 export const GET_USER_COMPANY_RESPONSES = gql`
   query GetUserCompanyResponses($userId: String!) {
@@ -24,15 +24,13 @@ export const GET_USER_COMPANY_RESPONSES = gql`
   }
 `;
 
-export const getUserCompanyResponsesError = (reset: Function) => (
-  e: ApolloError
-) => {
+export const getUserCompanyResponsesError = (
+  dispatch: React.Dispatch<any>,
+  alertVisible: boolean,
+  reset: Function
+) => (e: ApolloError) => {
   reset();
-  AlertHelper.show(
-    'error',
-    'Error',
-    'An error occurred and has been logged. Please try again.'
-  );
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const getUserCompanyResponsesCompleted = (
@@ -68,15 +66,13 @@ export const GET_USER_COMPANY_RESPONSE = gql`
   }
 `;
 
-export const getUserCompanyResponseError = (reset: Function) => (
-  e: ApolloError
-) => {
+export const getUserCompanyResponseError = (
+  dispatch: React.Dispatch<any>,
+  alertVisible: boolean,
+  reset: Function
+) => (e: ApolloError) => {
   reset();
-  AlertHelper.show(
-    'error',
-    'Error',
-    'An error occurred and has been logged. Please try again.'
-  );
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const getUserCompanyResponseCompleted = (
@@ -207,11 +203,12 @@ export const UPDATE_COMPANY_RESPONSE_FOR_USER = gql`
 
 export const updateCompanyResponseForUserError = (
   dispatch: React.Dispatch<any>,
+  alertVisible: boolean,
   setLoading: Function
 ) => (e: ApolloError) => {
   setLoading(false);
 
-  AlertHelper.show('error', 'Error', getErrorMessage(e));
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const updateCompanyResponseForUserCompleted = (
@@ -273,11 +270,12 @@ export const DELETE_COMPANY_RESPONSE = gql`
 
 export const deleteCompanyResponseError = (
   dispatch: React.Dispatch<any>,
+  alertVisible: boolean,
   setLoading: Function
 ) => (e: ApolloError) => {
   setLoading(false);
 
-  AlertHelper.show('error', 'Error', getErrorMessage(e));
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const deleteCompanyResponseCompleted = (
@@ -294,9 +292,13 @@ export const deleteCompanyResponseCompleted = (
   }
 };
 
-export const userSignupError = (setLoading: Function) => (e: ApolloError) => {
+export const userSignupError = (
+  dispatch: React.Dispatch<any>,
+  alertVisible: boolean,
+  setLoading: Function
+) => (e: ApolloError) => {
   setLoading(false);
-  AlertHelper.show('error', 'Error', getErrorMessage(e));
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const userSignupCompleted = (
@@ -321,13 +323,13 @@ export const userSignupCompleted = (
   }
 };
 
-export const updateUserError = (setLoading: Function) => (e: ApolloError) => {
+export const updateUserError = (
+  dispatch: React.Dispatch<any>,
+  alertVisible: boolean,
+  setLoading: Function
+) => (e: ApolloError) => {
   setLoading(false);
-  AlertHelper.show(
-    'error',
-    'Error',
-    'An error occurred and has been logged. Please try again.'
-  );
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const updateUserCompleted = (
@@ -349,15 +351,13 @@ export const updateUserCompleted = (
   }
 };
 
-export const updateUserSettingsError = (setLoading: Function) => (
-  e: ApolloError
-) => {
+export const updateUserSettingsError = (
+  dispatch: React.Dispatch<any>,
+  alertVisible: boolean,
+  setLoading: Function
+) => (e: ApolloError) => {
   setLoading(false);
-  AlertHelper.show(
-    'error',
-    'Error',
-    'An error occurred and has been logged. Please try again.'
-  );
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const updateUserSettingsCompleted = (
@@ -416,12 +416,14 @@ export const addPushTokenCompleted = (
   }
 };
 
-export const activateUserAccountError = (setLoading: Function) => (
-  e: ApolloError
-) => {
+export const activateUserAccountError = (
+  dispatch: React.Dispatch<any>,
+  alertVisible: boolean,
+  setLoading: Function
+) => (e: ApolloError) => {
   setLoading(false);
-  AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   Bugsnag.notify(e);
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const activateUserAccountCompleted = (
@@ -453,15 +455,13 @@ export const activateUserAccountCompleted = (
   }
 };
 
-export const updateUserPasswordError = (setLoading: Function) => (
-  e: ApolloError
-) => {
+export const updateUserPasswordError = (
+  dispatch: React.Dispatch<any>,
+  alertVisible: boolean,
+  setLoading: Function
+) => (e: ApolloError) => {
   setLoading(false);
-  AlertHelper.show(
-    'error',
-    'Error',
-    'An error occurred and has been logged. Please try again.'
-  );
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const updateUserPasswordCompleted = (
@@ -489,11 +489,12 @@ export const updateUserPasswordCompleted = (
 
 export const getPublicAndActiveNonFriendsByNameError = (
   dispatch: React.Dispatch<any>,
+  alertVisible: boolean,
   setLoading: Function
 ) => (e: ApolloError) => {
   setLoading(false);
   dispatch({ type: 'UPDATE_PUBLIC_USERS', payload: [] });
-  AlertHelper.show('error', 'Error', getErrorMessage(e));
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const getPublicAndActiveNonFriendsByNameCompleted = (
@@ -513,12 +514,14 @@ export const getPublicAndActiveNonFriendsByNameCompleted = (
   }
 };
 
-export const resetPasswordError = (setLoading: Function) => (
-  e: ApolloError
-) => {
+export const resetPasswordError = (
+  dispatch: React.Dispatch<any>,
+  alertVisible: boolean,
+  setLoading: Function
+) => (e: ApolloError) => {
   setLoading(false);
-  AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
   Bugsnag.notify(e);
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const resetPasswordCompleted = (
@@ -544,15 +547,13 @@ export const resetPasswordCompleted = (
   }
 };
 
-export const updateUserPasswordInternalError = (resetDialog: Function) => (
-  e: ApolloError
-) => {
+export const updateUserPasswordInternalError = (
+  dispatch: React.Dispatch<any>,
+  alertVisible: boolean,
+  resetDialog: Function
+) => (e: ApolloError) => {
   resetDialog();
-  AlertHelper.show(
-    'error',
-    'Error',
-    'An error occurred and has been logged. Please try again.'
-  );
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const updateUserPasswordInternalCompleted = (
@@ -573,12 +574,13 @@ export const updateUserPasswordInternalCompleted = (
 
 export const getUserByIdError = (
   dispatch: React.Dispatch<any>,
+  alertVisible: boolean,
   setLoading: Function
 ) => (e: ApolloError) => {
   setLoading(false);
   dispatch({ type: 'UPDATE_FRIEND', payload: null });
 
-  AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const getUserByIdCompleted = (

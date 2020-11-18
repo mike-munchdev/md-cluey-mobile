@@ -66,7 +66,12 @@ const Friends: FC = () => {
 
   const [getUserFriends] = useLazyQuery(GET_USER_FRIENDS, {
     fetchPolicy: 'network-only',
-    onError: getUserFriendsError(setFriendships, setIsPublicUsersLoading),
+    onError: getUserFriendsError(
+      setFriendships,
+      setIsPublicUsersLoading,
+      dispatch,
+      state.alertVisible
+    ),
     onCompleted: getUserFriendsCompleted(
       dispatch,
       setFilteredList,
@@ -80,6 +85,7 @@ const Friends: FC = () => {
       fetchPolicy: 'network-only',
       onError: getPublicAndActiveNonFriendsByNameError(
         dispatch,
+        state.alertVisible,
         setIsPublicUsersLoading
       ),
       onCompleted: getPublicAndActiveNonFriendsByNameCompleted(
@@ -292,8 +298,10 @@ const Friends: FC = () => {
                 renderSectionFooter={({ section }) => {
                   if (searchQuery.length < 3 && section.title === 'Users') {
                     return null;
-                  } else {
+                  } else if (section.data.length === 0) {
                     return section.ListEmptyComponent;
+                  } else {
+                    return null;
                   }
                 }}
                 ListEmptyComponent={() => {

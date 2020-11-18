@@ -29,21 +29,25 @@ const SystemNotificationListItem: FC<ISystemNotificationListItemProps> = ({
   item,
   title,
 }) => {
-  const { dispatch } = useContext(AppContext);
+  const { dispatch, state } = useContext(AppContext);
 
   const [isLoading, setIsLoading] = useState(false);
 
   const [acceptFriendship] = useMutation(ACCEPT_FRIENDSHIP, {
-    onError: acceptFriendshipError(dispatch, setIsLoading),
+    onError: acceptFriendshipError(dispatch, state.alertVisible, setIsLoading),
     onCompleted: acceptFriendshipCompleted(dispatch, setIsLoading),
   });
   const [rejectFriendship] = useMutation(REQUEST_FRIENDSHIP, {
-    onError: rejectFriendshipError(dispatch, setIsLoading),
+    onError: rejectFriendshipError(dispatch, state.alertVisible, setIsLoading),
     onCompleted: rejectFriendshipCompleted(dispatch, setIsLoading),
   });
 
   const [updateNotification] = useMutation(UPDATE_NOTIFICATION, {
-    onError: updateNotificationError(dispatch, setIsLoading),
+    onError: updateNotificationError(
+      dispatch,
+      state.alertVisible,
+      setIsLoading
+    ),
     onCompleted: updateNotificationCompleted(dispatch, setIsLoading),
   });
 

@@ -27,7 +27,12 @@ const Categories: FC = () => {
 
   const [getCategories] = useLazyQuery(GET_CATEGORIES, {
     fetchPolicy: 'network-only',
-    onError: getCategoriesError(setCategories, setIsLoading),
+    onError: getCategoriesError(
+      setCategories,
+      setIsLoading,
+      dispatch,
+      state.alertVisible
+    ),
     onCompleted: getCategoriesCompleted(setCategories, setIsLoading),
     errorPolicy: 'all',
   });

@@ -28,7 +28,7 @@ const MyLikes: FC = () => {
   };
   const [getUserCompanyResponses] = useLazyQuery(GET_USER_COMPANY_RESPONSES, {
     fetchPolicy: 'network-only',
-    onError: getUserCompanyResponsesError(reset),
+    onError: getUserCompanyResponsesError(dispatch, state.alertVisible, reset),
     onCompleted: getUserCompanyResponsesCompleted(
       reset,
       dispatch,

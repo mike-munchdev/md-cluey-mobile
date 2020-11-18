@@ -4,7 +4,7 @@ import { AlertHelper } from '../../../utils/alert';
 import Bugsnag from '@bugsnag/expo';
 import { errors } from '../../../constants/errors';
 import { notificationStructure } from '../structures';
-import { getErrorMessage } from '../../../utils/errors';
+import { getErrorMessage, showErrorAlert } from '../../../utils/errors';
 
 export const GET_USER_SYSTEM_NOTIFICATIONS = gql`
   query GetUserSystemNotifications($userId: String!) {
@@ -20,11 +20,12 @@ export const GET_USER_SYSTEM_NOTIFICATIONS = gql`
 
 export const getUserSystemNotificationsError = (
   dispatch: React.Dispatch<any>,
+  alertVisible: boolean,
   setLoading: Function
 ) => (e: ApolloError) => {
   setLoading(false);
   dispatch({ type: 'UPDATE_NOTIFICATIONS', payload: [] });
-  AlertHelper.show('error', 'Error', getErrorMessage(e));
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const getUserSystemNotificationsCompleted = (
@@ -70,8 +71,9 @@ export const updateNotificationCompleted = (
 
 export const updateNotificationError = (
   dispatch: React.Dispatch<any>,
+  alertVisible: boolean,
   setLoading: Function
 ) => (e: ApolloError) => {
   setLoading(false);
-  AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };

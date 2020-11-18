@@ -5,7 +5,7 @@ import Bugsnag from '@bugsnag/expo';
 
 import { errors } from '../../../constants/errors';
 import { companyStructure } from '../structures';
-import { getErrorMessage } from '../../../utils/errors';
+import { getErrorMessage, showErrorAlert } from '../../../utils/errors';
 
 export const GET_COMPANIES_BY_NAME = gql`
   query GetCompaniesByName($name: String!, $exact: Boolean) {
@@ -22,12 +22,14 @@ export const GET_COMPANIES_BY_NAME = gql`
 
 export const getCompaniesByNameError = (
   setCompanies: Function,
-  setLoading: Function
+  setLoading: Function,
+  dispatch: React.Dispatch<any>,
+  alertVisible: boolean
 ) => (e: ApolloError) => {
   setLoading(false);
   setCompanies([]);
 
-  AlertHelper.show('error', 'Error', getErrorMessage(e));
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const getCompaniesByNameCompleted = (
@@ -61,13 +63,15 @@ export const GET_COMPANIES_BY_CATEGORY = gql`
 export const getCompaniesByCategoryError = (
   setCompanies: Function,
   setFilteredList: Function,
-  setLoading: Function
+  setLoading: Function,
+  dispatch: React.Dispatch<any>,
+  alertVisible: boolean
 ) => (e: ApolloError) => {
   setLoading(false);
   setCompanies([]);
   setFilteredList([]);
 
-  AlertHelper.show('error', 'Error', getErrorMessage(e));
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const getCompaniesByCategoryCompleted = (
@@ -100,12 +104,14 @@ export const GET_COMPANIES_BY_PRODUCT_TYPE = gql`
 export const getCompaniesByProductTypeError = (
   setCompanies: Function,
   setFilteredList: Function,
-  setLoading: Function
+  setLoading: Function,
+  dispatch: React.Dispatch<any>,
+  alertVisible: boolean
 ) => (e: ApolloError) => {
   setLoading(false);
   setCompanies([]);
   setFilteredList([]);
-  AlertHelper.show('error', 'Error', getErrorMessage(e));
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const getCompaniesByProductTypeCompleted = (
@@ -137,12 +143,14 @@ export const GET_COMPANY_BY_ID = gql`
 
 export const getCompanyByIdError = (
   setCompany: Function,
-  setLoading: Function
+  setLoading: Function,
+  dispatch: React.Dispatch<any>,
+  alertVisible: boolean
 ) => (e: ApolloError) => {
   setLoading(false);
   setCompany(null);
 
-  AlertHelper.show('error', 'Error', getErrorMessage(e));
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const getCompanyByIdCompleted = (

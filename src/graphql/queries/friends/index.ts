@@ -10,7 +10,7 @@ import {
   notificationStructure,
   userStructure,
 } from '../structures';
-import { getErrorMessage } from '../../../utils/errors';
+import { getErrorMessage, showErrorAlert } from '../../../utils/errors';
 
 export const GET_USER_FRIENDS = gql`
   query GetUserFriends($userId: String!) {
@@ -43,11 +43,13 @@ export const getUserFriendsCompleted = (
 
 export const getUserFriendsError = (
   setFriends: Function | null | undefined,
-  setLoading: Function
+  setLoading: Function,
+  dispatch: React.Dispatch<any>,
+  alertVisible: boolean
 ) => (e: ApolloError) => {
   setLoading(false);
   if (setFriends) setFriends([]);
-  AlertHelper.show('error', 'Error', getErrorMessage(e));
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const REQUEST_FRIENDSHIP = gql`
@@ -79,10 +81,11 @@ export const requestFriendshipCompleted = (
 
 export const requestFriendshipError = (
   dispatch: React.Dispatch<any>,
+  alertVisible: boolean,
   setLoading: Function
 ) => (e: ApolloError) => {
   setLoading(false);
-  AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const ACCEPT_FRIENDSHIP = gql`
@@ -114,10 +117,11 @@ export const acceptFriendshipCompleted = (
 
 export const acceptFriendshipError = (
   dispatch: React.Dispatch<any>,
+  alertVisible: boolean,
   setLoading: Function
 ) => (e: ApolloError) => {
   setLoading(false);
-  AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const REJECT_FRIENDSHIP = gql`
@@ -149,10 +153,11 @@ export const rejectFriendshipCompleted = (
 
 export const rejectFriendshipError = (
   dispatch: React.Dispatch<any>,
+  alertVisible: boolean,
   setLoading: Function
 ) => (e: ApolloError) => {
   setLoading(false);
-  AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const GET_FRIENDSHIP_BETWEEN_USERS = gql`
@@ -182,11 +187,12 @@ export const getFriendshipBetweenUsersCompleted = (
 
 export const getFriendshipBetweenUsersError = (
   dispatch: React.Dispatch<any>,
+  alertVisible: boolean,
   setLoading: Function
 ) => (e: ApolloError) => {
   setLoading(false);
 
-  AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const DELETE_FRIENDSHIP_BY_ID = gql`
@@ -220,8 +226,9 @@ export const deleteFriendshipByIdCompleted = (
 
 export const deleteFriendshipByIdError = (
   dispatch: React.Dispatch<any>,
+  alertVisible: boolean,
   setLoading: Function
 ) => (e: ApolloError) => {
   setLoading(false);
-  AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
