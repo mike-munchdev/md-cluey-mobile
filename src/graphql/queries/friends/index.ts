@@ -71,7 +71,6 @@ export const requestFriendshipCompleted = (
 
   setLoading(false);
   if (ok) {
-    dispatch({ type: 'ADD_FRIEND', payload: friendship });
     dispatch({ type: 'UPDATE_FRIENDSHIP', payload: friendship });
   } else {
     AlertHelper.show('error', 'Error', error.message);
