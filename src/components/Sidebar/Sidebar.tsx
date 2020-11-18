@@ -11,7 +11,7 @@ import SidebarMenuItem from './SidebarMenuItem';
 import { HorizontalRule } from '../HorizontalRule/';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import theme from '../../constants/theme';
-import { useMutation } from '@apollo/react-hooks';
+import { useLazyQuery, useMutation } from '@apollo/react-hooks';
 import {
   updateUserCompleted,
   updateUserError,
@@ -19,6 +19,11 @@ import {
 } from '../../graphql/queries/user';
 import { Overlay } from 'react-native-elements';
 import { ActionButton } from '../Buttons';
+import {
+  getUserSystemNotificationsCompleted,
+  getUserSystemNotificationsError,
+  GET_USER_SYSTEM_NOTIFICATIONS,
+} from '../../graphql/queries/systemnotifications';
 
 const Sidebar = () => {
   const navigation = useNavigation();
@@ -26,11 +31,22 @@ const Sidebar = () => {
   const { state, dispatch } = useContext(AppContext);
 
   const [, setIsLoading] = useState(false);
+  const [notificationsLoading, setNotificationsLoading] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(false);
   const [updateUser] = useMutation(UPDATE_USER, {
     onError: updateUserError(setIsLoading),
     onCompleted: updateUserCompleted(setIsLoading, dispatch),
   });
+
+  const [getSystemNotifications] = useLazyQuery(GET_USER_SYSTEM_NOTIFICATIONS, {
+    fetchPolicy: 'network-only',
+    onError: getUserSystemNotificationsError(dispatch, setNotificationsLoading),
+    onCompleted: getUserSystemNotificationsCompleted(
+      dispatch,
+      setNotificationsLoading
+    ),
+  });
+
   const onIsMakeLikesPublicToggleSwitch = async () => {
     // check for consumer profile settings
     if (
@@ -57,6 +73,16 @@ const Sidebar = () => {
       navigation.dispatch(StackActions.replace('ResetPassword'));
     }
   }, [state.user]);
+
+  useEffect(() => {
+    (async () => {
+      await getSystemNotifications({
+        variables: {
+          userId: state.user?.id,
+        },
+      });
+    })();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -107,7 +133,7 @@ const Sidebar = () => {
           iconColor={theme.dark.hex}
           // viewStyles={{ marginTop: 20 }}
         />
-        <SidebarMenuItem
+        {/* <SidebarMenuItem
           onPress={async () => {
             navigation.navigate('SystemNotifications');
           }}
@@ -116,7 +142,7 @@ const Sidebar = () => {
           title="Notifications"
           iconColor={theme.dark.hex}
           viewStyles={{ marginTop: 20 }}
-        />
+        /> */}
         <SidebarMenuItem
           onPress={() => {
             navigation.navigate('Friends');
@@ -126,6 +152,8 @@ const Sidebar = () => {
           title="Manage Cluey Friends"
           iconColor={theme.dark.hex}
           viewStyles={{ marginTop: 20 }}
+          isLoading={notificationsLoading}
+          badge={state.notifications && state.notifications.length > 0}
         />
 
         <SidebarMenuItem

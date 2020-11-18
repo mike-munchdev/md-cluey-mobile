@@ -54,19 +54,14 @@ const MyLikesStackScreen = () => (
   </MyLikesStack.Navigator>
 );
 
-const NotificationsStackScreen = () => (
-  <NotificationsStack.Navigator screenOptions={{ headerShown: false }}>
-    <NotificationsStack.Screen
-      name="SystemNotifications"
-      component={SystemNotifications}
-    />
-  </NotificationsStack.Navigator>
-);
-
 const FriendsStackScreen = () => (
   <FriendsStack.Navigator screenOptions={{ headerShown: false }}>
     <FriendsStack.Screen name="Friends" component={Friends} />
     <FriendsStack.Screen name="Friend" component={Friend} />
+    <FriendsStack.Screen
+      name="SystemNotifications"
+      component={SystemNotifications}
+    />
   </FriendsStack.Navigator>
 );
 
@@ -76,10 +71,6 @@ const DrawerScreen = () => (
     <Drawer.Screen name="Profile" component={ProfileStackScreen} />
     <Drawer.Screen name="Friends" component={FriendsStackScreen} />
     <Drawer.Screen name="MyLikes" component={MyLikesStackScreen} />
-    <Drawer.Screen
-      name="SystemNotifications"
-      component={NotificationsStackScreen}
-    />
   </Drawer.Navigator>
 );
 
