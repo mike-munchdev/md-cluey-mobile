@@ -33,6 +33,8 @@ const Sidebar = () => {
   const [, setIsLoading] = useState(false);
   const [notificationsLoading, setNotificationsLoading] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(false);
+  const [friendsOverlayVisible, setFriendsOverlayVisible] = useState(false);
+
   const [updateUser] = useMutation(UPDATE_USER, {
     onError: updateUserError(setIsLoading),
     onCompleted: updateUserCompleted(setIsLoading, dispatch),
@@ -65,6 +67,15 @@ const Sidebar = () => {
       });
     } else {
       setOverlayVisible(true);
+    }
+  };
+
+  const handleManageFriendsPress = async () => {
+    // check for username
+    if (state.user?.username) {
+      navigation.navigate('Friends');
+    } else {
+      setFriendsOverlayVisible(true);
     }
   };
 
@@ -110,16 +121,6 @@ const Sidebar = () => {
           title="Search"
           iconColor={theme.dark.hex}
         />
-        {/* <SidebarMenuItem
-          onPress={async () => {
-            alert('Under Development');
-          }}
-          iconName="building"
-          iconColor={theme.dark.hex}
-          iconSize={20}
-          title="Pharmacy"
-          viewStyles={{ marginTop: 20 }}
-        /> */}
       </View>
       <HorizontalRule styles={{ marginBottom: 20 }} />
       <View style={{ marginLeft: 10, marginBottom: 20 }}>
@@ -133,20 +134,8 @@ const Sidebar = () => {
           iconColor={theme.dark.hex}
           // viewStyles={{ marginTop: 20 }}
         />
-        {/* <SidebarMenuItem
-          onPress={async () => {
-            navigation.navigate('SystemNotifications');
-          }}
-          iconName="bell"
-          iconSize={20}
-          title="Notifications"
-          iconColor={theme.dark.hex}
-          viewStyles={{ marginTop: 20 }}
-        /> */}
         <SidebarMenuItem
-          onPress={() => {
-            navigation.navigate('Friends');
-          }}
+          onPress={handleManageFriendsPress}
           iconName="user-friends"
           iconSize={20}
           title="Manage Cluey Friends"
@@ -176,40 +165,6 @@ const Sidebar = () => {
           title="Make Likes/Dislikes Public"
           viewStyles={{ marginTop: 20 }}
         />
-        {/* <SidebarMenuItem
-          onPress={async () => {
-            navigation.navigate('Settings');
-          }}
-          iconName="cog"
-          iconColor={theme.dark.hex}
-          iconSize={20}
-          title="Settings"
-        /> */}
-        {/* <SidebarMenuItem
-          onPress={async () => {
-            AlertHelper.show(
-              'info',
-              'Under Development',
-              'Feature is currently under development!'
-            );
-          }}
-          iconName="flag-usa"
-          iconSize={20}
-          title="Manage Political Preferences"
-          iconColor={theme.dark.hex}
-          viewStyles={{ marginTop: 20 }}
-        /> */}
-
-        {/* <SidebarMenuItem
-          onPress={async () => {
-            await signOut(navigation);
-          }}
-          iconName="sign-out-alt"
-          iconColor={theme.dark.hex}
-          iconSize={20}
-          title="Logout"
-          viewStyles={{ marginTop: 20 }}
-        /> */}
       </View>
       <HorizontalRule styles={{ marginBottom: 20 }} />
       <View style={{ marginLeft: 10, marginBottom: 20 }}>
@@ -274,6 +229,45 @@ const Sidebar = () => {
               title="Close"
               handlePress={() => {
                 setOverlayVisible(false);
+              }}
+              buttonStyles={{ marginTop: 15 }}
+              textColor={theme.buttonText}
+              color={theme.dark.hex}
+            />
+          </View>
+        </Fragment>
+      </Overlay>
+      <Overlay
+        isVisible={friendsOverlayVisible}
+        onBackdropPress={() => setFriendsOverlayVisible(false)}
+        overlayStyle={{ width: '90%' }}
+      >
+        <Fragment>
+          <Text style={{ fontSize: 18 }}>
+            Username must be set in order to manage, search, or add friends. Go
+            to View Profile.
+          </Text>
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 10,
+            }}
+          >
+            <ActionButton
+              title="View Profile"
+              handlePress={() => {
+                setFriendsOverlayVisible(false);
+                navigation.navigate('Profile');
+              }}
+              buttonStyles={{ marginTop: 15 }}
+              textColor={theme.buttonText}
+              color={theme.dark.hex}
+            />
+            <ActionButton
+              title="Close"
+              handlePress={() => {
+                setFriendsOverlayVisible(false);
               }}
               buttonStyles={{ marginTop: 15 }}
               textColor={theme.buttonText}
