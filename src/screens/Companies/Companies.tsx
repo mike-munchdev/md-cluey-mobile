@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import { useRoute } from '@react-navigation/native';
@@ -13,11 +13,12 @@ import { useLazyQuery } from '@apollo/react-hooks';
 import { CompaniesList } from '../../components/Lists';
 import { StandardContainer } from '../../components/Containers';
 import { NavHeader } from '../../components/Headers';
+import { AppContext } from '../../config/context';
 
 const Companies: FC = () => {
   const route = useRoute();
   const [searchQuery, setSearchQuery] = useState('');
-
+  const { dispatch, state } = useContext(AppContext);
   const [companies, setCompanies] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
   const [loading, setIsLoading] = useState(true);
@@ -30,7 +31,9 @@ const Companies: FC = () => {
       onError: getCompaniesByProductTypeError(
         setCompanies,
         setFilteredList,
-        setIsLoading
+        setIsLoading,
+        dispatch,
+        state.alertVisible
       ),
       onCompleted: getCompaniesByProductTypeCompleted(
         setCompanies,

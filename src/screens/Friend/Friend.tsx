@@ -49,17 +49,21 @@ const Friend: FC = () => {
 
   const [getUserById] = useLazyQuery(GET_USER_BY_ID, {
     fetchPolicy: 'network-only',
-    onError: getUserByIdError(dispatch, setIsLoading),
+    onError: getUserByIdError(dispatch, state.alertVisible, setIsLoading),
     onCompleted: getUserByIdCompleted(dispatch, setIsLoading),
   });
 
   const [requestFriendship] = useMutation(REQUEST_FRIENDSHIP, {
-    onError: requestFriendshipError(dispatch, setIsLoading),
+    onError: requestFriendshipError(dispatch, state.alertVisible, setIsLoading),
     onCompleted: requestFriendshipCompleted(dispatch, setIsLoading),
   });
 
   const [deleteFriendshipById] = useMutation(DELETE_FRIENDSHIP_BY_ID, {
-    onError: deleteFriendshipByIdError(dispatch, setIsLoading),
+    onError: deleteFriendshipByIdError(
+      dispatch,
+      state.alertVisible,
+      setIsLoading
+    ),
     onCompleted: deleteFriendshipByIdCompleted(dispatch, setIsLoading),
   });
 
@@ -67,14 +71,23 @@ const Friend: FC = () => {
     GET_FRIENDSHIP_BETWEEN_USERS,
     {
       fetchPolicy: 'network-only',
-      onError: getFriendshipBetweenUsersError(dispatch, setIsLoading),
+      onError: getFriendshipBetweenUsersError(
+        dispatch,
+        state.alertVisible,
+        setIsLoading
+      ),
       onCompleted: getFriendshipBetweenUsersCompleted(dispatch, setIsLoading),
     }
   );
 
   const [getUserFriends] = useLazyQuery(GET_USER_FRIENDS, {
     fetchPolicy: 'network-only',
-    onError: getUserFriendsError(setFriendships, setFriendshipLoading),
+    onError: getUserFriendsError(
+      setFriendships,
+      setFriendshipLoading,
+      dispatch,
+      state.alertVisible
+    ),
     onCompleted: getUserFriendsCompleted(null, setFriendships, setIsLoading),
   });
 

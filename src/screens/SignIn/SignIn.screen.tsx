@@ -19,7 +19,7 @@ import styles from './styles';
 import signinSchema from '../../validation/signin';
 
 import AnimatableTextInput from '../../components/TextInput/AnimatableTextInput';
-import { AuthContext } from '../../config/context';
+import { AppContext, AuthContext } from '../../config/context';
 import theme from '../../constants/theme';
 import { ActionButton, NavBackButton } from '../../components/Buttons';
 import TextButton from '../../components/Buttons/TextButton';
@@ -37,11 +37,12 @@ const SignIn: FC = () => {
   const index = useNavigationState((state) => state.index);
   const [myIndex] = useState(index);
   const { signIn } = useContext(AuthContext);
+  const { dispatch, state } = useContext(AppContext);
   const navigation = useNavigation();
 
   const [getUserToken] = useLazyQuery(GET_USER_TOKEN, {
     fetchPolicy: 'network-only',
-    onError: getUserTokenError(setSignInLoading),
+    onError: getUserTokenError(dispatch, state.alertVisible, setSignInLoading),
     onCompleted: getUserTokenCompleted(
       signIn,
       navigation,

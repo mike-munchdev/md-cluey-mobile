@@ -4,7 +4,7 @@ import { AlertHelper } from '../../../utils/alert';
 import Bugsnag from '@bugsnag/expo';
 import { errors } from '../../../constants/errors';
 import { productTypesStructure } from '../structures';
-import { getErrorMessage } from '../../../utils/errors';
+import { getErrorMessage, showErrorAlert } from '../../../utils/errors';
 
 export const GET_PRODUCT_TYPES_BY_CATEGORY = gql`
   query GetProductTypesByCategory ($id: String!) {
@@ -21,11 +21,13 @@ export const GET_PRODUCT_TYPES_BY_CATEGORY = gql`
 
 export const getProductTypesByCategoryError = (
   setProductTypes: Function,
-  setLoading: Function
+  setLoading: Function,
+  dispatch: React.Dispatch<any>,
+  alertVisible: boolean
 ) => (e: ApolloError) => {
   setLoading(false);
   setProductTypes([]);
-  AlertHelper.show('error', 'Error', getErrorMessage(e));
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const getProductTypesByCategoryCompleted = (

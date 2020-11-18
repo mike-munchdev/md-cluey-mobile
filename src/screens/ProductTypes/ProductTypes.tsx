@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import { useRoute } from '@react-navigation/native';
@@ -13,6 +13,7 @@ import { useLazyQuery } from '@apollo/react-hooks';
 import { ProductTypesList } from '../../components/Lists';
 import { StandardContainer } from '../../components/Containers';
 import { NavHeader } from '../../components/Headers';
+import { AppContext } from '../../config/context';
 
 const ProductTypes: FC = () => {
   const route = useRoute();
@@ -25,12 +26,17 @@ const ProductTypes: FC = () => {
   const [categoryId] = useState(
     route.params.categoryId ? route.params.categoryId : null
   );
-
+  const { dispatch, state } = useContext(AppContext);
   const [getProductTypesByCategory] = useLazyQuery(
     GET_PRODUCT_TYPES_BY_CATEGORY,
     {
       fetchPolicy: 'network-only',
-      onError: getProductTypesByCategoryError(setProductTypes, setIsLoading),
+      onError: getProductTypesByCategoryError(
+        setProductTypes,
+        setIsLoading,
+        dispatch,
+        state.alertVisible
+      ),
       onCompleted: getProductTypesByCategoryCompleted(
         setProductTypes,
         setIsLoading

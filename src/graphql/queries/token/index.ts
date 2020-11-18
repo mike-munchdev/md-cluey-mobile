@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import { ApolloError } from 'apollo-client';
 import { AlertHelper } from '../../../utils/alert';
 import { userStructure } from '../structures/';
+import { getErrorMessage, showErrorAlert } from '../../../utils/errors';
 
 export const GET_USER_TOKEN = gql`
   query GetUserToken(
@@ -26,13 +27,13 @@ export const GET_USER_TOKEN = gql`
   }
 `;
 
-export const getUserTokenError = (setLoading: Function) => (e: ApolloError) => {
+export const getUserTokenError = (
+  dispatch: React.Dispatch<any>,
+  alertVisible: boolean,
+  setLoading: Function
+) => (e: ApolloError) => {
   setLoading(false);
-  AlertHelper.show(
-    'error',
-    'Error',
-    'An error occurred retrieving user information. Please try again.'
-  );
+  showErrorAlert('error', 'Error', getErrorMessage(e), dispatch, alertVisible);
 };
 
 export const getUserTokenCompleted = (

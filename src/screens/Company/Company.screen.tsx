@@ -42,7 +42,12 @@ const Company: FC = () => {
   const [imageErrored, setImageErrored] = useState(false);
   const [getCompanyById] = useLazyQuery(GET_COMPANY_BY_ID, {
     fetchPolicy: 'network-only',
-    onError: getCompanyByIdError(setCompany, setIsLoading),
+    onError: getCompanyByIdError(
+      setCompany,
+      setIsLoading,
+      dispatch,
+      state.alertVisible
+    ),
     onCompleted: getCompanyByIdCompleted(setCompany, setIsLoading),
   });
 

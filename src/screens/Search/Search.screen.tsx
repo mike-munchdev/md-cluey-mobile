@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
@@ -22,11 +22,12 @@ import {
 } from '../../graphql/queries/company';
 import { sortByFieldName } from '../../utils/sort';
 import { NavHeader } from '../../components/Headers';
+import { AppContext } from '../../config/context';
 
 const Search: FC = () => {
   const [searchText, setSearchText] = useState('');
   const [companies, setCompanies] = useState([]);
-
+  const { dispatch, state } = useContext(AppContext);
   const [autoCompleteCache, setAutoCompleteCache] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [
@@ -69,7 +70,12 @@ const Search: FC = () => {
 
   const [getCompanysByName] = useLazyQuery(GET_COMPANIES_BY_NAME, {
     fetchPolicy: 'network-only',
-    onError: getCompaniesByNameError(setCompanies, setIsLoading),
+    onError: getCompaniesByNameError(
+      setCompanies,
+      setIsLoading,
+      dispatch,
+      state.alertVisible
+    ),
     onCompleted: getCompaniesByNameCompleted(
       setCompanies,
       setIsLoading,
