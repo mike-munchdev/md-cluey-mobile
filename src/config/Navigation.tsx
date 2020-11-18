@@ -264,7 +264,7 @@ export default () => {
             type: 'UPDATE_USER_TOKEN',
             payload: null,
           });
-          navigation.dispatch(StackActions.replace('SignIn'));
+          navigation.dispatch(StackActions.replace('GetStarted'));
         } catch (error) {
           AlertHelper.show('error', 'Sign Out', errors.DEFAULT_ERROR_MESSAGE);
         }
