@@ -220,7 +220,7 @@ const Friend: FC = () => {
                   style={{ marginLeft: 10, width: 150 }}
                   mode="contained"
                 >
-                  {friendships ? friendships.length : 0}
+                  {`${friendships ? friendships.length : 0} Friends`}
                 </Button>
               </View>
             </View>
