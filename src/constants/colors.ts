@@ -3,8 +3,10 @@ export default {
     normal: 'gray',
     neutral: 'lightgrey',
     dark: 'darkgrey',
-    light: 'lightgrey',
+    lightgrey: 'lightgrey',
+    light: '#E5E5E5',
     charcoal: '#2b2d2f',
+    opaque: '#232323',
   },
   white: {
     normal: 'white',

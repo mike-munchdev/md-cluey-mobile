@@ -7,7 +7,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  listEmptyView: { alignItems: 'center' },
+  listEmptyView: { alignItems: 'center', marginBottom: 30 },
   listEmptyText: {
     fontFamily: 'MontserratMedium',
     fontSize: 24,

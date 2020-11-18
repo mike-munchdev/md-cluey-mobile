@@ -53,7 +53,7 @@ const Friends: FC = () => {
         title: 'Friends',
         data: friends || [],
         renderItem: renderFriendItem,
-        ListEmptyComponent: <ListEmptyView title="No Friends" />,
+        ListEmptyComponent: <ListEmptyView title="No Friends Found" />,
       },
       {
         title: 'Users',
@@ -257,6 +257,7 @@ const Friends: FC = () => {
             placeholder="Name or @username"
             onChangeText={onChangeSearch}
             value={searchQuery}
+            style={{ marginHorizontal: 10 }}
           />
           <Fragment>
             {isLoading ? (
@@ -266,7 +267,7 @@ const Friends: FC = () => {
                 style={{
                   height: '85%',
                   width: '100%',
-                  marginHorizontal: 10,
+
                   marginTop: 10,
                 }}
                 sections={data}
@@ -277,9 +278,17 @@ const Friends: FC = () => {
                     onRefresh={onRefresh}
                   />
                 }
-                renderSectionHeader={({ section: { title } }) => (
-                  <FlatListHeader title={title} />
-                )}
+                renderSectionHeader={({ section }) => {
+                  if (section.data.length === 0 && section.title === 'Users')
+                    return null;
+                  return (
+                    <FlatListHeader
+                      title={section.title}
+                      containerStyle={{ backgroundColor: theme.gray.hex }}
+                      textStyle={{ color: theme.opaqueText.hex }}
+                    />
+                  );
+                }}
                 renderSectionFooter={({ section }) => {
                   if (section.data.length === 0) {
                     return section.ListEmptyComponent;
@@ -289,6 +298,7 @@ const Friends: FC = () => {
                 ListEmptyComponent={() => {
                   return <ListEmptyView title="No data" />;
                 }}
+                stickySectionHeadersEnabled
               />
             )}
           </Fragment>
