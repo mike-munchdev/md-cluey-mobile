@@ -1,0 +1,84 @@
+{
+  "expo": {
+    "name": "Cluey Test",
+    "slug": "cluey-mobile-test",
+    "version": "1.2.0",
+    "orientation": "portrait",
+    "icon": "./assets/Icon-1024.png",
+    "facebookScheme": "fb1187672448283641",
+    "facebookAppId": "1187672448283641",
+    "facebookDisplayName": "Cluey Consumer",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#005046"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "android": {
+      "package": "com.clueyconsumer.clueytest",
+      "googleServicesFile": "./assets/google-services.json",
+      "versionCode": 2,
+      "permissions": [
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "WRITE_SETTINGS"
+      ]
+    },
+    "ios": {
+      "bundleIdentifier": "com.clueyconsumer.clueytest",
+      "supportsTablet": true,
+      "googleServicesFile": "./assets/GoogleService-Info.plist",
+      "usesAppleSignIn": true,
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.576013538553-pdsto80kets3kd92o2jguikmkvtvnas5"
+        }
+      },
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": ["itms-apps"]
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "appVariables": {
+        "production": {
+          "apiServerUrl": "md-cluey-test.herokuapp.com",
+          "httpProtocol": "https",
+          "wsProtocol": "wss",
+          "categoryImageUrlPrefix": "http://md-cluey-test.herokuapp.com/categories/",
+          "brandLogoUrlPrefix": "http://md-cluey-test.herokuapp.com/logos/",
+          "googleClientIdIos": "576013538553-pdsto80kets3kd92o2jguikmkvtvnas5.apps.googleusercontent.com",
+          "googleClientIdAndroid": "576013538553-d8gffmivuiibqtcilddvcd8ajs91e2vj.apps.googleusercontent.com"
+        },
+        "development": {
+          "apiServerUrl": "localhost:4004",
+          "httpProtocol": "http",
+          "wsProtocol": "ws",
+          "categoryImageUrlPrefix": "http://localhost:4004/categories/",
+          "brandLogoUrlPrefix": "http://localhost:4004/logos/",
+          "googleClientIdIos": "854065862128-d6n6v1m2gjf1bgml4am349bf1s43fvkc.apps.googleusercontent.com",
+          "googleClientIdAndroid": "854065862128-c9qbpsi1m8frp0a39n6bqq8dhkp2555f.apps.googleusercontent.com"
+        }
+      },
+      "uplead": {
+        "apiKey": "b3ccb6d9ca316379213dff10bfd8227e"
+      },
+      "bugsnag": {
+        "apiKey": "779672cc411ca6b7390288aa4ce06988"
+      }
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "@bugsnag/expo/hooks/post-publish.js",
+          "config": {}
+        }
+      ]
+    }
+  }
+}
