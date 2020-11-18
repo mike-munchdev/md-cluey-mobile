@@ -2,7 +2,7 @@
   "expo": {
     "name": "Cluey",
     "slug": "cluey-mobile",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "orientation": "portrait",
     "icon": "./assets/Icon-1024.png",
     "facebookScheme": "fb1187672448283641",
@@ -30,6 +30,9 @@
         "googleSignIn": {
           "reservedClientId": "com.googleusercontent.apps.576013538553-pdsto80kets3kd92o2jguikmkvtvnas5"
         }
+      },
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": ["itms-apps"]
       }
     },
     "web": {
@@ -38,20 +41,20 @@
     "extra": {
       "appVariables": {
         "production": {
-          "apiServerUrl": "clueyconsumer.herokuapp.com",
-          "httpProtocol": "https",
-          "wsProtocol": "wss",
-          "categoryImageUrlPrefix": "http://clueyconsumer.herokuapp.com/categories/",
-          "brandLogoUrlPrefix": "http://clueyconsumer.herokuapp.com/logos/",
-          "googleClientIdIos": "576013538553-pdsto80kets3kd92o2jguikmkvtvnas5.apps.googleusercontent.com",
-          "googleClientIdAndroid": "576013538553-d8gffmivuiibqtcilddvcd8ajs91e2vj.apps.googleusercontent.com"
-        },
-        "heroku-test": {
           "apiServerUrl": "md-cluey-test.herokuapp.com",
           "httpProtocol": "https",
           "wsProtocol": "wss",
           "categoryImageUrlPrefix": "http://md-cluey-test.herokuapp.com/categories/",
           "brandLogoUrlPrefix": "http://md-cluey-test.herokuapp.com/logos/",
+          "googleClientIdIos": "576013538553-pdsto80kets3kd92o2jguikmkvtvnas5.apps.googleusercontent.com",
+          "googleClientIdAndroid": "576013538553-d8gffmivuiibqtcilddvcd8ajs91e2vj.apps.googleusercontent.com"
+        },
+        "heroku-test": {
+          "apiServerUrl": "clueyconsumer.herokuapp.com",
+          "httpProtocol": "https",
+          "wsProtocol": "wss",
+          "categoryImageUrlPrefix": "http://clueyconsumer.herokuapp.com/categories/",
+          "brandLogoUrlPrefix": "http://clueyconsumer.herokuapp.com/logos/",
           "googleClientIdIos": "576013538553-pdsto80kets3kd92o2jguikmkvtvnas5.apps.googleusercontent.com",
           "googleClientIdAndroid": "576013538553-d8gffmivuiibqtcilddvcd8ajs91e2vj.apps.googleusercontent.com"
         },
