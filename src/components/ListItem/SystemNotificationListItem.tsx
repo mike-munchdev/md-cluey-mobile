@@ -10,6 +10,7 @@ import {
   REQUEST_FRIENDSHIP,
   rejectFriendshipError,
   rejectFriendshipCompleted,
+  REJECT_FRIENDSHIP,
 } from '../../graphql/queries/friends';
 import { AppContext } from '../../config/context';
 import { ActivityIndicator } from 'react-native-paper';
@@ -37,7 +38,7 @@ const SystemNotificationListItem: FC<ISystemNotificationListItemProps> = ({
     onError: acceptFriendshipError(dispatch, state.alertVisible, setIsLoading),
     onCompleted: acceptFriendshipCompleted(dispatch, setIsLoading),
   });
-  const [rejectFriendship] = useMutation(REQUEST_FRIENDSHIP, {
+  const [rejectFriendship] = useMutation(REJECT_FRIENDSHIP, {
     onError: rejectFriendshipError(dispatch, state.alertVisible, setIsLoading),
     onCompleted: rejectFriendshipCompleted(dispatch, setIsLoading),
   });
