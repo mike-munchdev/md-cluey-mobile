@@ -22,7 +22,7 @@ export const showErrorAlert = (
         message,
         [
           {
-            text: `Go to ${Platform.OS === 'ios' ? 'App' : 'Play'} Store!`,
+            text: `Go to ${Platform.OS === 'ios' ? 'App' : 'Play'} Store.`,
             onPress: async () => {
               dispatch({ type: 'UPDATE_ALERT_VISIBLE', payload: false });
               if (Platform.OS === 'ios') {
