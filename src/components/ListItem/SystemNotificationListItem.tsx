@@ -147,6 +147,7 @@ const SystemNotificationListItem: FC<ISystemNotificationListItemProps> = ({
                   variables: {
                     input: {
                       friendshipId: item.linkId,
+                      notificationId: item.id,
                     },
                   },
                 });
