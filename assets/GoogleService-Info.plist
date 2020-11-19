@@ -3,21 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>726028660917-it17vlgku3ska4dm57h87cbequljvno3.apps.googleusercontent.com</string>
+	<string>576013538553-1loelnghest3tsvd43gdhjeshkm9k3v0.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.726028660917-it17vlgku3ska4dm57h87cbequljvno3</string>
+	<string>com.googleusercontent.apps.576013538553-1loelnghest3tsvd43gdhjeshkm9k3v0</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>576013538553-d8gffmivuiibqtcilddvcd8ajs91e2vj.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBo4sXTCji5ItXM8Fe0DhQWMjOS2htBpQM</string>
+	<string>AIzaSyDsoNFcKItTWF5DVN5F_m7cu6Z17wVPyhQ</string>
 	<key>GCM_SENDER_ID</key>
-	<string>726028660917</string>
+	<string>576013538553</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.munchdevelopment.clueytest</string>
+	<string>com.clueyconsumer.clueymobile</string>
 	<key>PROJECT_ID</key>
-	<string>cluey-976fc</string>
+	<string>cluey-consumer</string>
 	<key>STORAGE_BUCKET</key>
-	<string>cluey-976fc.appspot.com</string>
+	<string>cluey-consumer.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +31,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:726028660917:ios:e3635d4f40074e6d548efc</string>
+	<string>1:576013538553:ios:e28f9f24847d5c1106fe28</string>
 	<key>DATABASE_URL</key>
-	<string>https://cluey-976fc.firebaseio.com</string>
+	<string>https://cluey-consumer.firebaseio.com</string>
 </dict>
 </plist>
