@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>576013538553-1loelnghest3tsvd43gdhjeshkm9k3v0.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.576013538553-1loelnghest3tsvd43gdhjeshkm9k3v0</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>576013538553-d8gffmivuiibqtcilddvcd8ajs91e2vj.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDsoNFcKItTWF5DVN5F_m7cu6Z17wVPyhQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>576013538553</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.clueyconsumer.clueymobile</string>
+	<key>PROJECT_ID</key>
+	<string>cluey-consumer</string>
+	<key>STORAGE_BUCKET</key>
+	<string>cluey-consumer.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:576013538553:ios:e28f9f24847d5c1106fe28</string>
+	<key>DATABASE_URL</key>
+	<string>https://cluey-consumer.firebaseio.com</string>
+</dict>
+</plist>

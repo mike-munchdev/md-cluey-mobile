@@ -34,7 +34,7 @@
       "usesAppleSignIn": true,
       "config": {
         "googleSignIn": {
-          "reservedClientId": "com.googleusercontent.apps.576013538553-pdsto80kets3kd92o2jguikmkvtvnas5"
+          "reservedClientId": "com.googleusercontent.apps.576013538553-r0moau9j482gvasgpdctfv0lpc2kk7pn"
         }
       },
       "infoPlist": {
@@ -52,7 +52,7 @@
           "wsProtocol": "wss",
           "categoryImageUrlPrefix": "http://md-cluey-test.herokuapp.com/categories/",
           "brandLogoUrlPrefix": "http://md-cluey-test.herokuapp.com/logos/",
-          "googleClientIdIos": "576013538553-pdsto80kets3kd92o2jguikmkvtvnas5.apps.googleusercontent.com",
+          "googleClientIdIos": "576013538553-r0moau9j482gvasgpdctfv0lpc2kk7pn.apps.googleusercontent.com",
           "googleClientIdAndroid": "576013538553-d8gffmivuiibqtcilddvcd8ajs91e2vj.apps.googleusercontent.com"
         },
         "development": {
