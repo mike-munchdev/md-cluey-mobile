@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Cluey",
+    "name": "Cluey Test",
     "slug": "cluey-mobile",
-    "version": "1.1.1",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./assets/Icon-1024.png",
     "facebookScheme": "fb1187672448283641",
@@ -18,7 +18,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "android": {
-      "package": "com.clueyconsumer.clueyconsumer",
+      "package": "com.clueyconsumer.clueytest",
       "googleServicesFile": "./assets/google-services.json",
       "versionCode": 2,
       "permissions": [
@@ -28,7 +28,7 @@
       ]
     },
     "ios": {
-      "bundleIdentifier": "com.clueyconsumer.clueymobile",
+      "bundleIdentifier": "com.clueyconsumer.clueytest",
       "supportsTablet": true,
       "googleServicesFile": "./assets/GoogleService-Info.plist",
       "usesAppleSignIn": true,
@@ -48,24 +48,6 @@
       "appVariables": {
         "production": {
           "apiServerUrl": "md-cluey-test.herokuapp.com",
-          "httpProtocol": "https",
-          "wsProtocol": "wss",
-          "categoryImageUrlPrefix": "http://md-cluey-test.herokuapp.com/categories/",
-          "brandLogoUrlPrefix": "http://md-cluey-test.herokuapp.com/logos/",
-          "googleClientIdIos": "576013538553-pdsto80kets3kd92o2jguikmkvtvnas5.apps.googleusercontent.com",
-          "googleClientIdAndroid": "576013538553-d8gffmivuiibqtcilddvcd8ajs91e2vj.apps.googleusercontent.com"
-        },
-        "heroku-test": {
-          "apiServerUrl": "clueyconsumer.herokuapp.com",
-          "httpProtocol": "https",
-          "wsProtocol": "wss",
-          "categoryImageUrlPrefix": "http://clueyconsumer.herokuapp.com/categories/",
-          "brandLogoUrlPrefix": "http://clueyconsumer.herokuapp.com/logos/",
-          "googleClientIdIos": "576013538553-pdsto80kets3kd92o2jguikmkvtvnas5.apps.googleusercontent.com",
-          "googleClientIdAndroid": "576013538553-d8gffmivuiibqtcilddvcd8ajs91e2vj.apps.googleusercontent.com"
-        },
-        "staging": {
-          "apiServerUrl": "md-cluey-staging.herokuapp.com",
           "httpProtocol": "https",
           "wsProtocol": "wss",
           "categoryImageUrlPrefix": "http://md-cluey-test.herokuapp.com/categories/",
