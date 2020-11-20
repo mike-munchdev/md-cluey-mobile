@@ -13,13 +13,6 @@ import { NODE_ENV } from './src/hooks/serverInfo';
 
 Bugsnag.start(Constants.manifest.extra.bugsnag.apiKey);
 const ErrorBoundary = Bugsnag.getPlugin('react');
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-});
 
 const ErrorView = () => {
   return (
