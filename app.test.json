@@ -30,7 +30,7 @@
     "ios": {
       "bundleIdentifier": "com.clueyconsumer.clueytest",
       "supportsTablet": true,
-      "googleServicesFile": "./assets/GoogleService-Info.plist",
+      "googleServicesFile": "./assets/GoogleService-Info.test.plist",
       "usesAppleSignIn": true,
       "config": {
         "googleSignIn": {
