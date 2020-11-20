@@ -34,7 +34,7 @@
       "usesAppleSignIn": true,
       "config": {
         "googleSignIn": {
-          "reservedClientId": "com.googleusercontent.apps.576013538553-pdsto80kets3kd92o2jguikmkvtvnas5"
+          "reservedClientId": "com.googleusercontent.apps.576013538553-1loelnghest3tsvd43gdhjeshkm9k3v0"
         }
       },
       "infoPlist": {
@@ -47,30 +47,12 @@
     "extra": {
       "appVariables": {
         "production": {
-          "apiServerUrl": "md-cluey-test.herokuapp.com",
-          "httpProtocol": "https",
-          "wsProtocol": "wss",
-          "categoryImageUrlPrefix": "http://md-cluey-test.herokuapp.com/categories/",
-          "brandLogoUrlPrefix": "http://md-cluey-test.herokuapp.com/logos/",
-          "googleClientIdIos": "576013538553-pdsto80kets3kd92o2jguikmkvtvnas5.apps.googleusercontent.com",
-          "googleClientIdAndroid": "576013538553-d8gffmivuiibqtcilddvcd8ajs91e2vj.apps.googleusercontent.com"
-        },
-        "heroku-test": {
           "apiServerUrl": "clueyconsumer.herokuapp.com",
           "httpProtocol": "https",
           "wsProtocol": "wss",
           "categoryImageUrlPrefix": "http://clueyconsumer.herokuapp.com/categories/",
           "brandLogoUrlPrefix": "http://clueyconsumer.herokuapp.com/logos/",
-          "googleClientIdIos": "576013538553-pdsto80kets3kd92o2jguikmkvtvnas5.apps.googleusercontent.com",
-          "googleClientIdAndroid": "576013538553-d8gffmivuiibqtcilddvcd8ajs91e2vj.apps.googleusercontent.com"
-        },
-        "staging": {
-          "apiServerUrl": "md-cluey-staging.herokuapp.com",
-          "httpProtocol": "https",
-          "wsProtocol": "wss",
-          "categoryImageUrlPrefix": "http://md-cluey-test.herokuapp.com/categories/",
-          "brandLogoUrlPrefix": "http://md-cluey-test.herokuapp.com/logos/",
-          "googleClientIdIos": "576013538553-pdsto80kets3kd92o2jguikmkvtvnas5.apps.googleusercontent.com",
+          "googleClientIdIos": "576013538553-1loelnghest3tsvd43gdhjeshkm9k3v0.apps.googleusercontent.com",
           "googleClientIdAndroid": "576013538553-d8gffmivuiibqtcilddvcd8ajs91e2vj.apps.googleusercontent.com"
         },
         "development": {
