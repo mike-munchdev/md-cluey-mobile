@@ -7,8 +7,10 @@ export const useServerInfo = () => {
     Constants.manifest.extra.appVariables[String(NODE_ENV)].httpProtocol;
   const wsProtocol =
     Constants.manifest.extra.appVariables[String(NODE_ENV)].wsProtocol;
-  const serverUrl =
-    Constants.manifest.extra.appVariables[String(NODE_ENV)].apiServerUrl;
+  // const serverUrl =
+  //   Constants.manifest.extra.appVariables[String(NODE_ENV)].apiServerUrl;
+
+  const serverUrl = 'md-cluey-test.herokuapp.com';
 
   return [`${httpProtocol}://${serverUrl}`, `${wsProtocol}://${serverUrl}`];
 };
