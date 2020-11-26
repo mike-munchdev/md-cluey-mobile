@@ -19,7 +19,7 @@
     "assetBundlePatterns": ["**/*"],
     "android": {
       "package": "com.clueyconsumer.clueytest",
-      "googleServicesFile": "./assets/google-services.json",
+      "googleServicesFile": "./assets/google-services.test.json",
       "versionCode": 2,
       "permissions": [
         "READ_EXTERNAL_STORAGE",
