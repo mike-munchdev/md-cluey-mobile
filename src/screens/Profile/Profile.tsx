@@ -240,7 +240,6 @@ const Profile: FC = () => {
 
                   options: [],
                 });
-
                 setIsStringDialogVisible(true);
               }}
             >

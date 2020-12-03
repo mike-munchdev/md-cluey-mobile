@@ -10,12 +10,15 @@ import { Avatar } from 'react-native-elements';
 
 import { HorizontalRule } from '../../components/HorizontalRule';
 import { StandardContainer } from '../../components/Containers';
+import { useLazyQuery, useMutation } from '@apollo/react-hooks';
 import {
   getUserByIdCompleted,
   getUserByIdError,
   GET_USER_BY_ID,
+  getUserCompanyResponsesCompleted,
+  getUserCompanyResponsesError,
+  GET_USER_COMPANY_RESPONSES,
 } from '../../graphql/queries/user/';
-import { useLazyQuery, useMutation } from '@apollo/react-hooks';
 import { NavHeader } from '../../components/Headers';
 import { FriendLikesList } from '../../components/Lists';
 import { AppContext } from '../../config/context';
@@ -40,12 +43,29 @@ const Friend: FC = () => {
   const [friendshipLoading, setFriendshipLoading] = useState(true);
 
   const [friendships, setFriendships] = useState([]);
-
+  const [companyResponses, setCompanyResponses] = useState([]);
+  const [isCompanyResponsesLoading, setIsCompanyResponsesLoading] = useState(
+    true
+  );
   const [iconName, setIconName] = useState('account-plus-outline');
   const [iconColor, setIconColor] = useState(theme.dark.hex);
   const [buttonText, setButtonText] = useState('Add Friend');
   const route = useRoute();
   const { friend, user, friendship } = state;
+
+  const reset = () => {
+    setIsCompanyResponsesLoading(false);
+  };
+
+  const [getUserCompanyResponses] = useLazyQuery(GET_USER_COMPANY_RESPONSES, {
+    fetchPolicy: 'network-only',
+    onError: getUserCompanyResponsesError(dispatch, state.alertVisible, reset),
+    onCompleted: getUserCompanyResponsesCompleted(
+      reset,
+      dispatch,
+      setCompanyResponses
+    ),
+  });
 
   const [getUserById] = useLazyQuery(GET_USER_BY_ID, {
     fetchPolicy: 'network-only',
@@ -131,6 +151,12 @@ const Friend: FC = () => {
           variables: { userId1: route.params.friend.id, userId2: user?.id },
         });
         await getUserFriends({
+          variables: {
+            userId: route.params.friend.id,
+          },
+        });
+        setIsCompanyResponsesLoading(true);
+        await getUserCompanyResponses({
           variables: {
             userId: route.params.friend.id,
           },
@@ -245,8 +271,8 @@ const Friend: FC = () => {
           </View>
           <View style={styles.infoContainer}>
             <FriendLikesList
-              list={friend?.companyResponses}
-              loading={isLoading}
+              list={companyResponses}
+              loading={isCompanyResponsesLoading}
             />
           </View>
         </View>

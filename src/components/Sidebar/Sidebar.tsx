@@ -76,6 +76,7 @@ const Sidebar = () => {
 
   const handleManageFriendsPress = async () => {
     // check for username
+
     if (state.user?.username) {
       navigation.navigate('Friends');
     } else {
