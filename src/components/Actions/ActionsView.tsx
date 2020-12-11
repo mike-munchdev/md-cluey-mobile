@@ -36,7 +36,6 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
   const currentRouteIndex = useNavigationState((state) => state.index);
   const [isLoading, setIsLoading] = useState(false);
   const { companyResponse } = state;
-
   useEffect(() => {
     if (company) {
       const response = state.companyResponses.find(
@@ -115,12 +114,6 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
         break;
     }
   };
-
-  const handleSearchHomeClick = () => {
-    navigation.dispatch(StackActions.popToTop());
-  };
-
-  if (routes[currentRouteIndex - 1].name === 'Friend') return null;
 
   return (
     <View style={styles.likesContainer}>
@@ -249,7 +242,7 @@ const ActionsView: FC<IActionsViewProps> = ({ company }) => {
         </Tooltip>
       </View>
       <RoundedIconButton
-        onPress={handleSearchHomeClick}
+        onPress={() => navigation.dispatch(StackActions.popToTop())}
         backgroundColor={theme.white.hex}
         borderColor={theme.dark.hex}
         size={64}

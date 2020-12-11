@@ -11,6 +11,7 @@ import {
   userStructure,
 } from '../structures';
 import { getErrorMessage, showErrorAlert } from '../../../utils/errors';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export const GET_USER_COMPANY_RESPONSES = gql`
   query GetUserCompanyResponses($userId: String!) {
@@ -343,6 +344,7 @@ export const updateUserCompleted = (
     if (!user) {
       AlertHelper.show('error', 'Error', 'Error retrieving information.');
     } else {
+      await AsyncStorage.setItem('user', JSON.stringify(user));
       dispatch({ type: 'UPDATE_USER', payload: user });
     }
   } else {
@@ -372,6 +374,7 @@ export const updateUserSettingsCompleted = (
       AlertHelper.show('error', 'Error', 'Error retrieving information.');
     } else {
       AlertHelper.show('success', 'Success', 'Information saved.');
+      await AsyncStorage.setItem('user', JSON.stringify(user));
       dispatch({ type: 'UPDATE_USER', payload: user });
     }
   } else {
@@ -408,6 +411,7 @@ export const addPushTokenCompleted = (
       // AlertHelper.show('error', 'Error', 'Error retrieving information.');
     } else {
       // AlertHelper.show('success', 'Success', 'Information saved.');
+      await AsyncStorage.setItem('user', JSON.stringify(user));
       dispatch({ type: 'UPDATE_USER', payload: user });
     }
   } else {
@@ -476,6 +480,7 @@ export const updateUserPasswordCompleted = (
     setLoading(false);
     AlertHelper.show('success', 'Reset Password', 'Password Reset');
     if (dispatch) {
+      await AsyncStorage.setItem('user', JSON.stringify(user));
       dispatch({ type: 'UPDATE_USER', payload: user });
     }
     if (navigation && location) {
@@ -565,7 +570,10 @@ export const updateUserPasswordInternalCompleted = (
   if (ok) {
     AlertHelper.show('success', 'Reset Password', 'Password Reset');
     if (dispatch) {
-      dispatch({ type: 'UPDATE_USER', payload: user });
+      {
+        await AsyncStorage.setItem('user', JSON.stringify(user));
+        dispatch({ type: 'UPDATE_USER', payload: user });
+      }
     }
   } else {
     AlertHelper.show('error', 'Error', errors.DEFAULT_ERROR_MESSAGE);

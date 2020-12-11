@@ -4,7 +4,6 @@ import { ListItem } from 'react-native-elements';
 import theme from '../../constants/theme';
 
 import { ActivityIndicator } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
 
 export interface IFriendLikesListItemProps {
   item: any;
@@ -14,7 +13,6 @@ export interface IFriendLikesListItemProps {
 const FriendLikesListItem: FC<IFriendLikesListItemProps> = ({ item }) => {
   const [companyResponse] = useState(item);
   const [isLoading] = useState(false);
-  const navigation = useNavigation();
 
   const getIconName = (response: string) => {
     switch (response) {
@@ -44,7 +42,6 @@ const FriendLikesListItem: FC<IFriendLikesListItemProps> = ({ item }) => {
         backgroundColor: theme.light,
         width: '100%',
       }}
-      onPress={() => navigation.navigate('Company', { company: item.company })}
     >
       <ListItem.Content>
         <ListItem.Title>

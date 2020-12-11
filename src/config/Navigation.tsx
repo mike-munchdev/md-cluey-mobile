@@ -62,7 +62,6 @@ const FriendsStackScreen = () => (
       name="SystemNotifications"
       component={SystemNotifications}
     />
-    <FriendsStack.Screen name="Company" component={Company} />
   </FriendsStack.Navigator>
 );
 

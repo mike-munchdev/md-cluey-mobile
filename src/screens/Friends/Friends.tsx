@@ -18,6 +18,12 @@ import {
   getUserFriendsError,
   GET_USER_FRIENDS,
 } from '../../graphql/queries/friends/';
+import {
+  getUserSystemNotificationsCompleted,
+  getUserSystemNotificationsError,
+  GET_USER_SYSTEM_NOTIFICATIONS,
+} from '../../graphql/queries/systemnotifications';
+
 import { AppContext } from '../../config/context';
 import { FlatListHeader, NavHeader } from '../../components/Headers';
 import {
@@ -34,6 +40,8 @@ const Friends: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [notificationsLoading, setNotificationsLoading] = useState(false);
+
   const [, setFilteredList] = useState([]);
   const [, setFriendships] = useState([]);
   const [data, setData] = useState([
@@ -97,9 +105,28 @@ const Friends: FC = () => {
     }
   );
 
+  const [getSystemNotifications] = useLazyQuery(GET_USER_SYSTEM_NOTIFICATIONS, {
+    fetchPolicy: 'network-only',
+    onError: getUserSystemNotificationsError(
+      dispatch,
+      state.alertVisible,
+      setNotificationsLoading
+    ),
+    onCompleted: getUserSystemNotificationsCompleted(
+      dispatch,
+      setNotificationsLoading
+    ),
+  });
+
   const onRefresh = async () => {
     if (user) {
       await getUserFriends({
+        variables: {
+          userId: user.id,
+        },
+      });
+
+      await getSystemNotifications({
         variables: {
           userId: user.id,
         },
@@ -119,17 +146,20 @@ const Friends: FC = () => {
     })();
   }, []);
 
+  const isTextFound = (value:string, searchText:string ):boolean => {
+    if (!value) return false;
+    return value.toLowerCase().includes(searchText.toLowerCase());
+  }
   const filterFriends = () => {
     const searchLowercase = searchQuery.toLowerCase();
     const newList = state.friends.filter((f) => {
       const friend = f.requester.id === user?.id ? f.recipient : f.requester;
       return (
-        friend.firstName.toLowerCase().includes(searchLowercase) ||
-        friend.lastName.toLowerCase().includes(searchLowercase) ||
-        `${friend.firstName.toLowerCase()} ${friend.lastName.toLowerCase()}`.includes(
-          searchLowercase
-        ) ||
-        friend.username.toLowerCase().includes(searchLowercase)
+        isTextFound(friend.firstName, searchQuery) ||
+        isTextFound(friend.lastName, searchQuery) ||
+        isTextFound(`${friend.firstName.toLowerCase()} ${friend.lastName.toLowerCase()}`, searchQuery) ||
+        isTextFound(friend.userName, searchQuery)
+        
       );
     });
     setFilteredList(newList);
