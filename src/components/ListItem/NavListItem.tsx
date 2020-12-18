@@ -30,8 +30,8 @@ const NavListItem: FC<INavListItemProps> = ({
 
   return (
     <ListItem
-      onPress={() => {
-        item.isActive ? navigation.navigate(routeName, params) : null;
+      onPress={() => {        
+        item.isActive ? navigation.push(routeName, params) : null;
       }}
       key={item.id}
       bottomDivider
